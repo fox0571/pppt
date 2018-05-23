@@ -1,0 +1,25 @@
+{% extends 'request/index.html' %}
+
+{% block content %}
+
+
+{% if request %}
+<table class="a">
+  <tr>
+    <th>TIME</th>
+    <th>INCIDENT NUMBER</th>
+    <th>TRACKING</th>
+  </tr>
+    {% for r in request %}
+      <tr>
+        <th>{{r.requestTime}}</th>
+        <th>{{r.SKSID}}</th>
+        <th>{{r.tracking}}</th>
+      </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>No requests are available.</p>
+{% endif %}
+
+{% endblock %}

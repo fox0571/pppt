@@ -1,0 +1,142 @@
+{% extends 'request/index.html' %}
+
+{% block content %}
+
+
+<form action="/request/submit/" method="POST" class="post-form">
+    {% csrf_token %}
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">BUSINESS INFORMATION</h3>
+            </div>
+
+            <form role="form">
+              <div class="box-body">
+                <div class="form-group">
+                  {{ form.SKSID.errors }}
+                  <label for="{{ form.SKSID.id_for_label }}">Incident Number:</label>{{ form.SKSID }}
+                </div>
+                <div class="form-group">
+                  {{ form.businessName.errors }}
+                  <label for="{{ form.businessName.id_for_label }}">Business Name: </label>{{ form.businessName }}
+                </div>
+                <div class="form-group">
+                  {{ form.serialNumber.errors }}
+                  <label for="{{ form.serialNumber.id_for_label }}">Serial Number: </label>{{ form.serialNumber }}
+                </div>
+                <div class="form-group">
+                  {{ form.issue.errors }}
+                  <label for="{{ form.issue.id_for_label }}">Issue Description:</label>{{ form.issue }}
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFile">File input</label>
+                  <input type="file" id="exampleInputFile">
+
+                  <p class="help-block">Example block-level help text here.</p>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Check me out
+                  </label>
+                </div>
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">SHIPPING INFORMATION</h3>
+            </div>
+
+              <div class="box-body">
+                <div class="form-group">
+                  {{ form.SKSID.errors }}
+                  <label for="{{ form.SKSID.id_for_label }}">Incident Number:</label>{{ form.SKSID }}
+                </div>
+                <div class="form-group">
+                  {{ form.businessName.errors }}
+                  <label for="{{ form.businessName.id_for_label }}">Business Name: </label>{{ form.businessName }}
+                </div>
+                <div class="form-group">
+                  {{ form.serialNumber.errors }}
+                  <label for="{{ form.serialNumber.id_for_label }}">Serial Number: </label>{{ form.serialNumber }}
+                </div>
+                <div class="form-group">
+                  {{ form.issue.errors }}
+                  <label for="{{ form.issue.id_for_label }}">Issue Description:</label>{{ form.issue }}
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFile">File input</label>
+                  <input type="file" id="exampleInputFile">
+
+                  <p class="help-block">Example block-level help text here.</p>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Check me out
+                  </label>
+                </div>
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+        </div>
+      </div>
+      <div class="fieldWrapper">
+        {{ form.SKSID.errors }}
+        <label for="{{ form.SKSID.id_for_label }}">Incident Number:</label>{{ form.SKSID }}
+      </div>
+      <div class="fieldWrapper">
+        {{ form.businessName.errors }}
+        <label for="{{ form.businessName.id_for_label }}">Business Name: </label>{{ form.businessName }}
+      </div>
+      <div class="fieldWrapper">
+        {{ form.serialNumber.errors }}
+        <label for="{{ form.serialNumber.id_for_label }}">Serial Number: </label>{{ form.serialNumber }}
+      </div>
+      <div class="fieldWrapper">
+        {{ form.issue.errors }}
+        <label for="{{ form.issue.id_for_label }}">Issue Description:</label>{{ form.issue }}
+      </div>
+    </div>
+    <hr class="divide-line">
+    <div class="form-group">
+      <ul>
+        <li>PARTS INFORMATION</li>
+      </ul>
+      <div class="fieldWrapper">
+        {{ form.issue.errors }}
+        <label for="{{ form.issue.id_for_label }}">Issue Description:</label>{{ form.issue }}
+      </div>
+    </div>
+    <hr class="divide-line">
+    <div class="form-group">
+      <ul>
+        <li>SHIPPING INFORMATION</li>
+      </ul>
+    </div>
+   <label class="control-label">
+       {{ form.SKSID.label_tag }}
+   </label>
+   <div class="">
+       {{ form.SKSID }}
+   </div>
+   {{ form.title.errors }}
+   </div>
+
+    <button type="submit" class="save btn btn-default">Submit</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% load static %}
+<html>
+    <head>
+        <title>PARTS CENTER</title>
+        <link rel="stylesheet" href="{% static "css/index.css" %}">
+    </head>
+    <body>
+        <div class="page-left">
+          <div class="logo">
+            PARTS CENTER
+          </div>
+
+          <div class="page-left-nav">
+            <div class="left-nav">
+              REQUESTS
+            </div>
+            <div class="left-nav">
+              INVENTORY
+            </div>
+            <div class="left-nav">
+              PRICE
+            </div>
+            <div class="left-nav">
+              FEEDBACK
+            </div>
+          </div>
+
+        </div>
+        <div class="page-right">
+          <div class="page-right-nav">
+            <div class="right-nav-blank">
+            </div>
+            <div class="right-nav">
+              <a href="/request/all">ALL</a>
+            </div>
+            <div class="right-nav">
+              <a href="/request/finished">FINISHED</a>
+            </div>
+            <div class="right-nav" >
+              <a href="/request/pending">PENDING</a>
+            </div>
+            <div class="right-nav">
+              <a href="/request/new">NEW</a>
+            </div>
+          </div>
+
+          <div class=page-right-cont>
+            {% block content%}
+            {% endblock%}
+          </div>
+        </div>
+    </body>
+</html>

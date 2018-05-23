@@ -1,0 +1,17 @@
+body{margin: 0px;height: 100%;font-family:Monospace;}
+html{height: 100%;}
+hr.divide-line {
+    height: 12px;
+    border: 0;
+    box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}
+table.a{table-layout: auto;width: 600px;}
+li{color: #333333;font-size: 120%;}
+.page-left {background-color: #4BAAF4;width: 18.75%;height: 100%;float: left;}
+.logo{width: 100%;height: 120px;font-size: 250%;font-family:Monospace;}
+.left-nav {width: 100%;height: 60px;font-size: 170%;margin-left: 30px;color: #FFFFFF;}
+.page-right {width: 81.25%;height:900px;}
+.page-right-nav{background-color: #FAFAFA;height: 60px;width: 100%;}
+.right-nav{height: 60;width: 200px;color: #666666;font-size: 30;float: right;}
+.page-right-cont{margin-left: 90px;margin-right: auto;}
+.form-group{width: 100%;height: 240px; margin-left: 300px;}
