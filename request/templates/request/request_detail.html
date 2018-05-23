@@ -1,25 +1,128 @@
-{% extends 'request/index.html' %}
 
+{% extends 'request/index.html' %}
+{% load static %}
 {% block content %}
 
 
 {% if request %}
-<table class="a">
-  <tr>
-    <th>TIME</th>
-    <th>INCIDENT NUMBER</th>
-    <th>TRACKING</th>
-  </tr>
-    {% for r in request %}
-      <tr>
-        <th>{{r.requestTime}}</th>
-        <th>{{r.SKSID}}</th>
-        <th>{{r.tracking}}</th>
-      </tr>
-    {% endfor %}
-</table>
+
+<!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Requests List
+        <small>Requests List</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Requests List</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+    <div class="row">
+    <div class="col-xs-12">
+
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">资产总表<small>(不含软件)</small></h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="assets_table" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th>No.</th>
+              <th>Incident Number</th>
+              <th>Serial Number</th>
+              <th>Business Name</th>
+              <th>Tracking</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                {% for asset in request %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ asset.SKSID }}</td>
+                  <td>{{ asset.serialNumber }}</td>
+                  <td>{{ asset.businessName }}</td>
+                  <td>{{ asset.tracking }}</td>
+                    {% if asset.status == 0 %}
+                      <td><label class="label label-success">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 1 %}
+                      <td><label class="label label-warning">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 2 %}
+                      <td><label class="label label-default">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 3 %}
+                      <td><label class="label label-danger">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 4 %}
+                      <td><label class="label label-info">{{ asset.get_status_display }}</label></td>
+                    {% endif %}
+                  <td>{{ asset.idc|default:"-" }}</td>
+                  <td>{{ asset.m_time|date:"Y/m/d [H:m:s]" }}</td>
+                  <td>
+                      {% for tag in asset.tags.all %}
+                        <label class="label label-primary">{{ tag.name }}</label>
+                      {% empty %}
+                          -
+                      {% endfor %}
+                  </td>
+                </tr>
+                {% empty %}
+                  <tr>没有数据！</tr>
+                {% endfor %}
+
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>No.</th>
+                <th>Incident Number</th>
+                <th>Serial Number</th>
+                <th>Business Name</th>
+                <th>Tracking</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    </section>
+
+    <!-- DataTables -->
+
+
 {% else %}
     <p>No requests are available.</p>
 {% endif %}
 
 {% endblock %}
+
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+<!-- SlimScroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static "dist/js/app.min.js" %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static "dist/js/demo.js" %}"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $('#assets_table').DataTable({
+      "paging": true,       <!-- 允许分页 -->
+      "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+      "searching": true,    <!-- 允许内容搜索 -->
+      "ordering": true,     <!-- 允许排序 -->
+      "info": true,         <!-- 显示信息 -->
+      "autoWidth": false    <!-- 固定宽度 -->
+    });
+  });
+</script>

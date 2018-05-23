@@ -15,13 +15,23 @@
 
             <form role="form">
               <div class="box-body">
-                <div class="form-group">
-                  {{ form.SKSID.errors }}
-                  <label for="{{ form.SKSID.id_for_label }}">Incident Number:</label>{{ form.SKSID }}
-                </div>
-                <div class="form-group">
-                  {{ form.businessName.errors }}
-                  <label for="{{ form.businessName.id_for_label }}">Business Name: </label>{{ form.businessName }}
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="box-body">
+                    <div class="form-group">
+                      {{ form.SKSID.errors }}
+                      <label for="{{ form.SKSID.id_for_label }}">Incident Number:</label>{{ form.SKSID }}
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="box-body">
+                    <div class="form-group">
+                      {{ form.businessName.errors }}
+                      <label for="{{ form.businessName.id_for_label }}">Business Name: </label>{{ form.businessName }}
+                    </div>
+                  </div>
+                  </div>
                 </div>
                 <div class="form-group">
                   {{ form.serialNumber.errors }}
@@ -94,47 +104,7 @@
             </form>
         </div>
       </div>
-      <div class="fieldWrapper">
-        {{ form.SKSID.errors }}
-        <label for="{{ form.SKSID.id_for_label }}">Incident Number:</label>{{ form.SKSID }}
-      </div>
-      <div class="fieldWrapper">
-        {{ form.businessName.errors }}
-        <label for="{{ form.businessName.id_for_label }}">Business Name: </label>{{ form.businessName }}
-      </div>
-      <div class="fieldWrapper">
-        {{ form.serialNumber.errors }}
-        <label for="{{ form.serialNumber.id_for_label }}">Serial Number: </label>{{ form.serialNumber }}
-      </div>
-      <div class="fieldWrapper">
-        {{ form.issue.errors }}
-        <label for="{{ form.issue.id_for_label }}">Issue Description:</label>{{ form.issue }}
-      </div>
-    </div>
-    <hr class="divide-line">
-    <div class="form-group">
-      <ul>
-        <li>PARTS INFORMATION</li>
-      </ul>
-      <div class="fieldWrapper">
-        {{ form.issue.errors }}
-        <label for="{{ form.issue.id_for_label }}">Issue Description:</label>{{ form.issue }}
-      </div>
-    </div>
-    <hr class="divide-line">
-    <div class="form-group">
-      <ul>
-        <li>SHIPPING INFORMATION</li>
-      </ul>
-    </div>
-   <label class="control-label">
-       {{ form.SKSID.label_tag }}
-   </label>
-   <div class="">
-       {{ form.SKSID }}
-   </div>
-   {{ form.title.errors }}
-   </div>
+
 
     <button type="submit" class="save btn btn-default">Submit</button>
 </form>
