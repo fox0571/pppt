@@ -1,0 +1,173 @@
+{% extends 'request/index.html' %}
+
+{% block content %}
+
+
+<form action="/request/submit/" method="POST" class="post-form">
+    {% csrf_token %}
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Business Information</h3>
+            </div>
+
+            <!--form role="form"-->
+              <div class="box-body">
+                <div class="row">
+
+                  <!--left left column--->
+                  <div class="col-md-6">
+                    <div class="box-body">
+                      <div class="form-group">
+                        {{ form.businessName.errors }}
+                        <label for="{{ form.SKSID.id_for_label }}">Name of Business:</label>{{ form.businessName }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.contactName.errors }}
+                        <label for="{{ form.SKSID.id_for_label }}">Contact Name:</label>{{ form.contactName }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.phoneCustomer.errors }}
+                        <label for="{{ form.SKSID.id_for_label }}">Phone Number:</label>{{ form.phoneCustomer }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.emailAddress.errors }}
+                        <label for="{{ form.SKSID.id_for_label }}">Email Address:</label>{{ form.emailAddress }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.businessHours.errors }}
+                        <label for="{{ form.SKSID.id_for_label }}">Business Hours:</label>{{ form.businessHours }}
+                      </div>
+                   </div>
+                  </div>
+                  <!--end left left column-->
+
+                  <!--left right column--->
+                  <div class="col-md-6">
+                    <div class="box-body">
+                      <div class="form-group">
+                        {{ form.add1.errors }}
+                        <label for="{{ form.businessName.id_for_label }}">Address1: </label>{{ form.add1 }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.add2.errors }}
+                        <label for="{{ form.businessName.id_for_label }}">Address2: </label>{{ form.add2 }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.city.errors }}
+                        <label for="{{ form.businessName.id_for_label }}">City: </label>{{ form.city }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.state.errors }}
+                        <label for="{{ form.businessName.id_for_label }}">State: </label>{{ form.state }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.zip.errors }}
+                        <label for="{{ form.businessName.id_for_label }}">Zipcode: </label>{{ form.zip }}
+                      </div>
+
+
+
+                    </div>
+                  </div>
+                  <!-- end left right column-->
+
+                </div>
+                <div class="form-group">
+                  {{ form.serialNumber.errors }}
+                  <label for="{{ form.serialNumber.id_for_label }}">Serial Number: </label>{{ form.serialNumber }}
+                </div>
+                <div class="form-group">
+                  {{ form.issue.errors }}
+                  <label for="{{ form.issue.id_for_label }}">Issue Description:</label>{{ form.issue }}
+                </div>
+
+              </div>
+              <!-- /.box-body -->
+
+
+            <!--/form-->
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Technical Support Questions</h3>
+            </div>
+
+              <div class="box-body">
+                <div class="form-group">
+                  {{ form.filter.errors }}
+                  <label for="{{ form.SKSID.id_for_label }}">Filter Clean:</label>{{ form.filter }}
+                </div>
+                <div class="form-group">
+                  {{ form.displayTemp.errors }}
+                  <label for="{{ form.businessName.id_for_label }}">Dispaly Temperature: </label>{{ form.displayTemp }}
+                </div>
+                <div class="form-group">
+                  {{ form.realTemp.errors }}
+                  <label for="{{ form.serialNumber.id_for_label }}">Real Temperature: </label>{{ form.realTemp }}
+                </div>
+
+                <div class="row">
+
+                  <!--right left column--->
+                  <div class="col-md-6">
+                    <div class="box-body">
+                      <div class="form-group">
+                        {{ form.controller.errors }}
+                        <label for="{{ form.serialNumber.id_for_label }}">Controller: </label>{{ form.controller }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.snowflake.errors }}
+                        <label for="{{ form.serialNumber.id_for_label }}">Snowflake Icon: </label>{{ form.snowflake }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.fan.errors }}
+                        <label for="{{ form.serialNumber.id_for_label }}">Fan Icon: </label>{{ form.fan }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.iceEvap.errors }}
+                        <label for="{{ form.serialNumber.id_for_label }}">Ice On The Evaporator Coil: </label>{{ form.iceEvap }}
+                      </div>
+                    </div>
+                  </div>
+                  <!--end right left column-->
+
+                  <!--right right column-->
+                  <div class="col-md-6">
+                    <div class="box-body">
+                      <div class="form-group">
+                        {{ form.condFan.errors }}
+                        <label for="{{ form.serialNumber.id_for_label }}">Condensor Fans Running: </label>{{ form.condFan }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.evapFan.errors }}
+                        <label for="{{ form.serialNumber.id_for_label }}">Evaporator Fan Running: </label>{{ form.evapFan }}
+                      </div>
+                      <div class="form-group">
+                        {{ form.comp.errors }}
+                        <label for="{{ form.serialNumber.id_for_label }}">Compressor Running: </label>{{ form.comp }}
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <!--end right right column-->
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Customer is notified of warranty
+                  </label>
+                </div>
+                <button type="submit" class="save btn btn-default">Submit</button>
+              </div>
+        </div>
+      </div>
+
+    </div>
+</form>
+
+{% endblock %}

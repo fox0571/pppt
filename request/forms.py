@@ -1,5 +1,10 @@
 from django import forms
 
+CHOICES_0 = ((1,"ON"),(2,"OFF"))
+CHOICES_1 = ((1,"YES"),(2,"NO"),(3,"UNKNOWN"))
+CHOICES_2 = ((1,"ON"),(2,"OFF"),(3,"FLASHING"))
+CHOICES_3 = ((1,"Manual"),(2,"Digital"))
+CHOICES_4 = ((1,"Within 1 month"),(2,"Within 3 months"),(3,"Within 6 months"),(4,"More than 6 months"))
 STATES = (
     ("AL","Alabama"),("AK","Alaska"),("AS","American Samoa"),("AZ","Arizona"),
     ("AR","Arkansas"),("CA","California"),("CO","Colorado"),("CT","Connecticut"),
@@ -16,6 +21,30 @@ STATES = (
     ("TX", "Texas"),("UT", "Utah"),("VT", "Vermont"),("VI", "Virgin Islands"),("VA", "Virginia"),
     ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
 )
+
+class BasicInfoForm(forms.Form):
+    businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    contactName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    phoneCustomer = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    emailAddress = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
+    add1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    add2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'APT, UNIT, SUITE'}),required=False)
+    city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    state = forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}))
+    zip = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    businessHours = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
+    serialNumber = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the serial number'}))
+    issue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Enter the description of issue'}))
+    filter = forms.ChoiceField(choices=CHOICES_4,widget=forms.Select(attrs={'class': 'form-control'}))
+    displayTemp = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature on the display?'}))
+    realTemp = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature with your own thermometer?'}))
+    controller = forms.ChoiceField(choices=CHOICES_3,widget=forms.Select(attrs={'class': 'form-control'}))
+    snowflake = forms.ChoiceField(choices=CHOICES_2,widget=forms.Select(attrs={'class': 'form-control'}))
+    fan = forms.ChoiceField(choices=CHOICES_0,widget=forms.Select(attrs={'class': 'form-control'}))
+    iceEvap = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    condFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
 
 class RequestForm(forms.Form):
     SKSID = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))

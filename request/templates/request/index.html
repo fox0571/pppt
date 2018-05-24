@@ -143,28 +143,9 @@
     </section>
     <!-- /.sidebar -->
   </aside>
+  {% block content%}
+  {% endblock%}
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header)
-    <section class="content-header">
-      <h1>
-        Dashboard
-        <small>Version 2.0</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-      </ol>
-    </section>
-    -->
-    <section class="content">
-      {% block content%}
-      {% endblock%}
-    </section>
-
-  </div>
-  <!-- /.content-wrapper -->
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -215,5 +196,6 @@
 <script src="{% static "dist/js/pages/dashboard2.js" %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static "dist/js/demo.js" %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 </body>
 </html>
