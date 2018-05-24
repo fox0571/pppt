@@ -2,7 +2,8 @@
 
 {% block content %}
 
-
+<div class="content-wrapper">
+  <section class="content">
 <form action="/request/submit/" method="POST" class="post-form">
     {% csrf_token %}
 
@@ -108,5 +109,6 @@
 
     <button type="submit" class="save btn btn-default">Submit</button>
 </form>
-
+</section>
+</div>
 {% endblock %}

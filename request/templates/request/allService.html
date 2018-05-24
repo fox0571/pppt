@@ -34,33 +34,42 @@
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Incident Number</th>
-                <th>Serial Number</th>
-                <th>Business Name</th>
-                <th>Tracking</th>
+                <th>Business</th>
+                <th>Contact</th>
+                <th>S/N</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>issue</th>
+                <th>Date</th>
               </tr>
             </thead>
 
             <tbody>
-                {% for asset in request %}
+                {% for r in request %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td>{{ asset.SKSID }}</td>
-                  <td>{{ asset.serialNumber }}</td>
-                  <td>{{ asset.businessName }}</td>
-                  <td>{{ asset.tracking }}</td>
+                  <td>{{ r.businessName }}</td>
+                  <td>{{ r.contactName }}</td>
+                  <td>{{ r.serialNumber }}</td>
+                  <td>{{ r.phone }}</td>
+                  <td>{{ r.email }}</td>
+                  <td>{{ r.issue }}</td>
+                  <td>{{ r.callTime }}</td>
                 </tr>
                 {% empty %}
-                  <tr>没有数据！</tr>
+                  <tr>Nothing!</tr>
                 {% endfor %}
             </tbody>
             <tfoot>
               <tr>
                 <th>No.</th>
-                <th>Incident Number</th>
-                <th>Serial Number</th>
-                <th>Business Name</th>
-                <th>Tracking</th>
+                <th>Business</th>
+                <th>Contact</th>
+                <th>S/N</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>issue</th>
+                <th>Date</th>
               </tr>
             </tfoot>
           </table>

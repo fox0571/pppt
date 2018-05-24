@@ -6,7 +6,6 @@ SHIPPING_METHOD = (
     ('2NDA','SECOND DAY AIR'),
     ('GROUND','GROUND'),
 )
-
 STATES = (
     ("AL","Alabama"),("AK","Alaska"),("AS","American Samoa"),("AZ","Arizona"),
     ("AR","Arkansas"),("CA","California"),("CO","Colorado"),("CT","Connecticut"),
@@ -54,6 +53,26 @@ class CheckForm(ModelForm):
     class Meta:
         model = Partsinv
         fields=['number']
+
+class UnitBasicInfo(models.Model):
+    businessName=models.CharField(max_length=100)
+    contactName=models.CharField(max_length=50)
+    serialNumber=models.CharField(max_length=50)
+    phone=models.IntegerField()
+    email=models.EmailField()
+    location_add1=models.CharField(max_length=200)
+    location_add2=models.CharField(max_length=200)
+    location_city=models.CharField(max_length=20)
+    location_state=models.CharField(max_length=30)
+    location_zip=models.IntegerField()
+    issue=models.TextField()
+    warranty=models.NullBooleanField()
+    tsq=models.TextField()
+    techName=models.CharField(max_length=50,null=True)
+    techPhone=models.IntegerField(null=True)
+    techEmail=models.EmailField(null=True)
+    scheDate=models.DateField(null=True)
+    callTime=models.DateTimeField(auto_now_add=True)
 
 class Request(models.Model):
     SKSID=models.CharField(max_length=30)

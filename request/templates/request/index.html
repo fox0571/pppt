@@ -40,9 +40,9 @@
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>PA</b>RT</span>
+      <span class="logo-mini"><b>SER</b>VICE</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Parts</b>Center</span>
+      <span class="logo-lg"><b>Service</b>Center</span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -74,9 +74,6 @@
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="pull-left image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-        </div>
         <div class="pull-left info">
           <p>Alexander Pierce</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
@@ -97,6 +94,16 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
+        <li>
+          <a href="/request/dashboardop">
+            <i class="fa fa-book"></i> <span>My Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/request/basic">
+            <i class="fa fa-book"></i> <span>New Service</span>
+          </a>
+        </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>Requests</span>
@@ -190,12 +197,8 @@
 <script src="{% static "plugins/jvectormap/jquery-jvectormap-world-mill-en.js" %}"></script>
 <!-- SlimScroll -->
 <script src="{% static "bower_components/jquery-slimscroll/jquery.slimscroll.min.js" %}"></script>
-<!-- ChartJS -->
-<script src="{% static "bower_components/chart.js/Chart.js" %}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{% static "dist/js/pages/dashboard2.js" %}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{% static "dist/js/demo.js" %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+{% block script %}
+{% endblock %}
 </body>
 </html>

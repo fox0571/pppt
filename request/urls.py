@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^basic/$', views.basic_info, name='basic'),
     url(r'^dashboardop/$', views.dashboard_op, name='dbop'),
     url(r'^check/$', views.available, name='available'),
+    url(r'^allService/$', views.showAllService, name='allService'),
 ]

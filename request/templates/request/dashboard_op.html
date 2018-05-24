@@ -1,6 +1,7 @@
 {% extends 'request/index.html' %}
-
+{% load static %}
 {% block content %}
+<script src="{% static "bower_components/jquery/dist/jquery.min.js" %}"></script>
 
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -20,7 +21,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3>44</h3>
 
               <p>This Month</p>
             </div>
@@ -35,7 +36,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
+              <h3>150</h3>
 
               <p>Year to date</p>
             </div>
@@ -47,47 +48,51 @@
         </div>
       </div>
 
-      <canvas id="myChart" width="400" height="400"></canvas>
-<script>
-var ctx = document.getElementById("myChart");
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"], // 換成自己的labels
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3], // 換成自己的data
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-</script>
+      <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Bar Chart</h3>
+
+            </div>
+            <div class="box-body chart-responsive">
+              <div class="chart" id="bar-chart" style="height: 300px;"></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
     </section>
   </div>
+
+{% endblock %}
+{% block script %}
+<!-- ChartJS -->
+<script src="{% static "bower_components/chart.js/Chart.js" %}"></script>
+<script src="{% static "bower_components/morris.js/morris.min.js" %}"></script>
+<script src="{% static "bower_components/raphael/raphael.min.js" %}"></script>
+<script>
+$(function () {
+    "use strict";
+    //BAR CHART
+    var bar = new Morris.Bar({
+      element: 'bar-chart',
+      resize: true,
+      data: [
+        {y: '2006', a: 100, b: 90},
+        {y: '2007', a: 75, b: 65},
+        {y: '2008', a: 50, b: 40},
+        {y: '2009', a: 75, b: 65},
+        {y: '2010', a: 50, b: 40},
+        {y: '2011', a: 75, b: 65},
+        {y: '2012', a: 100, b: 90}
+      ],
+      barColors: ['#00a65a', '#f56954'],
+      xkey: 'y',
+      ykeys: ['a', 'b'],
+      labels: ['CPU', 'DISK'],
+      hideHover: 'auto'
+    });
+  });
+</script>
+
 
 {% endblock %}

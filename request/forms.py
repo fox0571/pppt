@@ -1,10 +1,10 @@
 from django import forms
 
-CHOICES_0 = ((1,"ON"),(2,"OFF"))
-CHOICES_1 = ((1,"YES"),(2,"NO"),(3,"UNKNOWN"))
-CHOICES_2 = ((1,"ON"),(2,"OFF"),(3,"FLASHING"))
-CHOICES_3 = ((1,"Manual"),(2,"Digital"))
-CHOICES_4 = ((1,"Within 1 month"),(2,"Within 3 months"),(3,"Within 6 months"),(4,"More than 6 months"))
+CHOICES_0 = (("ON","ON"),("OFF","OFF"))
+CHOICES_1 = (("YES","YES"),("NO","NO"),("UNKNOWN","UNKNOWN"))
+CHOICES_2 = (("ON","ON"),("OFF","OFF"),("FLASHING","FLASHING"))
+CHOICES_3 = (("Manual","Manual"),("Digital","Digital"))
+CHOICES_4 = (("Within 1 month","Within 1 month"),("Within 3 months","Within 3 months"),("Within 6 months","Within 6 months"),("More than 6 months","More than 6 months"))
 STATES = (
     ("AL","Alabama"),("AK","Alaska"),("AS","American Samoa"),("AZ","Arizona"),
     ("AR","Arkansas"),("CA","California"),("CO","Colorado"),("CT","Connecticut"),
