@@ -74,6 +74,9 @@ class UnitBasicInfo(models.Model):
     scheDate=models.DateField(null=True)
     callTime=models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.serialNumber
+
 class Request(models.Model):
     SKSID=models.CharField(max_length=30)
     serialNumber=models.CharField(max_length=50)
