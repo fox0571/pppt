@@ -5,6 +5,12 @@ CHOICES_1 = (("YES","YES"),("NO","NO"),("UNKNOWN","UNKNOWN"))
 CHOICES_2 = (("ON","ON"),("OFF","OFF"),("FLASHING","FLASHING"))
 CHOICES_3 = (("Manual","Manual"),("Digital","Digital"))
 CHOICES_4 = (("Within 1 month","Within 1 month"),("Within 3 months","Within 3 months"),("Within 6 months","Within 6 months"),("More than 6 months","More than 6 months"))
+GROUPS = (
+            (1,"Operator1"),(2,"Operator4"),(3,"Operator9"),(4,"Operator10"),
+            (5,"Operator11"),(6,"Operator12"),(7,"Operator13"),(8,"Dispatcher1"),
+            (9,"Dispatcher2"),(10,"Dispatcher3"),(11,"Dispatcher4"),(12,"Dispatcher5"),
+            (13,"Dispatcher6"),(14,"Warranty"),(15,"Admin")
+)
 STATES = (
     ("AL","Alabama"),("AK","Alaska"),("AS","American Samoa"),("AZ","Arizona"),
     ("AR","Arkansas"),("CA","California"),("CO","Colorado"),("CT","Connecticut"),
@@ -21,6 +27,10 @@ STATES = (
     ("TX", "Texas"),("UT", "Utah"),("VT", "Vermont"),("VI", "Virgin Islands"),("VA", "Virginia"),
     ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
 )
+
+class LoginForm(forms.Form):
+    user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput)
 
 class BasicInfoForm(forms.Form):
     businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
