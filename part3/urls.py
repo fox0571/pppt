@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^$',views.login),
     path('admin/', admin.site.urls),
     path('request/',include('request.urls')),
+    path('warranty/',include('warranty.urls')),
 ]

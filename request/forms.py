@@ -5,6 +5,7 @@ CHOICES_1 = (("YES","YES"),("NO","NO"),("UNKNOWN","UNKNOWN"))
 CHOICES_2 = (("ON","ON"),("OFF","OFF"),("FLASHING","FLASHING"))
 CHOICES_3 = (("Manual","Manual"),("Digital","Digital"))
 CHOICES_4 = (("Within 1 month","Within 1 month"),("Within 3 months","Within 3 months"),("Within 6 months","Within 6 months"),("More than 6 months","More than 6 months"))
+CHOICES_WARRANTY = ((1,"Under Warranty"),(2,"Out of Warranty"))
 GROUPS = (
             (1,"Operator1"),(2,"Operator4"),(3,"Operator9"),(4,"Operator10"),
             (5,"Operator11"),(6,"Operator12"),(7,"Operator13"),(8,"Dispatcher1"),
@@ -32,6 +33,9 @@ class LoginForm(forms.Form):
     user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput)
 
+class WarrantyForm(forms.Form):
+    waranty = forms.ChoiceField(choices=CHOICES_WARRANTY,widget=forms.RadioSelect(attrs={'class': 'form-control'}))
+    note = forms.CharField(widget=forms.Textarea)
 class BasicInfoForm(forms.Form):
     businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
     contactName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))

@@ -67,6 +67,7 @@ class UnitBasicInfo(models.Model):
     location_zip=models.IntegerField()
     issue=models.TextField()
     warranty=models.NullBooleanField()
+    warrantyNote=models.CharField(max_length=100)
     tsq=models.TextField()
     techName=models.CharField(max_length=50,null=True)
     techPhone=models.IntegerField(null=True)

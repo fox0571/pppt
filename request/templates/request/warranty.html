@@ -1,0 +1,36 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    {% if requests %}
+
+    {% for r in requests %}
+        <div class="post">
+            <h1><a href="/warranty/{{ r.pk }}">{{ r.serialNumber }}</a></h1>
+        </div>
+    {% endfor %}
+
+    {% else %}
+        <p>All serial numbers have been verified.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "bower_components/jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
+<!-- SlimScroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static "dist/js/adminlte.min.js" %}"></script>
+
+<!-- page script -->
+
+{% endblock %}

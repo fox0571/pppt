@@ -1,0 +1,33 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+
+    <form class='form' action="update/" method="post">
+      {% csrf_token %}
+              <h1>{{ unit.serialNumber }}</h1>
+              {{ form }}
+              <button type="submit" class="btn btn-primary pull-right">update</button>
+
+          </form>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "bower_components/jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
+<!-- SlimScroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static "dist/js/adminlte.min.js" %}"></script>
+
+<!-- page script -->
+
+{% endblock %}
