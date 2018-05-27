@@ -4,10 +4,6 @@ from .models import Request, CheckForm, Partsinv, UnitBasicInfo
 from django.utils import timezone
 from .forms import RequestForm, BasicInfoForm, LoginForm
 
-def login(request):
-    pass
-    form=LoginForm()
-    return render(request, 'request/login.html', {'form':form})
 def req_new(request):
     form=RequestForm()
     return render(request, 'request/request_new.html',{'form': form})

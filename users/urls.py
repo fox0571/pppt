@@ -17,13 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
-from users import views
-
+from . import views
 urlpatterns = [
-    url(r'^$',views.login),
-    url(r'^logout/$',views.logout),
-    path('admin/', admin.site.urls),
-    path('login/',include('users.urls')),
-    path('request/',include('request.urls')),
-    path('warranty/',include('warranty.urls')),
-]
+    url(r'^$', views.login, name='login'),
+    ]

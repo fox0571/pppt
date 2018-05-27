@@ -1,6 +1,10 @@
 
 {% extends 'request/index.html' %}
 {% load static %}
+
+{%block name%}
+{{request.session.user_name}}
+{%endblock%}
 {% block content %}
 
 <div class="content-wrapper">

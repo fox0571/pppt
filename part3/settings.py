@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['192.168.5.120','127.0.0.1']
 INSTALLED_APPS = [
     'request.apps.RequestConfig',
     'warranty.apps.WarrantyConfig',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
