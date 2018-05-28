@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^$',views.login),
     url(r'^logout/$',views.logout),
     path('admin/', admin.site.urls),
-    path('login/',include('users.urls')),
+    path('user/',include('users.urls')),
     path('request/',include('request.urls')),
     path('warranty/',include('warranty.urls')),
 ]

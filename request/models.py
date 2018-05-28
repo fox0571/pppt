@@ -75,8 +75,11 @@ class UnitBasicInfo(models.Model):
     scheDate=models.DateField(null=True)
     techNote=models.CharField(max_length=200,null=True)
     callTime=models.DateTimeField(auto_now_add=True)
-    reciever=models.CharField(max_length=50)
+    receiver=models.CharField(max_length=50)
     areaCode=models.IntegerField(default=0)
+    sksid=models.CharField(max_length=20,null=True)
+    finished=models.BooleanField(default=False)
+
     def __str__(self):
         return self.serialNumber
 

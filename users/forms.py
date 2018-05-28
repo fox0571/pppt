@@ -1,10 +1,10 @@
 from django import forms
 
 GROUPS = (
-            (1,"Jane"),(2,"Chris"),(3,"Randi"),(4,"Brandon"),
-            (5,"Anna"),(6,"Jackie"),(7,"Katrina"),(8,"Chloe"),
-            (9,"Samantha"),(10,"Danianla"),(11,"Yesi"),(12,"Amanda"),
-            (13,"Dispatcher6"),(14,"Bradly"),(15,"Admin")
+            (1,"Jane"),(2,"Yesi"),(3,"Chloe"),(4,"Christina"),
+            (5,"Daniela"),(6,"Samantha"),(7,"Katrina"),(8,"Amanda"),
+            (9,"Randi"),(10,"Brandon"),(11,"Anna"),(12,"Jackie"),
+            (13,"Bradly"),(14,"Admin"),(15,"--")
 )
 
 

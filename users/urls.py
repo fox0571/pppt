@@ -19,5 +19,11 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from . import views
 urlpatterns = [
-    url(r'^$', views.login, name='login'),
-    ]
+    url(r'^login/$', views.login, name='login'),
+    url(r'^$',views.show_page, name='show'),
+    url(r'^operator/all/$', views.get_all_records, name='all'),
+    url(r'^operator/today/$', views.get_today_records, name='today'),
+    url(r'^operator/oow/$', views.get_all_oow_records, name='oow'),
+    url(r'^dispatcher/$', views.show_dispatcher_page, name='dispatcher'),
+    url(r'^operator/$', views.show_operator_page, name='operator'),
+]

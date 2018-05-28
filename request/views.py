@@ -2,7 +2,7 @@ import datetime
 from django.shortcuts import render, redirect
 from .models import Request, CheckForm, Partsinv, UnitBasicInfo
 from django.utils import timezone
-from .forms import RequestForm, BasicInfoForm, LoginForm
+from .forms import RequestForm, BasicInfoForm
 
 def req_new(request):
     form=RequestForm()
@@ -10,8 +10,7 @@ def req_new(request):
 def basic_info(request):
     form=BasicInfoForm()
     return render(request, 'request/basicinfo.html',{'form': form})
-def dashboard_op(request):
-    return render(request, 'request/dashboard_op.html')
+
 def submit(request):
     if request.method == "POST":
         form = BasicInfoForm(request.POST)
@@ -55,6 +54,7 @@ def submit(request):
             new_unit.location_zip=zip
             new_unit.issue=issue
             new_unit.tsq=tsq
+            new_unit.receiver=request.session['user_name']
             new_unit.save()
         return redirect('/request/allService')
     else:
@@ -68,7 +68,6 @@ def submita(request):
 
     form = CheckForm(request.POST)
     query = request.POST.get('number','0')
-    print(query)
     result=Partsinv.objects.get(number=query)
     return render(request, 'request/availability.html', {'request':result})
 

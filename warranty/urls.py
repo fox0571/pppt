@@ -7,7 +7,8 @@ urlpatterns = [
     #path('', views.req, name='request'),
     #path('detail', views.submit, name='submit'),
 
-    url(r'^$', views.showAll, name='all'),
-    url(r'^(?P<pk>\d+)/$', views.showDetail, name='warranty_detail'),
+    url(r'^$', views.show_waiting, name='waiting'),
+    url(r'^all/$', views.show_all, name='all'),
+    url(r'^(?P<pk>\d+)/$', views.show_detail, name='warranty_detail'),
     url(r'^(?P<pk>\d+)/update/$', views.update, name='warranty_update'),
     ]
