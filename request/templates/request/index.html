@@ -22,7 +22,9 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
-
+  {% block css %}
+  {% endblock %}
+  
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -209,6 +211,7 @@
 <script src="{% static "plugins/jvectormap/jquery-jvectormap-world-mill-en.js" %}"></script>
 <!-- SlimScroll -->
 <script src="{% static "bower_components/jquery-slimscroll/jquery.slimscroll.min.js" %}"></script>
+
 
 {% block script %}
 {% endblock %}

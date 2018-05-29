@@ -19,4 +19,7 @@ urlpatterns = [
     url(r'^hot/$', views.update_hot, name='hot'),
     url(r'^cold/$', views.update_cold, name='cold'),
     url(r'^allService/$', views.showAllService, name='allService'),
+    url(r'^pre_diagnosis/(?P<pk>\d+)/$', views.get_detail_undiagnosed, name='pre_diagnosis'),
+    url(r'^pre_diagnosis/$', views.get_all_undiagnosed, name='pre_diag'),
+    url(r'^pre_diagnosis/(?P<pk>\d+)/update/$', views.update_diagnosis, name='update_diagnosis'),
 ]

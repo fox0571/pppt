@@ -54,16 +54,13 @@ def update(request,pk):
             warranty=form.cleaned_data["warranty"]
             note=form.cleaned_data["warrantyNote"]
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
-        print(unit.location_zip)
         month=unit.callTime.month
         year=unit.callTime.year
         area=unit.location_state
-        print (area,pk,month)
         code = get_code(area)
         unit.warranty=warranty
         unit.warrantyNote=note
         unit.areaCode=code
-        print (code)
         user=get_object_or_404(Users, code=code)
         task=user.current_tasks
         mon=user.current_month

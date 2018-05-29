@@ -1,61 +1,206 @@
 
 {% extends 'request/index.html' %}
 {% load static %}
+{% block css %}
+<!-- bootstrap datepicker -->
+<link rel="stylesheet" href="{% static "bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" %}">
+{% endblock %}
 {% block content %}
 
 <div class="content-wrapper">
   <section class="content">
     <div class="row">
-      <div class="col-md-6">
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Basic Information</h3>
+      <form class='form' action="update/" method="post">
+        {% csrf_token %}
+        <div class="col-md-6">
+          <div class "row">
+            <div class="col-md-6">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Basic Information</h3>
+                </div>
+                <div class="box-body">
+                  <p class="text-light-blue">Incident Number:{{unit.sksid|upper }}</p>
+                  <p class="text-light-blue">Business Name: {{unit.businessName|upper }}</p>
+                  <p class="text-light-blue">Contact Name: {{unit.contactName|upper }}</p>
+                  <p class="text-light-blue">Serial Number: {{unit.serialNumber|upper}}</p>
+                  <p class="text-light-blue">Phone: {{unit.phone|upper}}</p>
+                  <p class="text-light-blue">Email: {{unit.email|upper}}</p>
+                  <p class="text-light-blue">Address: {{unit.location_add1|upper}} {{unit.location_add2|upper}} {{unit.location_city|upper}}
+                    {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
+                  <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
+                  <p class="text-light-blue">Technical Support Questions: {{unit.tsq|upper|linebreaks}}</p>
+                  <p class="text-light-blue">Received by: {{unit.receiver}}</p>
+                </div>
+                <!-- /.box-body -->
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Pre-diagnosis</h3>
+                </div>
+                <div class="box-body">
+                  <p class="text-light-blue">Note: {{unit.pre_diagnosis}}</p>
+                </div>
+              </div>
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Tech Information</h3>
+                </div>
+                <div class="box-body">
+                  <div class="form-group">
+                    {{ form.tech_name.errors }}
+                    <label for="{{ form.tech_name.id_for_label }}">Tech Name</label>{{ form.tech_name }}
+                  </div>
+                  <div class="form-group">
+                    {{ form.tech_phone.errors }}
+                    <label for="{{ form.tech_phone.id_for_label }}">Tech Phone:</label>{{ form.tech_phone }}
+                  </div>
+                  <div class="form-group">
+                    {{ form.tech_email.errors }}
+                    <label for="{{ form.tech_email.id_for_label }}">Tech Email:</label>{{ form.tech_email }}
+                  </div>
+                  <div class="form-group">
+                    {{ form.tech_note.errors }}
+                    <label for="{{ form.tech_note.id_for_label }}">Note:</label>{{ form.tech_note }}
+                  </div>
+                  <div class="input-group date">
+                    {{ form.schedule_date.errors }}
+                    <label for="{{ form.schedule_date.id_for_label }}">Scheduled Date:</label>{{ form.schedule_date }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="box-body">
-            <p class="text-light-blue">Business Name: {{unit.businessName}}</p>
-            <p class="text-light-blue">Contact Name: {{unit.contactName}}</p>
-            <p class="text-light-blue">Serial Number: {{unit.serialNumber}}</p>
-            <p class="text-light-blue">Phone: {{unit.phone}}</p>
-            <p class="text-light-blue">Email: {{unit.email}}</p>
-            <p class="text-light-blue">Address: {{unit.location_add1}} {{unit.location_add2}} {{unit.location_city}}
-              {{unit.location_state}} {{unit.location_zip}}</p>
-            <p class="text-light-blue">Issue: {{unit.issue}}</p>
-            <p class="text-light-blue">Technical Support Questions: {{unit.tsq}}</p>
-            <p class="text-light-blue">Received by: {{unit.receiver}}</p>
-          </div>
-          <!-- /.box-body -->
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Tech Information</h3>
+        <div class="col-md-6">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Parts Infomtion</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ part_form.number1.errors }}
+                      <label for="{{ form.part_number1.id_for_label }}">Part Number:</label>{{ part_form.number1 }}
+                    </div>
+                    <div class="form-group">
+                      {{ part_form.number2.errors }}
+                      <label for="{{ form.part_number2.id_for_label }}">Part Number:</label>{{ part_form.number2 }}
+                    </div>
+                    <div class="form-group">
+                      {{ part_form.number3.errors }}
+                      <label for="{{ form.part_number3.id_for_label }}">Part Number:</label>{{ part_form.number3 }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ part_form.name1.errors }}
+                      <label for="{{ part_form.name1.id_for_label }}">Description:</label>{{ part_form.name1 }}
+                    </div>
+                    <div class="form-group">
+                      {{ part_form.name2.errors }}
+                      <label for="{{ part_form.name2.id_for_label }}">Description:</label>{{ part_form.name2 }}
+                    </div>
+                    <div class="form-group">
+                      {{ part_form.name3.errors }}
+                      <label for="{{ part_form.name3.id_for_label }}">Description:</label>{{ part_form.name3 }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ part_form.qty1.errors }}
+                      <label for="{{ part_form.qty1.id_for_label }}">QTY:</label>{{ part_form.qty1 }}
+                    </div>
+                    <div class="form-group">
+                      {{ part_form.qty2.errors }}
+                      <label for="{{ part_form.qty2.id_for_label }}">QTY:</label>{{ part_form.qty2 }}
+                    </div>
+                    <div class="form-group">
+                      {{ part_form.qty3.errors }}
+                      <label for="{{ part_form.qty3.id_for_label }}">QTY:</label>{{ part_form.qty3 }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="box-header with-border">
+                <h3 class="box-title">Shipping Infomtion</h3>
+              </div>
+              <div class="row">
+                <div class="box-body">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ part_form.contact.errors }}
+                      <label for="{{ part_form.contact.id_for_label }}">Contact:</label>{{ part_form.contact }}
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ part_form.phone.errors }}
+                      <label for="{{ part_form.phone.id_for_label }}">Phone:</label>{{ part_form.phone }}
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ part_form.Address1.errors }}
+                      <label for="{{ part_form.address1.id_for_label }}">Address1:</label>{{ part_form.address1 }}
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ part_form.Address2.errors }}
+                      <label for="{{ part_form.address2.id_for_label }}">Address2:</label>{{ part_form.address2 }}
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      {{ part_form.city.errors }}
+                      <label for="{{ part_form.city.id_for_label }}">City:</label>{{ part_form.city }}
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      {{ part_form.state.errors }}
+                      <label for="{{ part_form.state.id_for_label }}">State:</label>{{ part_form.state }}
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      {{ part_form.zip.errors }}
+                      <label for="{{ part_form.zip.id_for_label }}">Zip:</label>{{ part_form.zip }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="box-body">
-            <form class='form' action="update/" method="post">
-              {% csrf_token %}
-              {{ form }}
-              <button type="submit" class="btn btn-primary pull-right">update</button>
-            </form>
-          </div>
+          <button type="submit" class="btn btn-primary pull-right">update</button>
         </div>
-      </div>
+      </form>
     </div>
   </section>
 </div>
 {% endblock %}
 
 {% block script %}
-<script src="{% static "bower_components/jquery/dist/jquery.min.js" %}"></script>
-<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
-<!-- SlimScroll -->
-<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
-<!-- FastClick -->
-<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static "dist/js/adminlte.min.js" %}"></script>
-
+<!-- bootstrap datepicker -->
+<script src="{% static "bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.date.extensions.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.extensions.js" %}"></script>
+<script>
+  $(function (){
+    $('#datepicker').datepicker({
+      autoclose: true
+    })
+  })
 <!-- page script -->
-
+</script>
 {% endblock %}

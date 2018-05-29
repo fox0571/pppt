@@ -6,6 +6,7 @@ class Users(models.Model):
         ("dispatcher","DISPATCHER"),
         ("operator","OPERATOR"),
         ("warranty","WARRANTY"),
+        ("parts","PARTS"),
         ("admin","ADMIN"),
     )
     name=models.CharField(max_length=50)

@@ -1,8 +1,8 @@
 import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Request, CheckForm, Partsinv, UnitBasicInfo
 from django.utils import timezone
-from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, DispatchForm
+from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, DispatchForm, PreDiagnosisForm,PartForm
 
 def req_new(request):
     form=RequestForm()
@@ -11,6 +11,22 @@ def basic_info(request):
     form=BasicForm()
     return render(request, 'request/base.html',{'form': form})
 
+def get_all_undiagnosed(request):
+    all=UnitBasicInfo.objects.filter(pre_diagnosis=None)
+    return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
+def get_detail_undiagnosed(request,pk):
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    form=PreDiagnosisForm()
+    return render(request, 'request/pre_diagnosis_detail.html', {'unit': unit,'form':form})
+def update_diagnosis(request,pk):
+    if request.method == "POST":
+        form=PreDiagnosisForm(request.POST)
+        if form.is_valid():
+            note=form.cleaned_data["note"]
+            unit=get_object_or_404(UnitBasicInfo, pk=pk)
+            unit.pre_diagnosis=note
+            unit.save()
+            return redirect('/request/pre_diagnosis')
 def show_tech_question_page(request):
     if request.method == "POST":
         form = BasicForm(request.POST)

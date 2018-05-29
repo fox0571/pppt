@@ -66,9 +66,9 @@ class UnitBasicInfo(models.Model):
     location_state=models.CharField(max_length=30)
     location_zip=models.IntegerField()
     issue=models.TextField()
-    warranty=models.NullBooleanField()
+    warranty=models.NullBooleanField(null=True)
     warrantyNote=models.CharField(max_length=100,null=True,blank=True)
-    tsq=models.TextField()
+    tsq=models.TextField(null=True)
     techName=models.CharField(max_length=50,null=True)
     techPhone=models.IntegerField(null=True)
     techEmail=models.EmailField(null=True)
@@ -79,6 +79,7 @@ class UnitBasicInfo(models.Model):
     areaCode=models.IntegerField(default=0)
     sksid=models.CharField(max_length=20,null=True)
     finished=models.BooleanField(default=False)
+    pre_diagnosis=models.TextField(null=True)
 
     def __str__(self):
         return self.serialNumber

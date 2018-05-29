@@ -1,0 +1,27 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    {% if requests %}
+
+    {% for r in requests %}
+        <div class="post">
+            <h1><a href="/request/pre_diagnosis/{{ r.pk }}">{{ r.serialNumber }}</a></h1>
+        </div>
+    {% endfor %}
+
+    {% else %}
+        <p>All Units have been pre-diagnosised.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
+
+{% endblock %}
