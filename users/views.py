@@ -1,15 +1,27 @@
 import datetime
-from django.shortcuts import render, redirect
-from .forms import LoginForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import LoginForm, DispatchForm
 from .models import Users
 from request.models import UnitBasicInfo
 # Create your views here.
 
 def get_all_records(request):
     name=request.session['user_name']
-    print (name)
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).order_by('-callTime')
     return render(request, 'request/operator_list.html', {'request':request_list})
+def get_all_dispatcher_records(request):
+    code = request.session['user_code']
+    request_list = UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).order_by('-callTime')
+    return render(request, 'request/dispatcher_list.html', {'request':request_list})
+def get_all_scheduled_records(request):
+    code = request.session['user_code']
+    request_list = UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=False).exclude(scheDate=None).order_by('-callTime')
+    return render(request, 'request/dispatcher_list.html', {'request':request_list})
+def get_new_records(request):
+    code = request.session['user_code']
+    request_list = UnitBasicInfo.objects.all().filter(areaCode=code).filter(scheDate=None).order_by('-callTime')
+    return render(request, 'request/dispatcher_list.html', {'request':request_list})
+
 def get_all_oow_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).order_by('-callTime')
@@ -18,6 +30,10 @@ def get_today_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).order_by('-callTime')
     return render(request, 'request/operator_list.html', {'request':request_list})
+def show_service_detail(request,pk):
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    form=DispatchForm()
+    return render(request, 'request/dispatch_detail.html', {'unit': unit,'form':form})
 def show_operator_page(request):
     name=request.session['user_name']
     a=UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).count()
@@ -31,6 +47,7 @@ def show_dispatcher_page(request):
     a=UnitBasicInfo.objects.all().filter(areaCode=code).filter(scheDate=None).count()
     b=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=False).exclude(scheDate=None).count()
     c=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).count()
+
     print (request.session['user_group'])
     return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c})
 def show_page(request):
@@ -51,11 +68,9 @@ def login(request):
         return redirect('/user/')
     if request.method == "POST":
         login_form = LoginForm(request.POST)
-        message = "请检查填写的内容！"
         if login_form.is_valid():
             code = login_form.cleaned_data['user']
             password = login_form.cleaned_data['password']
-            message = "hhhh"
             try:
                 user = Users.objects.get(code=code)
                 if user.password == password:

@@ -30,12 +30,13 @@
                   <thead>
                     <tr>
                       <th>No.</th>
+                      <th>ID</th>
                       <th>Business</th>
                       <th>Contact</th>
                       <th>S/N</th>
                       <th>Phone</th>
-                      <th>Warranty Statue</th>
                       <th>Date</th>
+                      <th>Tech</th>
                     </tr>
                   </thead>
 
@@ -43,12 +44,16 @@
                       {% for r in request %}
                       <tr>
                         <td>{{ forloop.counter }}</td>
+                        <td>{{ r.sksid }}</td>
                         <td>{{ r.businessName }}</td>
                         <td>{{ r.contactName }}</td>
                         <td>{{ r.serialNumber }}</td>
                         <td>{{ r.phone }}</td>
-                        <td>{{ r.warranty }}</td>
                         <td>{{ r.callTime }}</td>
+                        <td><a href="/user/dispatcher/new/{{ r.pk }}">
+                              <button type="button" class="btn btn-block btn-info btn-sm">Find a Tech!</button>
+                            </a>
+                        </td>
                       </tr>
                       {% empty %}
                         <tr>Nothing!</tr>

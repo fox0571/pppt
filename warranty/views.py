@@ -21,12 +21,13 @@ def show_detail(request,pk):
     return render(request, 'request/warranty_detail.html', {'unit': warranty,'form':form})
 
 def get_code(area):
-    LIST_1=['FL','SC']
-    LIST_2=['TX','LA']
-    LIST_3=['IL','WI']
-    LIST_4=['WA','OR']
-    LIST_5=['MA','ME']
-    LIST_6=['CA','AZ']
+    #(1,"Jane"),(2,"Yesi"),(3,"Chloe"),(4,"Christina"),(5,"Daniela"),(6,"Samantha")
+    LIST_1=['CA','AZ','NV','UT','ID','CO']
+    LIST_2=['WA','OR','MT','WY','NM','ND','SD','NE','KS','MN','IA','AR']
+    LIST_3=['TX','OK','LA','MS']
+    LIST_4=['GA','FL']
+    LIST_5=['WI','MO','IL','MI','IN','OH','KY','TN','AL']
+    LIST_6=['ME','VT','NH','MA','CT','RI','NY','PA','NJ','DE','MD','DC','WV','VA','NC','SC']
     for st in LIST_1:
         if st==area:
             return 1
@@ -53,15 +54,17 @@ def update(request,pk):
             warranty=form.cleaned_data["warranty"]
             note=form.cleaned_data["warrantyNote"]
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
+        print(unit.location_zip)
         month=unit.callTime.month
         year=unit.callTime.year
         area=unit.location_state
+        print (area,pk,month)
         code = get_code(area)
         unit.warranty=warranty
         unit.warrantyNote=note
         unit.areaCode=code
-
-        user=get_object_or_404(User, code=code)
+        print (code)
+        user=get_object_or_404(Users, code=code)
         task=user.current_tasks
         mon=user.current_month
         if month==mon:

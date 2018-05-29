@@ -1,0 +1,96 @@
+{% extends 'request/index.html' %}
+
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <form action="/request/cold/" method="POST" class="post-form">
+        {% csrf_token %}
+
+        <div class="row">
+
+          <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Technical Support Questions</h3>
+                </div>
+
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ form.filter.errors }}
+                      <label for="{{ form.SKSID.id_for_label }}">Filter Clean:</label>{{ form.filter }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.displayTemp.errors }}
+                      <label for="{{ form.businessName.id_for_label }}">Dispaly Temperature: </label>{{ form.displayTemp }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.realTemp.errors }}
+                      <label for="{{ form.serialNumber.id_for_label }}">Real Temperature: </label>{{ form.realTemp }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.door.errors }}
+                      <label for="{{ form.door.id_for_label }}">If this is a door issue, please indicate: </label>{{ form.door }}
+                    </div>
+
+                    <div class="row">
+
+                      <!--right left column--->
+                      <div class="col-md-6">
+                        <div class="box-body">
+                          <div class="form-group">
+                            {{ form.controller.errors }}
+                            <label for="{{ form.serialNumber.id_for_label }}">Controller: </label>{{ form.controller }}
+                          </div>
+                          <div class="form-group">
+                            {{ form.snowflake.errors }}
+                            <label for="{{ form.serialNumber.id_for_label }}">Snowflake Icon: </label>{{ form.snowflake }}
+                          </div>
+                          <div class="form-group">
+                            {{ form.fan.errors }}
+                            <label for="{{ form.serialNumber.id_for_label }}">Fan Icon: </label>{{ form.fan }}
+                          </div>
+                          <div class="form-group">
+                            {{ form.iceEvap.errors }}
+                            <label for="{{ form.serialNumber.id_for_label }}">Ice On The Evaporator Coil: </label>{{ form.iceEvap }}
+                          </div>
+                        </div>
+                      </div>
+                      <!--end right left column-->
+
+                      <!--right right column-->
+                      <div class="col-md-6">
+                        <div class="box-body">
+                          <div class="form-group">
+                            {{ form.condFan.errors }}
+                            <label for="{{ form.serialNumber.id_for_label }}">Condensor Fans Running: </label>{{ form.condFan }}
+                          </div>
+                          <div class="form-group">
+                            {{ form.evapFan.errors }}
+                            <label for="{{ form.serialNumber.id_for_label }}">Evaporator Fan Running: </label>{{ form.evapFan }}
+                          </div>
+                          <div class="form-group">
+                            {{ form.comp.errors }}
+                            <label for="{{ form.serialNumber.id_for_label }}">Compressor Running: </label>{{ form.comp }}
+                          </div>
+
+
+                        </div>
+                      </div>
+                      <!--end right right column-->
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox"> Customer is notified of warranty
+                      </label>
+                    </div>
+                    <button type="submit" class="save btn btn-default">Submit</button>
+                  </div>
+            </div>
+          </div>
+
+        </div>
+    </form>
+  </section>
+</div>
+{% endblock %}

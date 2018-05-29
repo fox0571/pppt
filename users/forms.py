@@ -7,6 +7,12 @@ GROUPS = (
             (13,"Bradly"),(14,"Admin"),(15,"--")
 )
 
+class DispatchForm(forms.Form):
+    tech_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    tech_phone = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','data-inputmask':'"mask": "(999) 999-9999"'}))
+    tech_email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    tech_note = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    schedule_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control pull-right','id':'datepicker'}))
 
 class LoginForm(forms.Form):
     user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control'}))

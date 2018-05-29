@@ -1,0 +1,61 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Basic Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">Business Name: {{unit.businessName}}</p>
+            <p class="text-light-blue">Contact Name: {{unit.contactName}}</p>
+            <p class="text-light-blue">Serial Number: {{unit.serialNumber}}</p>
+            <p class="text-light-blue">Phone: {{unit.phone}}</p>
+            <p class="text-light-blue">Email: {{unit.email}}</p>
+            <p class="text-light-blue">Address: {{unit.location_add1}} {{unit.location_add2}} {{unit.location_city}}
+              {{unit.location_state}} {{unit.location_zip}}</p>
+            <p class="text-light-blue">Issue: {{unit.issue}}</p>
+            <p class="text-light-blue">Technical Support Questions: {{unit.tsq}}</p>
+            <p class="text-light-blue">Received by: {{unit.receiver}}</p>
+          </div>
+          <!-- /.box-body -->
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Tech Information</h3>
+          </div>
+          <div class="box-body">
+            <form class='form' action="update/" method="post">
+              {% csrf_token %}
+              {{ form }}
+              <button type="submit" class="btn btn-primary pull-right">update</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "bower_components/jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
+<!-- SlimScroll -->
+<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static "dist/js/adminlte.min.js" %}"></script>
+
+<!-- page script -->
+
+{% endblock %}

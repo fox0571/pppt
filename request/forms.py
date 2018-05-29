@@ -5,6 +5,8 @@ CHOICES_1 = (("YES","YES"),("NO","NO"),("UNKNOWN","UNKNOWN"))
 CHOICES_2 = (("ON","ON"),("OFF","OFF"),("FLASHING","FLASHING"))
 CHOICES_3 = (("Manual","Manual"),("Digital","Digital"))
 CHOICES_4 = (("Within 1 month","Within 1 month"),("Within 3 months","Within 3 months"),("Within 6 months","Within 6 months"),("More than 6 months","More than 6 months"))
+CHOICES_6 = (("LEFT","LEFT"),("MIDDLE","MIDDLE"),("RIGHT","RIGHT"),("ALL","ALL"))
+CHOICES_7 = (("HOT","HOT"),("COLD","COLD"),("OTHER","OTHER"))
 CHOICES_WARRANTY = ((1,"Under Warranty"),(2,"Out of Warranty"))
 GROUPS = (
             (1,"Operator1"),(2,"Operator4"),(3,"Operator9"),(4,"Operator10"),
@@ -29,10 +31,42 @@ STATES = (
     ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
 )
 
-class LoginForm(forms.Form):
-    user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control'}))
-    password = forms.CharField(widget=forms.PasswordInput)
-
+class DispatchForm(forms.Form):
+    tech_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    tech_phone = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','data-inputmask':'"mask": "(999) 999-9999"'}))
+    tech_email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    tech_note = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    schedule_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control pull-right','id':'datepicker'}))
+class HotTechQuestionForm(forms.Form):
+    pilot_light = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    pilot_stay = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    burner_light = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+class ColdTechQuestionForm(forms.Form):
+    filter = forms.ChoiceField(choices=CHOICES_4,widget=forms.Select(attrs={'class': 'form-control'}))
+    displayTemp = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature on the display?'}))
+    realTemp = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature with your own thermometer?'}))
+    door = forms.ChoiceField(choices=CHOICES_6,widget=forms.Select(attrs={'class': 'form-control'}))
+    controller = forms.ChoiceField(choices=CHOICES_3,widget=forms.Select(attrs={'class': 'form-control'}))
+    snowflake = forms.ChoiceField(choices=CHOICES_2,widget=forms.Select(attrs={'class': 'form-control'}))
+    fan = forms.ChoiceField(choices=CHOICES_0,widget=forms.Select(attrs={'class': 'form-control'}))
+    iceEvap = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    condFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+class BasicForm(forms.Form):
+    businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    contactName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    phoneCustomer = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    emailAddress = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
+    add1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    add2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'APT, UNIT, SUITE'}),required=False)
+    city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    state = forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}))
+    zip = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    businessHours = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
+    serialNumber = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the serial number'}))
+    issue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Enter the description of issue'}))
+    type = forms.ChoiceField(choices=CHOICES_7,widget=forms.RadioSelect(attrs={'class': 'radio'}))
 class WarrantyForm(forms.Form):
     waranty = forms.ChoiceField(choices=CHOICES_WARRANTY,widget=forms.RadioSelect(attrs={'class': 'form-control'}))
     note = forms.CharField(widget=forms.Textarea)
