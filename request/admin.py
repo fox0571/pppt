@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Partsinv, Request, UnitBasicInfo
+from .models import Partsinv, UnitBasicInfo
 # Register your models here.
-admin.site.register(Request)
 admin.site.register(UnitBasicInfo)

@@ -84,17 +84,19 @@ class UnitBasicInfo(models.Model):
     def __str__(self):
         return self.serialNumber
 
-class Request(models.Model):
-    SKSID=models.CharField(max_length=30)
-    serialNumber=models.CharField(max_length=50)
-    businessName=models.CharField(max_length=100)
-    tech=models.CharField(max_length=100)
-    issue=models.TextField()
-    shippingMethod=models.CharField(max_length=20,choices=SHIPPING_METHOD,blank=True)
-    partQty=models.IntegerField()
-    requestTime=models.DateField(auto_now_add=True)
-    requestStatue=models.NullBooleanField()
+class PartRequest(models.Model):
+    sksid=models.CharField(max_length=30)
+    contact=models.CharField(max_length=50)
+    number=models.CharField(max_length=30)
+    name=models.CharField(max_length=30)
+    shipping_method=models.CharField(max_length=20,choices=SHIPPING_METHOD,blank=True)
+    qty=models.IntegerField()
+    request_time=models.DateField(auto_now_add=True)
     tracking=models.CharField(max_length=50)
-
+    location_add1=models.CharField(max_length=200)
+    location_add2=models.CharField(max_length=200,null=True)
+    location_city=models.CharField(max_length=20)
+    location_state=models.CharField(max_length=30)
+    location_zip=models.IntegerField()
     def __str__(self):
-        return self.SKSID
+        return self.sksid

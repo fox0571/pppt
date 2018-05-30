@@ -1,0 +1,135 @@
+{% extends 'request/index.html' %}
+
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <form action="update/" method="POST" class="post-form">
+        {% csrf_token %}
+        <div class="col-md-6">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Parts Infomtion</h3>
+            </div>
+            <label>
+              <h2>{{ id }}</h2>
+            </label>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ form.number1.errors }}
+                      <label for="{{ form.number1.id_for_label }}">Part Number:</label>{{ form.number1 }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.number2.errors }}
+                      <label for="{{ form.number2.id_for_label }}">Part Number:</label>{{ form.number2 }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.number3.errors }}
+                      <label for="{{ form.number3.id_for_label }}">Part Number:</label>{{ form.number3 }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ form.name1.errors }}
+                      <label for="{{ form.name1.id_for_label }}">Description:</label>{{ form.name1 }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.name2.errors }}
+                      <label for="{{ form.name2.id_for_label }}">Description:</label>{{ form.name2 }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.name3.errors }}
+                      <label for="{{ form.name3.id_for_label }}">Description:</label>{{ form.name3 }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ form.qty1.errors }}
+                      <label for="{{ form.qty1.id_for_label }}">QTY:</label>{{ form.qty1 }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.qty2.errors }}
+                      <label for="{{ form.qty2.id_for_label }}">QTY:</label>{{ form.qty2 }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.qty3.errors }}
+                      <label for="{{ form.qty3.id_for_label }}">QTY:</label>{{ form.qty3 }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Shipping Infomtion</h3>
+              <div class="checkbox">
+                <label>
+                  {{ form.to_customer }}Check here if this package is shipped to the customer,
+                  and you can leave the shipping form blank.
+                </label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="box-body">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    {{ form.contact.errors }}
+                    <label for="{{ form.contact.id_for_label }}">Contact:</label>{{ form.contact }}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    {{ form.phone.errors }}
+                    <label for="{{ form.phone.id_for_label }}">Phone:</label>{{ form.phone }}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    {{ form.Address1.errors }}
+                    <label for="{{ form.address1.id_for_label }}">Address1:</label>{{ form.address1 }}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    {{ form.Address2.errors }}
+                    <label for="{{ form.address2.id_for_label }}">Address2:</label>{{ form.address2 }}
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    {{ form.city.errors }}
+                    <label for="{{ form.city.id_for_label }}">City:</label>{{ form.city }}
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    {{ form.state.errors }}
+                    <label for="{{ form.state.id_for_label }}">State:</label>{{ form.state }}
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    {{ form.zip.errors }}
+                    <label for="{{ form.zip.id_for_label }}">Zip:</label>{{ form.zip }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">update</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

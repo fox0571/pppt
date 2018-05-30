@@ -9,7 +9,8 @@ urlpatterns = [
 
     #url(r'^(?P<pk>\d+)/$', views.post_detail, name='post_detail'),
     url(r'^tq/$', views.show_tech_question_page, name='tech'),
-    url(r'^new/$', views.req_new, name='req_new'),
+    url(r'^(?P<pk>\d+)/part/$', views.request_part, name='part'),
+    url(r'^part/(?P<pk>\d+)/update/$', views.update_part, name='part'),
     url(r'^submit/$', views.submit, name='submit'),
     url(r'^all/$', views.showAllRequests, name='showAll'),
     url(r'^pending/$', views.showPendingRequests, name='showPending'),
