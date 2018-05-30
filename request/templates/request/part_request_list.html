@@ -50,7 +50,9 @@
                                 </div>
                               </a>
                             {% else %}
-                              {{r.tracking}}
+                              <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{r.tracking}}" target="_blank">
+                                {{r.tracking}}
+                              </a>
                             {% endif %}
                         </td>
                         <td>{{ r.request_time }}</td>
