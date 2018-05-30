@@ -2,69 +2,105 @@ import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
-from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, DispatchForm, PreDiagnosisForm,PartForm
+from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, DispatchForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 
 def request_part(request,pk):
     form=PartForm()
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     sksid=unit.sksid
     return render(request, 'request/part_request.html',{'form': form,'id':sksid})
-
+def show_part_list(request):
+    part = PartRequest.objects.all()
+    return render(request, 'request/part_request_list.html', {'request':part})
+def show_part_detail(request,pk):
+    part = get_object_or_404(PartRequest, pk=pk)
+    form=PartRequestUpdateForm()
+    return render(request, 'request/part_request_detail.html', {'part': part,'form':form})
 def update_part(request,pk):
     if request.method == "POST":
         form = PartForm(request.POST)
-            if form.is_valid():
-                unit=get_object_or_404(UnitBasicInfo, pk=pk)
-                sksid=unit.sksid
+        if form.is_valid():
+            unit=get_object_or_404(UnitBasicInfo, pk=pk)
+            sksid=unit.sksid
+            new_part_request=PartRequest()
+            new_part_request.sksid=sksid
+            contact=""
+            add1=""
+            add2=""
+            city=""
+            state=""
+            zip=""
+            if request.POST["to_customer"]:
+                contact=unit.contactName
+                add1=unit.location_add1
+                add2=unit.location_add2
+                city=unit.location_city
+                state=unit.location_state
+                zip=unit.location_zip
+            else:
+                contact=form.cleaned_data["contact"]
+                add1=form.cleaned_data["address1"]
+                add2=form.cleaned_data["address2"]
+                city=form.cleaned_data["city"]
+                state=form.cleaned_data["state"]
+                zip=form.cleaned_data["zip"]
+            new_part_request.contact=contact
+            new_part_request.location_add1=add1
+            new_part_request.location_add2=add2
+            new_part_request.location_city=city
+            new_part_request.location_state=state
+            new_part_request.location_zip=zip
+            n1=form.cleaned_data["number1"]
+            m1=form.cleaned_data["name1"]
+            q1=form.cleaned_data["qty1"]
+            new_part_request.number=n1
+            new_part_request.name=m1
+            new_part_request.qty=int(q1)
+            new_part_request.save()
+            n2=form.cleaned_data["number2"]
+            m2=form.cleaned_data["name2"]
+            q2=form.cleaned_data["qty2"]
+            n3=form.cleaned_data["number3"]
+            m3=form.cleaned_data["name3"]
+            q3=form.cleaned_data["qty3"]
+            if n2!="" and q2!="" and m2!="":
                 new_part_request=PartRequest()
                 new_part_request.sksid=sksid
-                contact=""
-                add1=""
-                add2=""
-                city=""
-                state=""
-                zip=""
-                if request.POST["to_customer"]:
-                    contact=unit.contactName
-                    add1=unit.location_add1
-                    add2=unit.location_add2
-                    city=unit.location_city
-                    state=unit.location_state
-                    zip=unit.location_zip
-                else:
-                    contact=form.cleaned_data["contact"]
-                    add1=form.cleaned_data["address1"]
-                    add2=form.cleaned_data["address2"]
-                    city=form.cleaned_data["city"]
-                    state=form.cleaned_data["state"]
-                    zip=form.cleaned_data["zip"]
                 new_part_request.contact=contact
                 new_part_request.location_add1=add1
                 new_part_request.location_add2=add2
                 new_part_request.location_city=city
                 new_part_request.location_state=state
                 new_part_request.location_zip=zip
-                n1=form.cleaned_data["number1"]
-                m1=form.cleaned_data["name1"]
-                q1=form.cleaned_data["qty1"]
-                new_part_request.number=n1
-                new_part_request.name=m1
-                new_part_request.qty=q1
+                new_part_request.number=n2
+                new_part_request.name=m2
+                new_part_request.qty=int(q2)
                 new_part_request.save()
-                n2=form.cleaned_data["number2"]
-                m2=form.cleaned_data["name2"]
-                q2=form.cleaned_data["qty2"]
-                n3=form.cleaned_data["number3"]
-                m3=form.cleaned_data["name3"]
-                q3=form.cleaned_data["qty3"]
-                if n2!="" and q2!="" and m2!="":
-
-
-
-
-
-
-    return
+            if n3!="" and q3!="" and m3!="":
+                new_part_request=PartRequest()
+                new_part_request.sksid=sksid
+                new_part_request.contact=contact
+                new_part_request.location_add1=add1
+                new_part_request.location_add2=add2
+                new_part_request.location_city=city
+                new_part_request.location_state=state
+                new_part_request.location_zip=zip
+                new_part_request.number=n3
+                new_part_request.name=m3
+                new_part_request.qty=int(q3)
+                new_part_request.save()
+            return redirect("/user/dispatcher/")
+def update_part_request(request,pk):
+    if request.method == "POST":
+        form=PartRequestUpdateForm(request.POST)
+        if form.is_valid():
+            part = PartRequest.objects.get(pk=pk)
+            tracking=form.cleaned_data["tracking"]
+            note = form.cleaned_data["note"]
+            part.tracking=tracking
+            part.tracking=note
+            part.save()
+            return redirect('/request/part/')
 def basic_info(request):
     form=BasicForm()
     return render(request, 'request/base.html',{'form': form})

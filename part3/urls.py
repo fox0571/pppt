@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^logout/$',views.logout),
     path('admin/', admin.site.urls),
     path('user/',include('users.urls')),
-    path('request/',include('request.urls')),
+    path('request/',include('request.urls', namespace="request")),
     path('warranty/',include('warranty.urls')),
 ]

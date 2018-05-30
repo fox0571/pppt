@@ -126,3 +126,6 @@ class RequestForm(forms.Form):
     state=forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
     zipCode=forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
     phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
+class PartRequestUpdateForm(forms.Form):
+    tracking = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Tracking number'}))
+    note = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'ETA'}))

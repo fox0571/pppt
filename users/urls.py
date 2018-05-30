@@ -19,6 +19,7 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from . import views
 urlpatterns = [
+    url(r'^dispatcher/part/$', views.get_all_part_records, name='dispatcher_part'),
     url(r'^login/$', views.login, name='login'),
     url(r'^$',views.show_page, name='show'),
     url(r'^dispatcher/new/(?P<pk>\d+)/$', views.show_service_detail, name='service_detail'),
@@ -28,6 +29,10 @@ urlpatterns = [
     url(r'^dispatcher/new/$', views.get_new_records, name='dispatcher_new'),
     url(r'^dispatcher/scheduled/$', views.get_all_scheduled_records, name='dispatcher_scheduled'),
     url(r'^dispatcher/all/$', views.get_all_dispatcher_records, name='dispatcher_all'),
+
     url(r'^dispatcher/$', views.show_dispatcher_page, name='dispatcher'),
     url(r'^operator/$', views.show_operator_page, name='operator'),
+    url(r'^warranty/$', views.show_waiting, name='warranty'),
+    url(r'^administrator/$', views.show_operator_page, name='operator'),
+
 ]

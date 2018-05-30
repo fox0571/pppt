@@ -3,9 +3,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginForm, DispatchForm
 from request.forms import PartForm
 from .models import Users
-from request.models import UnitBasicInfo
+from request.models import UnitBasicInfo, PartRequest
 # Create your views here.
 
+#show all unverified serial numbers
+def show_waiting(request):
+    all=UnitBasicInfo.objects.filter(warranty=None)
+    return render(request, 'request/warranty.html', {'requests':all})
 def get_all_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).order_by('-callTime')
@@ -22,7 +26,10 @@ def get_new_records(request):
     code = request.session['user_code']
     request_list = UnitBasicInfo.objects.all().exclude(pre_diagnosis=None).filter(areaCode=code).filter(scheDate=None).order_by('-callTime')
     return render(request, 'request/dispatcher_list.html', {'request':request_list})
-
+def get_all_part_records(request):
+    code = request.session['user_code']
+    request_list = PartRequest.objects.all().filter(code=code).order_by('-request_time')
+    return render(request, 'request/part_request_list.html', {'request':request_list})
 def get_all_oow_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).order_by('-callTime')
@@ -49,19 +56,19 @@ def show_dispatcher_page(request):
     a=UnitBasicInfo.objects.all().filter(areaCode=code).filter(scheDate=None).count()
     b=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=False).exclude(scheDate=None).count()
     c=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).count()
-
+    d=PartRequest.objects.all().filter(code=code).count()
     print (request.session['user_group'])
-    return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c})
+    return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c,'parts':d})
 def show_page(request):
     group = request.session['user_group']
     if group=="dispatcher":
-        return redirect('/user/dispatcher/')
+        return redirect('dispatcher/')
     if group=="operator":
-        return redirect('/user/operator/')
+        return redirect('operator/')
     if group=="warranty":
-        return redirect('/warranty/')
+        return redirect('warranty/')
     if group=="admin":
-        return redirect('/admin/')
+        return redirect('administrator/')
     print (request.session['user_group'])
     return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c})
 def login(request):

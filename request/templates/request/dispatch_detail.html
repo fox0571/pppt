@@ -12,9 +12,7 @@
     <div class="row">
       <form class='form' action="update/" method="post">
         {% csrf_token %}
-        <div class="col-md-6">
-          <div class "row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title">Basic Information</h3>
@@ -35,7 +33,7 @@
                 <!-- /.box-body -->
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title">Pre-diagnosis</h3>
@@ -71,10 +69,8 @@
                   </div>
                 </div>
               </div>
+              <button type="submit" class="btn btn-primary pull-right">update</button>
             </div>
-          </div>
-        </div>
-
       </form>
     </div>
   </section>

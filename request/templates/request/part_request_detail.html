@@ -1,0 +1,51 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <form class='form' action="{% url 'request:update_pq' part.pk %}" method="post">
+      {% csrf_token %}
+      <div class="box-body">
+        <div class="col-md-6">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Basic Information</h3>
+            </div>
+            <div class="box-body">
+              <p class="text-light-blue">Incident Number:{{part.sksid|upper }}</p>
+              <p class="text-light-blue">Contact: {{part.contact|upper }}</p>
+              <p class="text-light-blue">Address: {{part.location_add1|upper}}
+                {{part.location_add2|upper}} {{part.location_city|upper}}
+                {{part.location_state|upper}} {{part.location_zip|upper}}</p>
+              <p class="text-light-blue">Part Number: {{part.number|upper}}</p>
+              <p class="text-light-blue">Description: {{part.name|upper}}</p>
+              <p class="text-light-blue">Quantity: {{part.qty}}</p>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <div class="box box-primary">
+            <div class="box-body">
+              <div class="form-group">
+                {{ form.tracking.errors }}
+                <label for="{{ form.tracking.id_for_label }}">Tracking Number</label>{{ form.tracking }}
+              </div>
+              <div class="form-group">
+                {{ form.note.errors }}
+                <label for="{{ form.note.id_for_label }}">ETA Note:</label>{{ form.note }}
+              </div>
+              <button type="submit" class="btn btn-primary pull-right">update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
+{% endblock %}
