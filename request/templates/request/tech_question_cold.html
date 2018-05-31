@@ -4,7 +4,7 @@
 
 <div class="content-wrapper">
   <section class="content">
-    <form action="/request/cold/" method="POST" class="post-form">
+    <form action="{% url 'request:cold' unit.pk %}" method="POST" class="post-form">
         {% csrf_token %}
 
         <div class="row">

@@ -106,7 +106,7 @@ def basic_info(request):
     return render(request, 'request/base.html',{'form': form})
 
 def get_all_undiagnosed(request):
-    all=UnitBasicInfo.objects.filter(pre_diagnosis=None)
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_detail_undiagnosed(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
@@ -155,13 +155,13 @@ def show_tech_question_page(request):
             new_unit.save()
             if request.session['unit_type']=="HOT":
                 form=HotTechQuestionForm()
-                return render(request, 'request/tech_question_hot.html', {'form':form})
+                return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
             elif request.session['unit_type']=="COLD":
                 form=ColdTechQuestionForm()
-                return render(request, 'request/tech_question_cold.html', {'form':form})
+                return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
             else:
                 redirect('/user')
-def update_hot(request):
+def update_hot(request,pk):
     if request.method == "POST":
         form = HotTechQuestionForm(request.POST)
         if form.is_valid():
@@ -172,11 +172,11 @@ def update_hot(request):
                 +"The pilot can stay on: "+tsq2+"<br>"
                 +"The burner can be turned on: "+tsq3
                 )
-            unit=UnitBasicInfo.objects.get(serialNumber=request.session['unit_sn'])
+            unit=UnitBasicInfo.objects.get(pk=pk)
             unit.tsq=tsq
             unit.save()
     return redirect('/user')
-def update_cold(request):
+def update_cold(request,pk):
     if request.method == "POST":
         form = ColdTechQuestionForm(request.POST)
         if form.is_valid():
@@ -194,7 +194,7 @@ def update_cold(request):
                 +"Controller: "+tsq4+"\n"+"Snowflake Icon: "+tsq5+"\n"+"Fan Icon: "+tsq6+"\n"
                 +"Ice on Evap: "+tsq7+"\n"+"Cond Fan Running: "+tsq8+"\n"+"Evap Fan Running: "+tsq9+"\n"
                 +"Compressor running: "+tsq10+"\n")
-            unit=UnitBasicInfo.objects.get(serialNumber=request.session['unit_sn'])
+            unit=UnitBasicInfo.objects.get(pk=pk)
             unit.tsq=tsq
             unit.save()
     return redirect('/user')

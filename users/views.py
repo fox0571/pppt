@@ -68,7 +68,7 @@ def show_page(request):
     if group=="warranty":
         return redirect('warranty/')
     if group=="admin":
-        return redirect('administrator/')
+        return redirect('/request/administrator/')
     print (request.session['user_group'])
     return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c})
 def login(request):

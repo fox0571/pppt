@@ -46,7 +46,13 @@ def get_code(area):
     for st in LIST_6:
         if st==area:
             return 6
-
+def reg_month(month):
+    if month<10:
+        return "0"+str(month)
+    else:
+        return str(month)
+def generate_default_sksid(month,year,code):
+    return "SKS"+ reg_month(month)+str(year)+"-"+"D"+str(code)+"-1"
 def update(request,pk):
     if request.method == "POST":
         form=WarrantyForm(request.POST)
@@ -54,6 +60,9 @@ def update(request,pk):
             warranty=form.cleaned_data["warranty"]
             note=form.cleaned_data["warrantyNote"]
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
+
+        #improve the way generate the sksid
+
         month=unit.callTime.month
         year=unit.callTime.year
         area=unit.location_state
@@ -61,26 +70,51 @@ def update(request,pk):
         unit.warranty=warranty
         unit.warrantyNote=note
         unit.areaCode=code
-        user=get_object_or_404(Users, code=code)
-        task=user.current_tasks
-        mon=user.current_month
-        if month==mon:
-            task=task+1
-            user.current_tasks=task
-        else:
-            task=1
-            user.current_tasks=task
-            if mon==12:
-                user.current_month=1
+        last_unit=UnitBasicInfo.objects.filter(areaCode=code).order_by('-id')
+        sks=""
+        month1=0
+        new_sks=""
+        if len(last_unit)!=0:
+            last_unit=last_unit[0]
+            month1=last_unit.callTime.Month
+            year1=last_unit.callTime.year
+            sks=last_unit.sksid.split("-")
+            sks_pre=sks[0]
+            sks_middle="D"+str(code)
+            sks_last=sks[2]
+            if month1==month:
+                new_sks=sks_pre+"-"+sks_middle+"-"+str(1)
             else:
-                user.current_month=mon+1
-        m=""
-        if month<10:
-            m="0"+str(month)
+                if month==1:
+                    sks_pre="SKS01"+str(year)
+                    new_sks=sks_pre+"-"+sks_middle+"-"+str(int(sks_last)+1)
+                else:
+                    sks_pre="SKS"+reg_month(month)+str(year)
+                    new_sks=sks_pre+"-"+sks_middle+"-"+str(int(sks_last)+1)
         else:
-            m=str(month)
-        sksid="SKS"+m+str(year)+"-D"+str(code)+"-"+str(task)
-        unit.sksid=sksid
+            new_sks=generate_default_sksid(month,year,code)
+
+
+        # user=get_object_or_404(Users, code=code)
+        # task=user.current_tasks
+        # mon=user.current_month
+        # if month==mon:
+        #     task=task+1
+        #     user.current_tasks=task
+        # else:
+        #     task=1
+        #     user.current_tasks=task
+        #     if mon==12:
+        #         user.current_month=1
+        #     else:
+        #         user.current_month=mon+1
+        # m=""
+        # if month<10:
+        #     m="0"+str(month)
+        # else:
+        #     m=str(month)
+        # sksid="SKS"+m+str(year)+"-D"+str(code)+"-"+str(task)
+        unit.sksid=new_sks
         unit.save()
         return redirect('/warranty/')
     else:

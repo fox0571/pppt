@@ -2,6 +2,20 @@
 {% extends 'request/index.html' %}
 {% load static %}
 
+{% block css %}
+<style>
+.glyphicon.glyphicon-green-dot:before {
+    color: #20F343;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-red-dot:before {
+    color: #F21616;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="content-wrapper">
@@ -34,7 +48,7 @@
                       <th>Contact</th>
                       <th>S/N</th>
                       <th>Phone</th>
-                      <th>Warranty Statue</th>
+                      <th>Warranty</th>
                       <th>Date</th>
                     </tr>
                   </thead>
@@ -47,7 +61,12 @@
                         <td>{{ r.contactName }}</td>
                         <td>{{ r.serialNumber }}</td>
                         <td>{{ r.phone }}</td>
-                        <td>{{ r.warranty }}</td>
+                        <td>{% if r.warranty %}
+                            <span class="glyphicon glyphicon-green-dot"></span>
+                            {% else %}
+                            <span class="glyphicon glyphicon-red-dot"></span>
+                            {% endif %}
+                        </td>
                         <td>{{ r.callTime }}</td>
                       </tr>
                       {% endfor %}
@@ -59,7 +78,7 @@
                       <th>Contact</th>
                       <th>S/N</th>
                       <th>Phone</th>
-                      <th>Warranty Statue</th>
+                      <th>Warranty</th>
                       <th>Date</th>
                     </tr>
                   </tfoot>
@@ -84,17 +103,8 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static "bower_components/jquery/dist/jquery.min.js" %}"></script>
 <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
-<!-- SlimScroll -->
-<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
-<!-- FastClick -->
-<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static "dist/js/adminlte.min.js" %}"></script>
-
-<!-- page script -->
 <script>
   $(function () {
     $('#assets_table').DataTable({

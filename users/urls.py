@@ -18,6 +18,7 @@ from django.urls import include, path
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from . import views
+from request import views as vws
 urlpatterns = [
     url(r'^dispatcher/part/$', views.get_all_part_records, name='dispatcher_part'),
     url(r'^login/$', views.login, name='login'),
@@ -33,6 +34,6 @@ urlpatterns = [
     url(r'^dispatcher/$', views.show_dispatcher_page, name='dispatcher'),
     url(r'^operator/$', views.show_operator_page, name='operator'),
     url(r'^warranty/$', views.show_waiting, name='warranty'),
-    url(r'^administrator/$', views.show_operator_page, name='operator'),
+    url(r'^admin/$', vws.get_all_undiagnosed, name='gau'),
 
 ]
