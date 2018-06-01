@@ -1,6 +1,6 @@
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import LoginForm, DispatchForm
+from .forms import LoginForm, DispatchForm, ChangePassword
 from request.forms import PartForm
 from .models import Users
 from request.models import UnitBasicInfo, PartRequest
@@ -98,9 +98,31 @@ def login(request):
 
 def logout(request):
     if not request.session.get('is_login', None):
-        return redirect("/request/")
+        return redirect("/user/login/")
     request.session.flush()
     # del request.session['is_login']
     # del request.session['user_id']
     # del request.session['user_name']
     return redirect("/user/login/")
+def change_password(request):
+    form1=ChangePassword()
+    message=""
+    if not request.session.get('is_login',None):
+        return redirect('login/')
+    if request.method == "POST":
+        form = ChangePassword(request.POST)
+        if form.is_valid():
+            old_password=form.cleaned_data['old_pw'];
+            new_password=form.cleaned_data['new_pw'];
+            new_password2=form.cleaned_data['new_pw2'];
+            user=Users.objects.get(code=request.session['user_code'])
+            if old_password != user.password:
+                message="The current password is not correct"
+            else:
+                if new_password != new_password2:
+                    message="The new passwords are not the same"
+                else:
+                    message="success"
+                    user.password=new_password
+                    user.save()
+    return render(request,'request/change.html',{'form':form1,'message':message})

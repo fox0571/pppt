@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^dispatcher/new/$', views.get_new_records, name='dispatcher_new'),
     url(r'^dispatcher/scheduled/$', views.get_all_scheduled_records, name='dispatcher_scheduled'),
     url(r'^dispatcher/all/$', views.get_all_dispatcher_records, name='dispatcher_all'),
-
+    url(r'^change/$',views.change_password, name='change_password'),
     url(r'^dispatcher/$', views.show_dispatcher_page, name='dispatcher'),
     url(r'^operator/$', views.show_operator_page, name='operator'),
     url(r'^warranty/$', views.show_waiting, name='warranty'),

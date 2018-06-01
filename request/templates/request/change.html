@@ -1,0 +1,35 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="box-body">
+      <form class='form' action="/user/change/" method="post">
+        {% csrf_token %}
+        <div class="col-md-4">
+          <div class="form-group">
+            {{ form.old_pw.errors }}
+            <label for="{{ form.old_pw.id_for_label }}">Current Password</label>{{ form.old_pw }}
+          </div>
+          <div class="form-group">
+            {{ form.new_pw.errors }}
+            <label for="{{ form.new_pw.id_for_label }}">New Password</label>{{ form.new_pw }}
+          </div>
+          <div class="form-group">
+            {{ form.new_pw2.errors }}
+            <label for="{{ form.new_pw2.id_for_label }}">Re-type New Password</label>{{ form.new_pw2 }}
+          </div>
+          {{ message }}
+          <button type="submit" class="btn btn-primary pull-right">update</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

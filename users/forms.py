@@ -17,3 +17,8 @@ class DispatchForm(forms.Form):
 class LoginForm(forms.Form):
     user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+class ChangePassword(forms.Form):
+    old_pw = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    new_pw = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    new_pw2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
