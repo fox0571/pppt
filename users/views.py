@@ -67,9 +67,10 @@ def show_page(request):
         return redirect('operator/')
     if group=="warranty":
         return redirect('warranty/')
-    if group=="admin":
-        return redirect('/request/administrator/')
-    print (request.session['user_group'])
+    if group=="adminop":
+        return redirect('/request/adminop/')
+    if group=="admindp":
+        return redirect('/request/admindp/')
     return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c})
 def login(request):
     message=""
@@ -88,6 +89,7 @@ def login(request):
                     request.session['user_name'] = user.name
                     group=user.group
                     request.session['user_group'] = group
+                    print(group)
                     return redirect('/user/')
                 else:
                     message = "Wrong password!"

@@ -34,6 +34,6 @@ urlpatterns = [
     url(r'^dispatcher/$', views.show_dispatcher_page, name='dispatcher'),
     url(r'^operator/$', views.show_operator_page, name='operator'),
     url(r'^warranty/$', views.show_waiting, name='warranty'),
-    url(r'^admin/$', vws.get_all_undiagnosed, name='gau'),
-
+    url(r'^admindp/$', vws.show_admindp, name='admindp'),
+    url(r'^adminop/$', vws.show_adminop, name='adminop'),
 ]

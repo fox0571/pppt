@@ -7,7 +7,8 @@ class Users(models.Model):
         ("operator","OPERATOR"),
         ("warranty","WARRANTY"),
         ("parts","PARTS"),
-        ("admin","ADMIN"),
+        ("adminop","ADMIN_OP"),
+        ("admindp","ADMIN_DP"),
     )
     name=models.CharField(max_length=50)
     code=models.CharField(max_length=10)

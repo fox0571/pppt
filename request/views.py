@@ -4,6 +4,7 @@ from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
 from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, DispatchForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 
+OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 def request_part(request,pk):
     form=PartForm()
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
@@ -105,9 +106,37 @@ def basic_info(request):
     form=BasicForm()
     return render(request, 'request/base.html',{'form': form})
 
+def show_admindp(request):
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
+    alls=UnitBasicInfo.objects.all().count()
+    new=all.count()
+    final_data = []
+    today = datetime.date.today()
+    delta= datetime.timedelta(today.weekday())
+
+    start = today-delta
+    print(start)
+    for user in OPERATOR_GROUP:
+        count = UnitBasicInfo.objects.filter(receiver=user).filter(
+            callTime__gte=start).count()
+        final_data.append(count)
+    return render(request, 'request/dispatcher_supervisor.html', {'new':new,'all':alls})
 def get_all_undiagnosed(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
-    return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
+    return render(request, 'request/pre_diagnosis_list.html', {'rquest':all})
+def show_adminop(request):
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
+    new=all.count()
+    final_data = []
+    today = datetime.date.today()
+    delta= datetime.timedelta(today.weekday())
+    start = today-delta
+    print(start)
+    for user in OPERATOR_GROUP:
+        count = UnitBasicInfo.objects.filter(receiver=user).filter(
+            callTime__gte=start).count()
+        final_data.append(count)
+    return render(request, 'request/operator_supervisor.html', {'new':new,'data':final_data})
 def get_detail_undiagnosed(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=PreDiagnosisForm()

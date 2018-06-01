@@ -93,27 +93,6 @@ def update(request,pk):
                     new_sks=sks_pre+"-"+sks_middle+"-"+str(int(sks_last)+1)
         else:
             new_sks=generate_default_sksid(month,year,code)
-
-
-        # user=get_object_or_404(Users, code=code)
-        # task=user.current_tasks
-        # mon=user.current_month
-        # if month==mon:
-        #     task=task+1
-        #     user.current_tasks=task
-        # else:
-        #     task=1
-        #     user.current_tasks=task
-        #     if mon==12:
-        #         user.current_month=1
-        #     else:
-        #         user.current_month=mon+1
-        # m=""
-        # if month<10:
-        #     m="0"+str(month)
-        # else:
-        #     m=str(month)
-        # sksid="SKS"+m+str(year)+"-D"+str(code)+"-"+str(task)
         unit.sksid=new_sks
         unit.save()
         return redirect('/warranty/')
