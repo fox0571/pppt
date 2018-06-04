@@ -10,7 +10,7 @@
 <div class="content-wrapper">
   <section class="content">
     <div class="row">
-      <form class='form' action="update/" method="post">
+      <form class='form' action="{% url 'request:update_tech' unit.pk %}" method="post">
         {% csrf_token %}
             <div class="col-md-4">
               <div class="box box-primary">

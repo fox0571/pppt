@@ -3,8 +3,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
 from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, DispatchForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
-
+from users.forms import DispatchForm
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
+
+def show_detail(request,pk):
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    return render(request,'request/detail.html',{'unit':unit})
 def request_part(request,pk):
     form=PartForm()
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
@@ -150,6 +154,27 @@ def update_diagnosis(request,pk):
             unit.pre_diagnosis=note
             unit.save()
             return redirect('/request/pre_diagnosis')
+def update_tech_info(request,pk):
+    if request.method == "POST":
+        form=DispatchForm(request.POST)
+        if form.is_valid():
+            tech_name=form.cleaned_data["tech_name"]
+            tech_phone=form.cleaned_data["tech_phone"]
+            tech_email=form.cleaned_data["tech_email"]
+            tech_note=form.cleaned_data["tech_note"]
+            schedule_date=form.cleaned_data["schedule_date"]
+            unit=get_object_or_404(UnitBasicInfo, pk=pk)
+            unit.techName=tech_name
+            unit.techPhone=tech_phone
+            unit.techEmail=tech_email
+            unit.scheDate=schedule_date
+            if unit.techNote:
+                unit.techNote=unit.techNote+"<br /> "+tech_note
+            else:
+                unit.techNote=tech_note
+            unit.save()
+            return redirect('/user/')
+
 def show_tech_question_page(request):
     if request.method == "POST":
         form = BasicForm(request.POST)
@@ -244,8 +269,8 @@ def showAllService(request):
     request_list = UnitBasicInfo.objects.order_by('-callTime')
     return render(request, 'request/allService.html', {'request':request_list})
 def showAllRequests(request):
-    request_list = Request.objects.order_by('-requestTime')
-    return render(request, 'request/request_detail.html', {'request':request_list})
+    request_list = UnitBasicInfo.objects.order_by('-callTime')
+    return render(request, 'request/all_records.html', {'request':request_list})
 
 def showPendingRequests(request):
     request_list = Request.objects.filter(requestStatue=False)

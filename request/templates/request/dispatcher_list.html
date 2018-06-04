@@ -1,7 +1,15 @@
 
 {% extends 'request/index.html' %}
 {% load static %}
-
+{% block css %}
+<style>
+.glyphicon.glyphicon-green-dot:before {
+    color: #20F343;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+</style>
+{% endblock %}
 {% block content %}
 <div class="content-wrapper">
   <section class="content">
@@ -48,9 +56,13 @@
                         <td>{{ r.serialNumber }}</td>
                         <td>{{ r.phone }}</td>
                         <td>{{ r.callTime }}</td>
-                        <td><a href="/user/dispatcher/new/{{ r.pk }}">
+                        <td>{% if r.warranty %}
+                            <span class="glyphicon glyphicon-green-dot"></span>
+                            {% else %}
+                            <a href="/user/dispatcher/new/{{ r.pk }}">
                               <button type="button" class="btn btn-block btn-info btn-sm">Find a Tech!</button>
                             </a>
+                            {% endif %}
                         </td>
                       </tr>
                       {% empty %}

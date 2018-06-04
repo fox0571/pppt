@@ -1,5 +1,13 @@
 {% extends 'request/index.html' %}
 {% load static %}
+
+{% block dashboard %}
+<li>
+  <a href="/request/all">
+    <i class="fa fa-book"></i> <span>All Records</span>
+  </a>
+</li>
+{% endblock %}
 {% block content %}
 
 <!-- Content Wrapper. Contains page content -->
