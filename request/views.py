@@ -106,9 +106,49 @@ def update_part_request(request,pk):
             part.tracking=note
             part.save()
             return redirect('/request/part/')
-def basic_info(request):
+def update_basic(request):
+    if request.method == "POST":
+        print("2")
+        form = BasicForm(request.POST)
+        if form.is_valid():
+            print("3")
+            name_business=form.cleaned_data["businessName"]
+            name_contact=form.cleaned_data["contactName"]
+            serial=form.cleaned_data["serialNumber"]
+            phone=form.cleaned_data["phoneCustomer"]
+            email=form.cleaned_data["emailAddress"]
+            add1=form.cleaned_data["add1"]
+            add2=form.cleaned_data["add2"]
+            city=form.cleaned_data["city"]
+            state=form.cleaned_data["state"]
+            zip=form.cleaned_data["zip"]
+            issue=form.cleaned_data["issue"]
+            unit_type=form.cleaned_data["type"]
+            request.session["unit_type"]=unit_type
+            request.session["unit_sn"]=serial
+            new_unit=UnitBasicInfo()
+            new_unit.businessName=name_business
+            new_unit.contactName=name_contact
+            new_unit.serialNumber=serial
+            new_unit.phone=phone
+            new_unit.email=email
+            new_unit.location_add1=add1
+            new_unit.location_add2=add2
+            new_unit.location_city=city
+            new_unit.location_state=state
+            new_unit.location_zip=zip
+            new_unit.issue=issue
+            new_unit.receiver=request.session['user_name']
+            new_unit.save()
+            if request.session['unit_type']=="HOT":
+                form=HotTechQuestionForm()
+                return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
+            elif request.session['unit_type']=="COLD":
+                form=ColdTechQuestionForm()
+                return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
+            return redirect('question/')
     form=BasicForm()
-    return render(request, 'request/base.html',{'form': form})
+    return render(request, 'operator/basic.html',{'form': form})
 
 def show_admindp(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
@@ -174,11 +214,23 @@ def update_tech_info(request,pk):
                 unit.techNote=tech_note
             unit.save()
             return redirect('/user/')
-
+def show_question(request,pk):
+    if request.session['unit_type']=="HOT":
+        form=HotTechQuestionForm()
+        return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
+    elif request.session['unit_type']=="COLD":
+        form=ColdTechQuestionForm()
+        print(4)
+        return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
+    else:
+        redirect('/user')
 def show_tech_question_page(request):
+    print("1")
     if request.method == "POST":
+        print("2")
         form = BasicForm(request.POST)
         if form.is_valid():
+            print("3")
             name_business=form.cleaned_data["businessName"]
             name_contact=form.cleaned_data["contactName"]
             serial=form.cleaned_data["serialNumber"]
@@ -212,6 +264,7 @@ def show_tech_question_page(request):
                 return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
             elif request.session['unit_type']=="COLD":
                 form=ColdTechQuestionForm()
+                print(4)
                 return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
             else:
                 redirect('/user')
