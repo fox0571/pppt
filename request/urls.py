@@ -1,5 +1,5 @@
 from django.urls import path
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from . import views
 
@@ -7,6 +7,10 @@ app_name = 'request'
 urlpatterns = [
     #path('', views.req, name='request'),
     #path('detail', views.submit, name='submit'),
+    path('operator/', include([
+        path('basic/', views.update_basic),
+        path('question/<int:pk>/', views.show_tech_question_page),
+    ])),
     path('<int:pk>/update/', views.update_part_request, name='update_pq'),
     path('tech/<int:pk>/', views.update_tech_info, name='update_tech'),
     #url(r'^(?P<pk>\d+)/$', views.post_detail, name='post_detail'),
@@ -21,7 +25,7 @@ urlpatterns = [
     url(r'^all/$', views.showAllRequests, name='showAll'),
     url(r'^pending/$', views.showPendingRequests, name='showPending'),
     url(r'^finished/$', views.showFinishedRequests, name='showFinished'),
-    url(r'^basic/$', views.basic_info, name='basic'),
+    url(r'^basic/$', views.update_basic, name='basic'),
     url(r'^check/$', views.available, name='available'),
     url(r'^hot/<int:pk>/$', views.update_hot, name='hot'),
     url(r'^cold/<int:pk>/$', views.update_cold, name='cold'),

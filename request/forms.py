@@ -95,7 +95,7 @@ class BasicInfoForm(forms.Form):
     condFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
-
+    double_check = forms.BooleanField(required=False)
 class PartForm(forms.Form):
     number1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
     name1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)

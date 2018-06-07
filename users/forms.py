@@ -15,7 +15,7 @@ class DispatchForm(forms.Form):
     schedule_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control pull-right','id':'datepicker'}))
 
 class LoginForm(forms.Form):
-    user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control'}))
+    user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control','data-placeholder':"Select a user"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 class ChangePassword(forms.Form):

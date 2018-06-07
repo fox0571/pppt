@@ -13,7 +13,7 @@ def show_waiting(request):
 def get_all_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).order_by('-callTime')
-    return render(request, 'request/operator_list.html', {'request':request_list})
+    return render(request, 'operator/list.html', {'request':request_list})
 def get_all_dispatcher_records(request):
     code = request.session['user_code']
     request_list = UnitBasicInfo.objects.all().exclude(pre_diagnosis=None).filter(areaCode=code).filter(finished=True).order_by('-callTime')
@@ -33,11 +33,11 @@ def get_all_part_records(request):
 def get_all_oow_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).order_by('-callTime')
-    return render(request, 'request/operator_list.html', {'request':request_list})
+    return render(request, 'operator/list.html', {'request':request_list})
 def get_today_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).order_by('-callTime')
-    return render(request, 'request/operator_list.html', {'request':request_list})
+    return render(request, 'operator/list.html', {'request':request_list})
 def show_service_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()
@@ -48,7 +48,7 @@ def show_operator_page(request):
     a=UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).count()
     b=UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).count()
     c=UnitBasicInfo.objects.all().filter(receiver=name).count()
-    return render(request, 'request/dashboard_op.html',{'today':a,'oow':b,'all':c})
+    return render(request, 'operator/dashboard.html',{'today':a,'oow':b,'all':c})
 def show_dispatcher_page(request):
     name=request.session['user_name']
     code = request.session['user_code']

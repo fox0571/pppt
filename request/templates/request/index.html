@@ -60,9 +60,6 @@
         <ul class="nav navbar-nav">
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              {% localtime on %}
-                  {{ value }}
-              {% endlocaltime %}
               <span id="date" class="hidden-xs"></span>
               <script>
               var d = new Date();
@@ -88,18 +85,7 @@
           <p>{{ request.session.user_name }}</p>
         </div>
       </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
+
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
@@ -108,59 +94,13 @@
             <i class="fa fa-book"></i> <span>My Dashboard</span>
           </a>
         </li>
-        {% if request.session.user_group == "operator" %}
-        <li>
-          <a href="/request/basic">
-            <i class="fa fa-book"></i> <span>New Service</span>
-          </a>
-        </li>
-        {% endif %}
-        {% block dashboard%}
+        {% block operator_base %}
         {% endblock %}
-        <!--
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Requests</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+        <li>
+          <a href="/request/all">
+            <i class="fa fa-book"></i> <span>All Records</span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="/request/new"><i class="fa fa-circle-o"></i> New</a></li>
-            <li class="active"><a href="/request/pending"><i class="fa fa-circle-o"></i> Pending</a></li>
-            <li><a href="/request/finished"><i class="fa fa-circle-o"></i> Finished</a></li>
-            <li><a href="/request/all"><i class="fa fa-circle-o"></i> All</a></li>
-          </ul>
         </li>
-
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Parts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="/request/new"><i class="fa fa-circle-o"></i> Find</a></li>
-            <li class="active"><a href="/request/pending"><i class="fa fa-circle-o"></i> Availability</a></li>
-            <li><a href="/request/finished"><i class="fa fa-circle-o"></i> Price</a></li>
-          </ul>
-        </li>
-
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Support</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="/request/new"><i class="fa fa-circle-o"></i> Common Issues</a></li>
-            <li class="active"><a href="/request/pending"><i class="fa fa-circle-o"></i> Explode Views</a></li>
-            <li><a href="/request/finished"><i class="fa fa-circle-o"></i> Wiring Diagrams</a></li>
-          </ul>
-        </li>
-        -->
         <li>
           <a href="/user/change/">
             <i class="fa fa-book"></i> <span>Change Password</span>
@@ -186,24 +126,6 @@
     <strong>Copyright &copy; 2018-2018 <a href="mailto:fox0571@gmail.com">Fox24 Studio</a>.</strong> All rights
     reserved.
   </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-    </ul>
-    <!-- Tab panes -->
-
-
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
-
 </div>
 <!-- ./wrapper -->
 
@@ -217,9 +139,6 @@
 <script src="{% static "dist/js/adminlte.min.js" %}"></script>
 <!-- Sparkline -->
 <script src="{% static "bower_components/jquery-sparkline/dist/jquery.sparkline.min.js" %}"></script>
-<!-- jvectormap  -->
-<script src="{% static "plugins/jvectormap/jquery-jvectormap-1.2.2.min.js" %}"></script>
-<script src="{% static "plugins/jvectormap/jquery-jvectormap-world-mill-en.js" %}"></script>
 <!-- SlimScroll -->
 <script src="{% static "bower_components/jquery-slimscroll/jquery.slimscroll.min.js" %}"></script>
 
