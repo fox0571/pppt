@@ -166,8 +166,10 @@ def show_admindp(request):
         final_data.append(count)
     return render(request, 'request/dispatcher_supervisor.html', {'new':new,'all':alls})
 def get_all_undiagnosed(request):
+    print("undiag")
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
-    return render(request, 'request/pre_diagnosis_list.html', {'rquest':all})
+    print(all)
+    return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def show_adminop(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
     new=all.count()
@@ -193,7 +195,7 @@ def update_diagnosis(request,pk):
             unit=get_object_or_404(UnitBasicInfo, pk=pk)
             unit.pre_diagnosis=note
             unit.save()
-            return redirect('/request/pre_diagnosis')
+            return redirect('/request/diag')
 def update_tech_info(request,pk):
     if request.method == "POST":
         form=DispatchForm(request.POST)

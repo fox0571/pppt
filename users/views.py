@@ -17,15 +17,16 @@ def get_all_records(request):
 def get_all_dispatcher_records(request):
     code = request.session['user_code']
     request_list = UnitBasicInfo.objects.all().exclude(pre_diagnosis=None).filter(areaCode=code).filter(finished=True).order_by('-callTime')
-    return render(request, 'request/dispatcher_list.html', {'request':request_list})
+    return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_scheduled_records(request):
     code = request.session['user_code']
     request_list = UnitBasicInfo.objects.all().exclude(pre_diagnosis=None).filter(areaCode=code).filter(finished=False).exclude(scheDate=None).order_by('-callTime')
-    return render(request, 'request/dispatcher_list.html', {'request':request_list})
+    return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_new_records(request):
     code = request.session['user_code']
-    request_list = UnitBasicInfo.objects.all().exclude(pre_diagnosis=None).filter(areaCode=code).filter(scheDate=None).order_by('-callTime')
-    return render(request, 'request/dispatcher_list.html', {'request':request_list})
+    print(code)
+    request_list = UnitBasicInfo.objects.all().filter(warranty=True).filter(areaCode=code).filter(scheDate=None).order_by('-callTime')
+    return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_part_records(request):
     code = request.session['user_code']
     request_list = PartRequest.objects.all().filter(code=code).order_by('-request_time')

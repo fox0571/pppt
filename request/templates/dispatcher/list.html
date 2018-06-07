@@ -43,6 +43,7 @@
                       <th>Phone</th>
                       <th>Date</th>
                       <th>Tech</th>
+                      <th>Parts</th>
                     </tr>
                   </thead>
 
@@ -56,13 +57,16 @@
                         <td>{{ r.serialNumber }}</td>
                         <td>{{ r.phone }}</td>
                         <td>{{ r.callTime }}</td>
-                        <td>{% if r.warranty %}
-                            <span class="glyphicon glyphicon-green-dot"></span>
-                            {% else %}
+                        <td>
                             <a href="/user/dispatcher/new/{{ r.pk }}">
-                              <button type="button" class="btn btn-block btn-info btn-sm">Find a Tech!</button>
+                              View
                             </a>
-                            {% endif %}
+
+                        </td>
+                        <td>
+                          <a href="/request/{{ r.pk }}/part">
+                            View
+                          </a>
                         </td>
                       </tr>
                       {% empty %}
@@ -78,6 +82,8 @@
                       <th>Phone</th>
                       <th>Warranty Statue</th>
                       <th>Date</th>
+                      <th>Tech</th>
+                      <th>Parts</th>
                     </tr>
                   </tfoot>
                 </table>

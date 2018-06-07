@@ -76,7 +76,8 @@ def update(request,pk):
         new_sks=""
         if len(last_unit)!=0:
             last_unit=last_unit[0]
-            month1=last_unit.callTime.Month
+            print(last_unit)
+            month1=last_unit.callTime.month
             year1=last_unit.callTime.year
             sks=last_unit.sksid.split("-")
             sks_pre=sks[0]
