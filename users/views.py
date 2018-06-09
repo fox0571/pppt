@@ -39,6 +39,9 @@ def get_today_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).order_by('-callTime')
     return render(request, 'operator/list.html', {'request':request_list})
+def show_follow_up(request,pk):
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    return render(request, 'dispatcher/followup.html', {'unit': unit})
 def show_service_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()
@@ -59,7 +62,7 @@ def show_dispatcher_page(request):
     c=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).count()
     d=PartRequest.objects.all().filter(code=code).count()
     print (request.session['user_group'])
-    return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c,'parts':d})
+    return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c,'parts':d})
 def show_admin_page(request):
     units=UnitBasicInfo.objects.all().order_by('-callTime')
     return render(request, 'admin/admin.html',{'reqeust':units})
@@ -77,7 +80,9 @@ def show_page(request):
         return redirect('/request/admindp/')
     if group=="admin":
         return redirect('/user/admin/')
-    return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c})
+    if group=="parts":
+        return redirect('/request/part/')
+    return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c})
 def login(request):
     message=""
     if request.session.get('is_login',None):

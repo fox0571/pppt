@@ -3,9 +3,9 @@ from django import forms
 CHOICES_0 = (("ON","ON"),("OFF","OFF"))
 CHOICES_1 = (("YES","YES"),("NO","NO"),("UNKNOWN","UNKNOWN"))
 CHOICES_2 = (("ON","ON"),("OFF","OFF"),("FLASHING","FLASHING"))
-CHOICES_3 = (("Manual","Manual"),("Digital","Digital"))
+CHOICES_3 = (("Digital","Digital"),("Manual","Manual"))
 CHOICES_4 = (("Within 1 month","Within 1 month"),("Within 3 months","Within 3 months"),("Within 6 months","Within 6 months"),("More than 6 months","More than 6 months"))
-CHOICES_6 = (("LEFT","LEFT"),("MIDDLE","MIDDLE"),("RIGHT","RIGHT"),("ALL","ALL"),("NONE","NONE"))
+CHOICES_6 = (("NONE","NONE"),("LEFT","LEFT"),("MIDDLE","MIDDLE"),("RIGHT","RIGHT"),("ALL","ALL"))
 CHOICES_7 = (("HOT","HOT"),("COLD","COLD"),("OTHER","OTHER"))
 CHOICES_WARRANTY = ((1,"Under Warranty"),(2,"Out of Warranty"))
 GROUPS = (
@@ -41,6 +41,7 @@ class HotTechQuestionForm(forms.Form):
     pilot_light = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     pilot_stay = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     burner_light = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    double_check = forms.BooleanField(required=True)
 class ColdTechQuestionForm(forms.Form):
     filter = forms.ChoiceField(choices=CHOICES_4,widget=forms.Select(attrs={'class': 'form-control'}))
     displayTemp = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature on the display?'}))
@@ -53,6 +54,7 @@ class ColdTechQuestionForm(forms.Form):
     condFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    double_check = forms.BooleanField(required=True)
 class BasicForm(forms.Form):
     businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
     contactName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
@@ -67,6 +69,7 @@ class BasicForm(forms.Form):
     serialNumber = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the serial number'}))
     issue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Enter the description of issue'}))
     type = forms.ChoiceField(choices=CHOICES_7,widget=forms.RadioSelect(attrs={'class': 'radio'}))
+    double_check = forms.BooleanField(required=True)
 class WarrantyForm(forms.Form):
     waranty = forms.ChoiceField(choices=CHOICES_WARRANTY,widget=forms.RadioSelect(attrs={'class': 'form-control'}))
     note = forms.CharField(widget=forms.Textarea)
@@ -95,7 +98,7 @@ class BasicInfoForm(forms.Form):
     condFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
-    double_check = forms.BooleanField(required=False)
+
 class PartForm(forms.Form):
     number1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
     name1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)

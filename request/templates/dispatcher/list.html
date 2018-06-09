@@ -44,6 +44,7 @@
                       <th>Date</th>
                       <th>Tech</th>
                       <th>Parts</th>
+                      <th>Follow-up</th>
                     </tr>
                   </thead>
 
@@ -61,11 +62,15 @@
                             <a href="/user/dispatcher/new/{{ r.pk }}">
                               View
                             </a>
-
                         </td>
                         <td>
                           <a href="/request/{{ r.pk }}/part">
                             View
+                          </a>
+                        </td>
+                        <td>
+                          <a href="/user/dispatcher/follow/{{ r.pk }}">
+                            Follow-up
                           </a>
                         </td>
                       </tr>
@@ -84,6 +89,7 @@
                       <th>Date</th>
                       <th>Tech</th>
                       <th>Parts</th>
+                      <th>Follow-up</th>
                     </tr>
                   </tfoot>
                 </table>
