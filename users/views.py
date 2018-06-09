@@ -60,6 +60,9 @@ def show_dispatcher_page(request):
     d=PartRequest.objects.all().filter(code=code).count()
     print (request.session['user_group'])
     return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c,'parts':d})
+def show_admin_page(request):
+    units=UnitBasicInfo.objects.all().order_by('-callTime')
+    return render(request, 'admin/admin.html',{'reqeust':units})
 def show_page(request):
     group = request.session['user_group']
     if group=="dispatcher":
@@ -72,12 +75,15 @@ def show_page(request):
         return redirect('/request/adminop/')
     if group=="admindp":
         return redirect('/request/admindp/')
+    if group=="admin":
+        return redirect('/user/admin/')
     return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c})
 def login(request):
     message=""
     if request.session.get('is_login',None):
         return redirect('/user/')
     if request.method == "POST":
+
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             code = login_form.cleaned_data['user']

@@ -1,0 +1,93 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    {% if request %}
+    <section class="content-header">
+      <h1>
+        All service records
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Requests List</li>
+      </ol>
+    </section>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">list<small></small></h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="assets_table" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Reference</th>
+                    <th>Business</th>
+                    <th>S/N</th>
+                    <th>Tech</th>
+                    <th>Detail</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                    {% for r in request %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ r.sksid }}</td>
+                      <td>{{ r.businessName }}</td>
+                      <td>{{ r.serialNumber }}</td>
+                      <td>{{ r.techName }}</td>
+                      <td><a href="/request/{{ r.pk }}">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>No.</th>
+                    <th>Reference</th>
+                    <th>Business</th>
+                    <th>S/N</th>
+                    <th>Tech</th>
+                    <th>Detail</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    {% else %}
+    <p>No records.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
+
+<script>
+  $(function () {
+    $('#assets_table').DataTable({
+      "paging": true,       <!-- 允许分页 -->
+      "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+      "searching": true,    <!-- 允许内容搜索 -->
+      "ordering": true,     <!-- 允许排序 -->
+      "info": true,         <!-- 显示信息 -->
+      "autoWidth": false    <!-- 固定宽度 -->
+    });
+  });
+</script>
+{% endblock %}

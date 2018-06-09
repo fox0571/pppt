@@ -36,4 +36,5 @@ urlpatterns = [
     url(r'^warranty/$', views.show_waiting, name='warranty'),
     url(r'^admindp/$', vws.show_admindp, name='admindp'),
     url(r'^adminop/$', vws.show_adminop, name='adminop'),
+    url(r'^admin/$', views.show_admin_page, name='admin'),
 ]
