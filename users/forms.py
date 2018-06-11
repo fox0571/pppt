@@ -12,8 +12,7 @@ class DispatchForm(forms.Form):
     tech_phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}))
     tech_email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control',}))
     tech_note = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    schedule_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control pull-right','id':'datepicker'}))
-
+    schedule_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class': 'form-control','id':'datetime'}))
 class LoginForm(forms.Form):
     user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control','data-placeholder':"Select a user"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))

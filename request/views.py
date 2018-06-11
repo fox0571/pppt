@@ -203,21 +203,22 @@ def update_diagnosis(request,pk):
             return redirect('/request/diag')
 def update_tech_info(request,pk):
     if request.method == "POST":
-        print(11111)
         form=DispatchForm(request.POST)
         print(form.errors)
+        print(form["schedule_time"])
         if form.is_valid():
             tech_name=form.cleaned_data["tech_name"]
             tech_phone=form.cleaned_data["tech_phone"]
             tech_email=form.cleaned_data["tech_email"]
             tech_note=form.cleaned_data["tech_note"]
-            schedule_date=form.cleaned_data["schedule_date"]
+            schedule_time=form.cleaned_data["schedule_time"]
             unit=get_object_or_404(UnitBasicInfo, pk=pk)
             unit.techName=tech_name
             unit.techPhone=tech_phone
             unit.techEmail=tech_email
-            unit.scheDate=schedule_date
-            a_note=("Name: "+str(tech_name)+"\n"
+            unit.scheDate=schedule_time
+            a_note=("Scheduled Time: "+str(schedule_time)+"\n"
+                    +"Name: "+str(tech_name)+"\n"
                     +"Phone "+str(tech_phone)+"\n"
                     +"Email "+tech_email+"\n"
                     +"Note "+str(tech_note)+"\n"

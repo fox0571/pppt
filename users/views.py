@@ -45,7 +45,7 @@ def show_follow_up(request,pk):
 def show_service_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()
-    return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form,'part_form':part_f})
+    return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form})
 def show_operator_page(request):
     name=request.session['user_name']
     a=UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).count()
@@ -60,7 +60,6 @@ def show_dispatcher_page(request):
     b=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=False).exclude(scheDate=None).count()
     c=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).count()
     d=PartRequest.objects.all().filter(code=code).count()
-    print (request.session['user_group'])
     return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c,'parts':d})
 def show_admin_page(request):
     units=UnitBasicInfo.objects.all().order_by('-callTime')
