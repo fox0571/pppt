@@ -2,19 +2,82 @@
 
 {% block content %}
 
+
 <div class="content-wrapper">
   <section class="content">
+    <section class="content-header">
+      <h1>
+        {{id}}
+      </h1>
+    </section>
     <form action="update/" method="POST" class="post-form">
         {% csrf_token %}
         <div class="col-md-6">
           <div class="box box-primary">
             <div class="box-header with-border">
+              <h3 class="box-title">Pre-diagnosis</h3>
+            </div>
+            <div class="box-body">
+              {{ unit.pre_diagnosis }}
+            </div>
+          </div>
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Previous records</h3>
+            </div>
+            <div class="box-body">
+              {% if parts %}
+              <table id="assets_table" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Date</th>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Tracking</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                    {% for p in parts %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ p.request_time }}</td>
+                      <td>{{ p.number }}</td>
+                      <td>{{ p.name }}</td>
+                      <td>{{ p.qty }}</td>
+                      <td>{% if p.tracking %}
+                        <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{p.tracking}}" target="_blank">
+                        {{p.tracking}}
+                        </a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>No.</th>
+                    <th>Date</th>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Tracking</th>
+                  </tr>
+                </tfoot>
+              </table>
+              {% endif %}
+            </div>
+          </div>
+          <div class="box box-primary">
+            <div class="box-header with-border">
               <h3 class="box-title">Parts Infomtion</h3>
             </div>
-            <label>
-              <h2>{{ id }}</h2>
-            </label>
             <div class="box-body">
+              <label>
+                <h2>{{ id }}</h2>
+              </label>
               <div class="row">
                 <div class="col-md-4">
                   <div class="box-body">

@@ -3,20 +3,12 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
-<style>
-.glyphicon.glyphicon-green-dot:before {
-    color: #20F343;
-    content: "\25cf";
-    font-size: 1.5em;
-}
-</style>
-
 {% endblock %}
 {% block content %}
+
 <div class="content-wrapper">
   <section class="content">
     {% if request %}
-
     <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
@@ -27,6 +19,7 @@
           <li class="active">Records List</li>
         </ol>
       </section>
+
       <!-- Main content -->
       <section class="content">
         <div class="row">
@@ -38,15 +31,10 @@
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>ID</th>
-                      <th>Business</th>
-                      <th>Contact</th>
-                      <th>S/N</th>
-                      <th>Phone</th>
+                      <th>Incident Number</th>
+                      <th>Approved</th>
+                      <th>Tracking</th>
                       <th>Date</th>
-                      <th>Tech</th>
-                      <th>Parts</th>
-                      <th>Follow-up</th>
                     </tr>
                   </thead>
 
@@ -55,43 +43,26 @@
                       <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ r.sksid }}</td>
-                        <td>{{ r.businessName }}</td>
-                        <td>{{ r.contactName }}</td>
-                        <td>{{ r.serialNumber }}</td>
-                        <td>{{ r.phone }}</td>
-                        <td>{{ r.callTime }}</td>
-                        <td>
-                            <a href="/user/dispatcher/new/{{ r.pk }}">
-                              View
-                            </a>
+                        <td>{{ r.approved }}</td>
+                        <td>{% if not r.tracking %}
+                              <label>Waiting....</label>
+                            {% else %}
+                              <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{r.tracking}}" target="_blank">
+                                {{r.tracking}}
+                              </a>
+                            {% endif %}
                         </td>
-                        <td>
-                          <a href="/request/{{ r.pk }}/part">
-                            View
-                          </a>
-                        </td>
-                        <td>
-                          <a href="/user/dispatcher/follow/{{ r.pk }}">
-                            Follow-up
-                          </a>
-                        </td>
+                        <td>{{ r.request_time }}</td>
                       </tr>
-                      {% empty %}
-                        <tr>Nothing!</tr>
                       {% endfor %}
                   </tbody>
                   <tfoot>
                     <tr>
                       <th>No.</th>
-                      <th>Business</th>
-                      <th>Contact</th>
-                      <th>S/N</th>
-                      <th>Phone</th>
-                      <th>Warranty Statue</th>
+                      <th>Incident Number</th>
+                      <th>Approved</th>
+                      <th>Tracking</th>
                       <th>Date</th>
-                      <th>Tech</th>
-                      <th>Parts</th>
-                      <th>Follow-up</th>
                     </tr>
                   </tfoot>
                 </table>
@@ -104,8 +75,11 @@
         </div>
       </section>
 
+    <!-- DataTables -->
+
+
     {% else %}
-      <p>No requests are available.</p>
+      <p>No Records.</p>
     {% endif %}
   </section>
 </div>
@@ -113,11 +87,6 @@
 
 {% block script %}
 <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-<!-- SlimScroll -->
-<script src="{% static "plugins/slimScroll/jquery.slimscroll.min.js" %}"></script>
-<!-- FastClick -->
-<script src="{% static "plugins/fastclick/fastclick.js" %}"></script>
-
 <script>
   $(function () {
     $('#assets_table').DataTable({

@@ -1,4 +1,4 @@
-{% extends 'request/index.html' %}
+{% extends 'operator/operator.html' %}
 
 {% block content %}
 
@@ -81,7 +81,7 @@
                     </div>
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox"> Customer is notified of warranty
+                        {{ form.double_check }}Double check before you submit
                       </label>
                     </div>
                     <button type="submit" class="save btn btn-default">Submit</button>

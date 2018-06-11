@@ -2,7 +2,7 @@ import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
-from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, DispatchForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
+from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
@@ -13,7 +13,8 @@ def request_part(request,pk):
     form=PartForm()
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     sksid=unit.sksid
-    return render(request, 'request/part_request.html',{'form': form,'id':sksid})
+    parts=PartRequest.objects.all().filter(sksid=sksid)
+    return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit})
 def show_part_list(request):
     part = PartRequest.objects.all()
     return render(request, 'request/part_request_list.html', {'request':part})
@@ -25,6 +26,7 @@ def update_part(request,pk):
     if request.method == "POST":
         form = PartForm(request.POST)
         if form.is_valid():
+            print(3333)
             unit=get_object_or_404(UnitBasicInfo, pk=pk)
             sksid=unit.sksid
             new_part_request=PartRequest()
@@ -35,7 +37,7 @@ def update_part(request,pk):
             city=""
             state=""
             zip=""
-            if request.POST["to_customer"]:
+            if request.POST.get('to_customer', False):
                 contact=unit.contactName
                 add1=unit.location_add1
                 add2=unit.location_add2
@@ -55,6 +57,7 @@ def update_part(request,pk):
             new_part_request.location_city=city
             new_part_request.location_state=state
             new_part_request.location_zip=zip
+            new_part_request.code=unit.areaCode
             n1=form.cleaned_data["number1"]
             m1=form.cleaned_data["name1"]
             q1=form.cleaned_data["qty1"]
@@ -80,6 +83,7 @@ def update_part(request,pk):
                 new_part_request.number=n2
                 new_part_request.name=m2
                 new_part_request.qty=int(q2)
+                new_part_request.code=unit.areaCode
                 new_part_request.save()
             if n3!="" and q3!="" and m3!="":
                 new_part_request=PartRequest()
@@ -93,6 +97,7 @@ def update_part(request,pk):
                 new_part_request.number=n3
                 new_part_request.name=m3
                 new_part_request.qty=int(q3)
+                new_part_request.code=unit.areaCode
                 new_part_request.save()
             return redirect("/user/dispatcher/")
 def update_part_request(request,pk):
@@ -103,7 +108,7 @@ def update_part_request(request,pk):
             tracking=form.cleaned_data["tracking"]
             note = form.cleaned_data["note"]
             part.tracking=tracking
-            part.tracking=note
+            part.note=note
             part.save()
             return redirect('/request/part/')
 def update_basic(request):
@@ -164,7 +169,7 @@ def show_admindp(request):
         count = UnitBasicInfo.objects.filter(receiver=user).filter(
             callTime__gte=start).count()
         final_data.append(count)
-    return render(request, 'request/dispatcher_supervisor.html', {'new':new,'all':alls})
+    return render(request, 'admin/dispatcher.html', {'new':new,'all':alls})
 def get_all_undiagnosed(request):
     print("undiag")
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
@@ -199,21 +204,30 @@ def update_diagnosis(request,pk):
 def update_tech_info(request,pk):
     if request.method == "POST":
         form=DispatchForm(request.POST)
+        print(form.errors)
+        print(form["schedule_time"])
         if form.is_valid():
             tech_name=form.cleaned_data["tech_name"]
             tech_phone=form.cleaned_data["tech_phone"]
             tech_email=form.cleaned_data["tech_email"]
             tech_note=form.cleaned_data["tech_note"]
-            schedule_date=form.cleaned_data["schedule_date"]
+            schedule_time=form.cleaned_data["schedule_time"]
             unit=get_object_or_404(UnitBasicInfo, pk=pk)
             unit.techName=tech_name
             unit.techPhone=tech_phone
             unit.techEmail=tech_email
-            unit.scheDate=schedule_date
+            unit.scheDate=schedule_time
+            a_note=("Scheduled Time: "+str(schedule_time)+"\n"
+                    +"Name: "+str(tech_name)+"\n"
+                    +"Phone "+str(tech_phone)+"\n"
+                    +"Email "+tech_email+"\n"
+                    +"Note "+str(tech_note)+"\n"
+                    )
+            print(tech_note)
             if unit.techNote:
-                unit.techNote=unit.techNote+"<br /> "+tech_note
+                unit.techNote=unit.techNote+"\n"+a_note
             else:
-                unit.techNote=tech_note
+                unit.techNote=a_note
             unit.save()
             return redirect('/user/')
 def show_question(request,pk):
@@ -222,7 +236,6 @@ def show_question(request,pk):
         return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
     elif request.session['unit_type']=="COLD":
         form=ColdTechQuestionForm()
-        print(4)
         return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
     else:
         redirect('/user')
@@ -299,10 +312,11 @@ def update_cold(request,pk):
             tsq8=form.cleaned_data["condFan"]
             tsq9=form.cleaned_data["evapFan"]
             tsq10=form.cleaned_data["comp"]
+            tsq11=form.cleaned_data["door"]
             tsq=("Filter Clean: "+tsq1+"\n"+"Display Temperature: "+str(tsq2)+"\n"+"Real Temperature: "+str(tsq3)+"\n"
                 +"Controller: "+tsq4+"\n"+"Snowflake Icon: "+tsq5+"\n"+"Fan Icon: "+tsq6+"\n"
                 +"Ice on Evap: "+tsq7+"\n"+"Cond Fan Running: "+tsq8+"\n"+"Evap Fan Running: "+tsq9+"\n"
-                +"Compressor running: "+tsq10+"\n")
+                +"Compressor running: "+tsq10+"\n"+"Door issue: "+tsq11+"\n")
             unit=UnitBasicInfo.objects.get(pk=pk)
             unit.tsq=tsq
             unit.save()

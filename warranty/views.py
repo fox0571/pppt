@@ -84,7 +84,7 @@ def update(request,pk):
             sks_middle="D"+str(code)
             sks_last=sks[2]
             if month1==month:
-                new_sks=sks_pre+"-"+sks_middle+"-"+str(1)
+                new_sks=sks_pre+"-"+sks_middle+"-"+str(int(sks_last)+1)
             else:
                 if month==1:
                     sks_pre="SKS01"+str(year)

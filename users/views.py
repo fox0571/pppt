@@ -30,7 +30,7 @@ def get_new_records(request):
 def get_all_part_records(request):
     code = request.session['user_code']
     request_list = PartRequest.objects.all().filter(code=code).order_by('-request_time')
-    return render(request, 'request/part_request_list.html', {'request':request_list})
+    return render(request, 'dispatcher/part_list.html', {'request':request_list})
 def get_all_oow_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).order_by('-callTime')
@@ -39,11 +39,13 @@ def get_today_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).order_by('-callTime')
     return render(request, 'operator/list.html', {'request':request_list})
+def show_follow_up(request,pk):
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    return render(request, 'dispatcher/followup.html', {'unit': unit})
 def show_service_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()
-    part_f=PartForm()
-    return render(request, 'request/dispatch_detail.html', {'unit': unit,'form':form,'part_form':part_f})
+    return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form})
 def show_operator_page(request):
     name=request.session['user_name']
     a=UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).count()
@@ -58,8 +60,10 @@ def show_dispatcher_page(request):
     b=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=False).exclude(scheDate=None).count()
     c=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).count()
     d=PartRequest.objects.all().filter(code=code).count()
-    print (request.session['user_group'])
-    return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c,'parts':d})
+    return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c,'parts':d})
+def show_admin_page(request):
+    units=UnitBasicInfo.objects.all().order_by('-callTime')
+    return render(request, 'admin/admin.html',{'reqeust':units})
 def show_page(request):
     group = request.session['user_group']
     if group=="dispatcher":
@@ -72,12 +76,17 @@ def show_page(request):
         return redirect('/request/adminop/')
     if group=="admindp":
         return redirect('/request/admindp/')
-    return render(request, 'request/dashboard_dp.html',{'new':a,'sche':b,'fin':c})
+    if group=="admin":
+        return redirect('/user/admin/')
+    if group=="parts":
+        return redirect('/request/part/')
+    return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c})
 def login(request):
     message=""
     if request.session.get('is_login',None):
         return redirect('/user/')
     if request.method == "POST":
+
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             code = login_form.cleaned_data['user']

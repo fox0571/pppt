@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^$',views.show_page, name='show'),
     url(r'^dispatcher/new/(?P<pk>\d+)/$', views.show_service_detail, name='service_detail'),
+    url(r'^dispatcher/follow/(?P<pk>\d+)/$', views.show_follow_up, name='follow_up'),
     url(r'^operator/all/$', views.get_all_records, name='all'),
     url(r'^operator/today/$', views.get_today_records, name='today'),
     url(r'^operator/oow/$', views.get_all_oow_records, name='oow'),
@@ -36,4 +37,5 @@ urlpatterns = [
     url(r'^warranty/$', views.show_waiting, name='warranty'),
     url(r'^admindp/$', vws.show_admindp, name='admindp'),
     url(r'^adminop/$', vws.show_adminop, name='adminop'),
+    url(r'^admin/$', views.show_admin_page, name='admin'),
 ]

@@ -1,6 +1,11 @@
 
 {% extends 'request/index.html' %}
 {% load static %}
+{% block css %}
+
+<link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+
+{% endblock %}
 {% block content %}
 
 <div class="content-wrapper">
@@ -8,8 +13,7 @@
     {% if request %}
     <section class="content-header">
       <h1>
-        Requests List
-        <small>Requests List</small>
+        All service records
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -29,13 +33,11 @@
                 <thead>
                   <tr>
                     <th>No.</th>
+                    <th>Reference</th>
                     <th>Business</th>
-                    <th>Contact</th>
                     <th>S/N</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>issue</th>
-                    <th>Date</th>
+                    <th>Tech</th>
+                    <th>Detail</th>
                   </tr>
                 </thead>
 
@@ -43,28 +45,22 @@
                     {% for r in request %}
                     <tr>
                       <td>{{ forloop.counter }}</td>
+                      <td>{{ r.sksid }}</td>
                       <td>{{ r.businessName }}</td>
-                      <td>{{ r.contactName }}</td>
                       <td>{{ r.serialNumber }}</td>
-                      <td>{{ r.phone }}</td>
-                      <td>{{ r.email }}</td>
-                      <td>{{ r.issue }}</td>
-                      <td>{{ r.callTime }}</td>
+                      <td>{{ r.techName }}</td>
+                      <td><a href="/request/{{ r.pk }}">View</a></td>
                     </tr>
-                    {% empty %}
-                      <tr>Nothing!</tr>
                     {% endfor %}
                 </tbody>
                 <tfoot>
                   <tr>
                     <th>No.</th>
+                    <th>Reference</th>
                     <th>Business</th>
-                    <th>Contact</th>
                     <th>S/N</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>issue</th>
-                    <th>Date</th>
+                    <th>Tech</th>
+                    <th>Detail</th>
                   </tr>
                 </tfoot>
               </table>
@@ -77,7 +73,7 @@
       <!-- /.row -->
     </section>
     {% else %}
-    <p>No requests are available.</p>
+    <p>No records.</p>
     {% endif %}
   </section>
 </div>
@@ -85,7 +81,6 @@
 
 {% block script %}
 <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-
 <script>
   $(function () {
     $('#assets_table').DataTable({

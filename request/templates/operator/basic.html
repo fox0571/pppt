@@ -1,5 +1,5 @@
 {% extends 'operator/operator.html' %}
-
+{% load static %}
 {% block content %}
 
 <div class="content-wrapper">
@@ -92,9 +92,10 @@
                 <label>
                   <input type="checkbox"> Customer is notified of warranty
                 </label>
-                {{ form.double_check }}
+              </div>
+              <div class="checkbox">
                 <label>
-                  Double check before you submit
+                  {{ form.double_check }}Double check before you submit
                 </label>
               </div>
               <button type="submit" class="save btn btn-default">Submit</button>
@@ -105,4 +106,16 @@
     </form>
   </section>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/input-mask/jquery.inputmask.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.date.extensions.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.extensions.js" %}"></script>
+<script>
+  var selector = document.getElementById("phone");
+  $(function () {
+    $(selector).inputmask({"mask": "(999) 999-9999"});
+  });
+</script>
 {% endblock %}
