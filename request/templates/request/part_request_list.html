@@ -46,7 +46,7 @@
                         <td>{% if not r.tracking %}
                               <a href="/request/part/{{ r.pk }}">
                                 <div class="col-md-4">
-                                  <button type="button" class="btn btn-block btn-info btn-sm">Update with tracking</button>
+                                  <button type="button" class="btn btn-block btn-info btn-sm">Update</button>
                                 </div>
                               </a>
                             {% else %}
@@ -90,7 +90,6 @@
 
 {% block script %}
 <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
 <script>
   $(function () {
     $('#assets_table').DataTable({

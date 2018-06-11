@@ -31,12 +31,6 @@ STATES = (
     ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
 )
 
-class DispatchForm(forms.Form):
-    tech_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    tech_phone = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','data-inputmask':'"mask": "(999) 999-9999"'}))
-    tech_email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    tech_note = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',}))
-    schedule_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control pull-right','id':'datepicker'}))
 class HotTechQuestionForm(forms.Form):
     pilot_light = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     pilot_stay = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
@@ -58,7 +52,7 @@ class ColdTechQuestionForm(forms.Form):
 class BasicForm(forms.Form):
     businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
     contactName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    phoneCustomer = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    phoneCustomer = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}))
     emailAddress = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
     add1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     add2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'APT, UNIT, SUITE'}),required=False)

@@ -2,7 +2,7 @@ import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
-from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, DispatchForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
+from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
@@ -203,7 +203,9 @@ def update_diagnosis(request,pk):
             return redirect('/request/diag')
 def update_tech_info(request,pk):
     if request.method == "POST":
+        print(11111)
         form=DispatchForm(request.POST)
+        print(form.errors)
         if form.is_valid():
             tech_name=form.cleaned_data["tech_name"]
             tech_phone=form.cleaned_data["tech_phone"]

@@ -30,7 +30,7 @@ def get_new_records(request):
 def get_all_part_records(request):
     code = request.session['user_code']
     request_list = PartRequest.objects.all().filter(code=code).order_by('-request_time')
-    return render(request, 'request/part_request_list.html', {'request':request_list})
+    return render(request, 'dispatcher/part_list.html', {'request':request_list})
 def get_all_oow_records(request):
     name=request.session['user_name']
     request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).order_by('-callTime')
@@ -45,8 +45,7 @@ def show_follow_up(request,pk):
 def show_service_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()
-    part_f=PartForm()
-    return render(request, 'request/dispatch_detail.html', {'unit': unit,'form':form,'part_form':part_f})
+    return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form,'part_form':part_f})
 def show_operator_page(request):
     name=request.session['user_name']
     a=UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).count()

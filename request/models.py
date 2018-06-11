@@ -53,12 +53,17 @@ class CheckForm(ModelForm):
     class Meta:
         model = Partsinv
         fields=['number']
-
+class TimeRecord(models.Model):
+    ref=models.IntegerField()
+    call=models.DateTimeField()
+    pre_diagnosis=models.DateTimeField()
+    tech=models.DateTimeField()
+    part=models.DateTimeField()
 class UnitBasicInfo(models.Model):
     businessName=models.CharField(max_length=100)
     contactName=models.CharField(max_length=50)
     serialNumber=models.CharField(max_length=50)
-    phone=models.IntegerField(null=True)
+    phone=models.CharField(max_length=15,null=True)
     email=models.EmailField(null=True)
     location_add1=models.CharField(max_length=200)
     location_add2=models.CharField(max_length=200,null=True)
@@ -70,7 +75,7 @@ class UnitBasicInfo(models.Model):
     warrantyNote=models.CharField(max_length=100,null=True,blank=True)
     tsq=models.TextField(null=True)
     techName=models.CharField(max_length=50,null=True)
-    techPhone=models.IntegerField(null=True)
+    techPhone=models.CharField(max_length=15,null=True)
     techEmail=models.EmailField(null=True)
     scheDate=models.DateField(null=True)
     techNote=models.CharField(max_length=200,null=True)
