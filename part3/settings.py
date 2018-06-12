@@ -26,11 +26,8 @@ SECRET_KEY = '5%midtd07efmf13(0^xk!d2s^2^42yytvk-9o71y2$2=(j$(dd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
 ALLOWED_HOSTS = ['*']
-=======
-ALLOWED_HOSTS = ['192.168.5.120','127.0.0.1','192.168.5.122']
->>>>>>> d477f552542c13987ee0654bfae095b94eeb06bd
+
 
 
 # Application definition
@@ -89,6 +86,10 @@ DATABASES = {
         'PASSWORD': 'Atosa123',
         'HOST': 'localhost',
         'PORT': '',
+        'OPTIONS': {
+          'autocommit': True,
+	  'use_pure' : True,
+        },
     }
 }
 
@@ -117,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
@@ -130,3 +131,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = "C:\\inetpub\\wwwroot\\pppt\\static\\"

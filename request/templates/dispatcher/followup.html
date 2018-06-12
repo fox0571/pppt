@@ -36,25 +36,52 @@
             <p class="text-light-blue">Note: {{unit.pre_diagnosis}}</p>
           </div>
         </div>
+	<div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Parts Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">Tracking: {{unit.tracking}}</p>
+          </div>
+        </div>
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">Tech Information</h3>
           </div>
           <div class="box-body">
-            <p class="text-light-blue">Tech: {{unit.techName}}</p>
-            <p class="text-light-blue">Phone: {{unit.techPhone}}</p>
-            <p class="text-light-blue">Email: {{unit.techEmail}}</p>
-            <p class="text-light-blue">Note: {{unit.techNote}}</p>
+            <p class="text-light-blue">{{unit.techNote|linebreaks}}</p>
           </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Parts Information</h3>
+            <h3 class="box-title">Follow-up with customer</h3>
           </div>
           <div class="box-body">
-            <p class="text-light-blue">Tracking: {{unit.tracking}}</p>
+            <p class="text-light-blue">Note: {{unit.followup_customer|linebreaks}}</p>
+            <div class="form-group">
+              <form class='form' action="/request/customer/follow/{{ unit.pk }}/" method="post">
+                {% csrf_token %}
+                <textarea class="form-control" rows="5" name="customer" id="follow_up_customer" required></textarea>
+                <button type="submit" class="btn btn-primary pull-right">update</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Follow-up with technician</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">Note: {{unit.followup_tech|linebreaks}}</p>
+            <div class="form-group">
+              <form class='form' action="/request/tech/follow/{{ unit.pk }}/" method="post">
+                {% csrf_token %}
+                <textarea class="form-control" rows="5" name="tech" id="follow_up_tech" required></textarea>
+                <button type="submit" class="btn btn-primary pull-right">update</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

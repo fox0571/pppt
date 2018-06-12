@@ -8,7 +8,7 @@ class WarrantyForm(forms.ModelForm):
         model = UnitBasicInfo
         fields = ['warranty', 'warrantyNote']
         widgets = {
-            'warrantyNote': forms.Textarea(attrs={'class': 'form-control',}),
+            'warrantyNote': forms.Textarea(attrs={'class': 'form-control','rows':'5'}),
         }
     # waranty = forms.ChoiceField(choices=CHOICES_WARRANTY,widget=forms.RadioSelect(attrs={'class': 'form-control'}))
     # note = forms.CharField(widget=forms.Textarea)

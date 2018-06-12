@@ -22,9 +22,17 @@
               {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
             <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
             <p class="text-light-blue">Technical Support Questions: {{unit.tsq|upper|linebreaks}}</p>
-            <p class="text-light-blue">Received by: {{unit.receiver}}</p>
+            <p class="text-light-blue">Received by {{unit.receiver}} @ {{unit.callTime}}</p>
           </div>
           <!-- /.box-body -->
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Follow Up With Customer</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">{{unit.followup_customer|upper|linebreaks}}</p>
+          </div>
         </div>
       </div>
       <div class="col-md-4">
@@ -45,6 +53,14 @@
             <p class="text-light-blue">Phone: {{unit.techPhone}}</p>
             <p class="text-light-blue">Email: {{unit.techEmail}}</p>
             <p class="text-light-blue">Note: {{unit.techNote}}</p>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Follow Up With Technician</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">{{unit.followup_tech|upper|linebreaks}}</p>
           </div>
         </div>
       </div>

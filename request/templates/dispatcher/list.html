@@ -47,6 +47,8 @@
                       <th>Tech</th>
                       <th>Parts</th>
                       <th>Follow-up</th>
+                      <th>Statue</th>
+                      <th>PDF</th>
                     </tr>
                   </thead>
 
@@ -75,6 +77,20 @@
                             Follow-up
                           </a>
                         </td>
+                        <td>
+                          <a href="/request/statue/{{ r.pk }}">
+                            {% if not r.finished %}
+                              Not yet
+                            {% else %}
+                              Finished
+                            {% endif %}
+                          </a>
+                        </td>
+                        <td>
+                          <a href="/request/{{ r.pk }}/order">
+                            View
+                          </a>
+                        </td>
                       </tr>
                       {% empty %}
                         <tr>Nothing!</tr>
@@ -83,15 +99,17 @@
                   <tfoot>
                     <tr>
                       <th>No.</th>
+                      <th>ID</th>
                       <th>Business</th>
                       <th>Contact</th>
                       <th>S/N</th>
                       <th>Phone</th>
-                      <th>Warranty Statue</th>
                       <th>Date</th>
                       <th>Tech</th>
                       <th>Parts</th>
                       <th>Follow-up</th>
+                      <th>Statue</th>
+                      <th>PDF</th>
                     </tr>
                   </tfoot>
                 </table>

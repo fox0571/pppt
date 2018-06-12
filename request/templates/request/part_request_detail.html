@@ -5,7 +5,7 @@
 
 <div class="content-wrapper">
   <section class="content">
-    <form class='form' action="{% url 'request:update_pq' part.pk %}" method="post">
+    <form class='form' action="/request/part/{{ part.pk }}/update/" method="post">
       {% csrf_token %}
       <div class="box-body">
         <div class="col-md-6">
@@ -24,6 +24,14 @@
               <p class="text-light-blue">Quantity: {{part.qty}}</p>
             </div>
             <!-- /.box-body -->
+          </div>
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Pre-diagnosis</h3>
+            </div>
+            <div class="box-body">
+             <p class="text-light-blue">{{part.pre_diagnosis}}</p>
+            </div>
           </div>
           <div class="box box-primary">
             <div class="box-body">

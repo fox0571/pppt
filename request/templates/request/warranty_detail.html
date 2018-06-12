@@ -7,12 +7,29 @@
   <section class="content">
 
     <form class='form' action="update/" method="post">
-      {% csrf_token %}
-              <h1>{{ unit.serialNumber }}</h1>
-              {{ form }}
-              <button type="submit" class="btn btn-primary pull-right">update</button>
-
-          </form>
+      	{% csrf_token %}
+       		<div class="box-body">
+        		<div class="col-md-6">
+          			<div class="box box-primary">
+          				<div class="box-header with-border">
+              				<h1 class="box-title">{{ unit.serialNumber }}</h1>
+           				</div>
+           				<div class="box-header">
+              				<h1 class="box-title">Business Infomation:</h1>
+           				</div>
+           				<div class="box-body">
+           					<p>Business Name: {{unit.businessName}}</p>
+           					<p>Business Location: {{unit.location_add1|upper}} {{unit.location_add2|upper}} {{unit.location_city|upper}}
+                    			{{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
+           				</div>
+              			<div class="box-body">
+              				{{ form }}
+              				<button type="submit" class="btn btn-primary pull-right">update</button>
+              			</div>
+              		</div>
+              	</div>
+			</div>
+    </form>
   </section>
 </div>
 {% endblock %}

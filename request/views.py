@@ -6,6 +6,42 @@ from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, C
 from users.forms import DispatchForm
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
+def get_order(request,pk):
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
+    return render(request, 'dispatcher/order.html', {'unit':unit})
+def update_statue(request,pk):
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
+    if request.method == "POST":
+        statue=request.POST.get("statue","")
+        if statue=="finished":
+            unit.finished=True
+        else:
+            unit.finished=False
+        unit.save()
+        return redirect('/user/dispatcher/scheduled/')
+    return render(request, 'dispatcher/statue.html', {'unit':unit})
+def update_follow_tech(request,pk):
+    if request.method == "POST":
+        note=request.POST.get("tech","")
+        note=str(datetime.datetime.now(tz=None))+"\n"+note
+        unit=get_object_or_404(UnitBasicInfo, pk=pk)
+        if unit.followup_tech:
+            unit.followup_tech=unit.followup_tech+"\n"+note
+        else:
+            unit.followup_tech=note
+        unit.save()
+    return render(request, 'dispatcher/followup.html', {'unit': unit})
+def update_follow_customer(request,pk):
+    if request.method == "POST":
+        note=request.POST.get("customer","")
+        note=str(datetime.datetime.now(tz=None))+"\n"+note
+        unit=get_object_or_404(UnitBasicInfo, pk=pk)
+        if unit.followup_customer:
+            unit.followup_customer=unit.followup_customer+"\n"+note
+        else:
+            unit.followup_customer=note
+        unit.save()
+    return render(request, 'dispatcher/followup.html', {'unit': unit})
 def show_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     return render(request,'request/detail.html',{'unit':unit})
@@ -26,7 +62,6 @@ def update_part(request,pk):
     if request.method == "POST":
         form = PartForm(request.POST)
         if form.is_valid():
-            print(3333)
             unit=get_object_or_404(UnitBasicInfo, pk=pk)
             sksid=unit.sksid
             new_part_request=PartRequest()
@@ -37,6 +72,7 @@ def update_part(request,pk):
             city=""
             state=""
             zip=""
+            new_part_request.pre_diagnosis=unit.pre_diagnosis
             if request.POST.get('to_customer', False):
                 contact=unit.contactName
                 add1=unit.location_add1
@@ -84,6 +120,7 @@ def update_part(request,pk):
                 new_part_request.name=m2
                 new_part_request.qty=int(q2)
                 new_part_request.code=unit.areaCode
+                new_part_request.pre_diagnosis=unit.pre_diagnosis
                 new_part_request.save()
             if n3!="" and q3!="" and m3!="":
                 new_part_request=PartRequest()
@@ -98,6 +135,7 @@ def update_part(request,pk):
                 new_part_request.name=m3
                 new_part_request.qty=int(q3)
                 new_part_request.code=unit.areaCode
+                new_part_request.pre_diagnosis=unit.pre_diagnosis
                 new_part_request.save()
             return redirect("/user/dispatcher/")
 def update_part_request(request,pk):
@@ -290,8 +328,8 @@ def update_hot(request,pk):
             tsq1=form.cleaned_data["pilot_light"]
             tsq2=form.cleaned_data["pilot_stay"]
             tsq3=form.cleaned_data["burner_light"]
-            tsq=("The pilot can be lighted on: "+tsq1+"<br>"
-                +"The pilot can stay on: "+tsq2+"<br>"
+            tsq=("The pilot can be lighted on: "+tsq1+"\n"
+                +"The pilot can stay on: "+tsq2+"\n"
                 +"The burner can be turned on: "+tsq3
                 )
             unit=UnitBasicInfo.objects.get(pk=pk)

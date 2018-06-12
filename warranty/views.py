@@ -22,12 +22,12 @@ def show_detail(request,pk):
 
 def get_code(area):
     #(1,"Jane"),(2,"Yesi"),(3,"Chloe"),(4,"Christina"),(5,"Daniela"),(6,"Samantha")
-    LIST_1=['CA','AZ','NV','UT','ID','CO']
-    LIST_2=['WA','OR','MT','WY','NM','ND','SD','NE','KS','MN','IA','AR']
-    LIST_3=['TX','OK','LA','MS']
-    LIST_4=['GA','FL']
-    LIST_5=['WI','MO','IL','MI','IN','OH','KY','TN','AL']
-    LIST_6=['ME','VT','NH','MA','CT','RI','NY','PA','NJ','DE','MD','DC','WV','VA','NC','SC']
+    LIST_6=['CA','AZ','NV','UT','ID','CO']
+    LIST_4=['WA','OR','MT','WY','NM','ND','SD','NE','KS','MN','IA','AR']
+    LIST_2=['TX','OK','LA','MS']
+    LIST_1=['GA','FL']
+    LIST_3=['WI','MO','IL','MI','IN','OH','KY','TN','AL']
+    LIST_5=['ME','VT','NH','MA','CT','RI','NY','PA','NJ','DE','MD','DC','WV','VA','NC','SC']
     for st in LIST_1:
         if st==area:
             return 1

@@ -77,7 +77,7 @@ def show_page(request):
     if group=="admindp":
         return redirect('/request/admindp/')
     if group=="admin":
-        return redirect('/user/admin/')
+        return redirect('/request/all/')
     if group=="parts":
         return redirect('/request/part/')
     return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c})

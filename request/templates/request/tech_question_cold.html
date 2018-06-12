@@ -62,12 +62,12 @@
                       <div class="col-md-6">
                         <div class="box-body">
                           <div class="form-group">
-                            {{ form.condFan.errors }}
-                            <label for="{{ form.serialNumber.id_for_label }}">Condensor Fans Running: </label>{{ form.condFan }}
-                          </div>
-                          <div class="form-group">
                             {{ form.evapFan.errors }}
                             <label for="{{ form.serialNumber.id_for_label }}">Evaporator Fan Running: </label>{{ form.evapFan }}
+                          </div>
+                          <div class="form-group">
+                            {{ form.condFan.errors }}
+                            <label for="{{ form.serialNumber.id_for_label }}">Condensor Fans Running: </label>{{ form.condFan }}
                           </div>
                           <div class="form-group">
                             {{ form.comp.errors }}

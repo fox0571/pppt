@@ -109,7 +109,7 @@ class PartForm(forms.Form):
     city=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
     state=forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}),required=False)
     zip=forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
-    phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}),required=False)
     to_customer=forms.BooleanField(required=False)
 class RequestForm(forms.Form):
     SKSID = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))

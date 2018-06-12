@@ -1,7 +1,9 @@
 
 {% extends 'request/index.html' %}
 {% load static %}
-
+{% block css %}
+<link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+{% endblock %}
 {% block content %}
 
 <div class="content-wrapper">

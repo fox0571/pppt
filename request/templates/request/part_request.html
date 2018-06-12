@@ -1,5 +1,5 @@
 {% extends 'request/index.html' %}
-
+{% load static %}
 {% block content %}
 
 
@@ -195,4 +195,13 @@
     </form>
   </section>
 </div>
+{% endblock %}
+{% block script %}
+<script src="{% static "plugins/input-mask/jquery.inputmask.js" %}"></script>
+<script>
+  var selector = document.getElementById("phone");
+  $(function () {
+    $(selector).inputmask({"mask": "(999) 999-9999"});
+  });
+</script>
 {% endblock %}
