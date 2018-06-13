@@ -5,11 +5,6 @@
 
 <div class="content-wrapper">
   <section class="content">
-    <section class="content-header">
-      <h1>
-        {{id}}
-      </h1>
-    </section>
     <form action="update/" method="POST" class="post-form">
         {% csrf_token %}
         <div class="col-md-6">
@@ -18,7 +13,8 @@
               <h3 class="box-title">Pre-diagnosis</h3>
             </div>
             <div class="box-body">
-              {{ unit.pre_diagnosis }}
+              <p>S/N: {{ unit.serialNumber }}</p>
+              <p>{{ unit.pre_diagnosis }}</p>
             </div>
           </div>
           <div class="box box-primary">
@@ -75,9 +71,6 @@
               <h3 class="box-title">Parts Infomtion</h3>
             </div>
             <div class="box-body">
-              <label>
-                <h2>{{ id }}</h2>
-              </label>
               <div class="row">
                 <div class="col-md-4">
                   <div class="box-body">
@@ -138,6 +131,10 @@
               <div class="checkbox">
                 <label>
                   {{ form.to_customer }}Check here if this package is shipped to the customer,
+                  and you can leave the shipping form blank.
+                </label>
+                <label>
+                  {{ form.to_tech }}Check here if this package is shipped to the tech,
                   and you can leave the shipping form blank.
                 </label>
               </div>

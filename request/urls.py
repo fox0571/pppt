@@ -19,7 +19,7 @@ urlpatterns = [
     #url(r'^(?P<pk>\d+)/$', views.post_detail, name='post_detail'),
     url(r'^tq/$', views.show_tech_question_page, name='tech'),
     url(r'^(?P<pk>\d+)/$', views.show_detail,name='detail'),
-    url(r'^(?P<pk>\d+)/part/$', views.request_part, name='part'),
+    url(r'^(?P<pk>\d+)/part/$', views.update_part, name='part'),
     url(r'^(?P<pk>\d+)/order/$', views.get_order, name='order'),
     url(r'^part/$', views.show_part_list, name='part_list'),
     url(r'^part/(?P<pk>\d+)/$', views.show_part_detail, name='part_detail'),
@@ -40,4 +40,5 @@ urlpatterns = [
     url(r'^admindp/$', views.show_admindp, name='admindp'),
     url(r'^adminop/$', views.show_adminop, name='adminop'),
     url(r'^diag/$', views.get_all_undiagnosed, name='alldiag'),
+    url(r'^diag/all/$', views.get_all_diag, name='ad'),
 ]

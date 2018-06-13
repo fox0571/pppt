@@ -45,12 +45,12 @@ def update_follow_customer(request,pk):
 def show_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     return render(request,'request/detail.html',{'unit':unit})
-def request_part(request,pk):
-    form=PartForm()
-    unit=get_object_or_404(UnitBasicInfo, pk=pk)
-    sksid=unit.sksid
-    parts=PartRequest.objects.all().filter(sksid=sksid)
-    return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit})
+# def request_part(request,pk):
+#     form=PartForm()
+#     unit=get_object_or_404(UnitBasicInfo, pk=pk)
+#     sksid=unit.sksid
+#     parts=PartRequest.objects.all().filter(sksid=sksid)
+#     return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit})
 def show_part_list(request):
     part = PartRequest.objects.all()
     return render(request, 'request/part_request_list.html', {'request':part})
@@ -59,11 +59,13 @@ def show_part_detail(request,pk):
     form=PartRequestUpdateForm()
     return render(request, 'request/part_request_detail.html', {'part': part,'form':form})
 def update_part(request,pk):
+    form=PartForm()
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
+    sksid=unit.sksid
+    parts=PartRequest.objects.all().filter(sksid=sksid)
     if request.method == "POST":
         form = PartForm(request.POST)
         if form.is_valid():
-            unit=get_object_or_404(UnitBasicInfo, pk=pk)
-            sksid=unit.sksid
             new_part_request=PartRequest()
             new_part_request.sksid=sksid
             contact=""
@@ -80,6 +82,13 @@ def update_part(request,pk):
                 city=unit.location_city
                 state=unit.location_state
                 zip=unit.location_zip
+            elif request.POST.get('to_tech', False):
+                contact=unit.techName
+                add1=unit.tech_add1
+                add2=unit.tech_add2
+                city=unit.tech_city
+                state=unit.tech_state
+                zip=unit.tech_zip
             else:
                 contact=form.cleaned_data["contact"]
                 add1=form.cleaned_data["address1"]
@@ -94,6 +103,7 @@ def update_part(request,pk):
             new_part_request.location_state=state
             new_part_request.location_zip=zip
             new_part_request.code=unit.areaCode
+            new_part_request.sn=unit.serialNumber
             n1=form.cleaned_data["number1"]
             m1=form.cleaned_data["name1"]
             q1=form.cleaned_data["qty1"]
@@ -138,6 +148,7 @@ def update_part(request,pk):
                 new_part_request.pre_diagnosis=unit.pre_diagnosis
                 new_part_request.save()
             return redirect("/user/dispatcher/")
+    return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit})
 def update_part_request(request,pk):
     if request.method == "POST":
         form=PartRequestUpdateForm(request.POST)
@@ -151,10 +162,8 @@ def update_part_request(request,pk):
             return redirect('/request/part/')
 def update_basic(request):
     if request.method == "POST":
-        print("2")
         form = BasicForm(request.POST)
         if form.is_valid():
-            print("3")
             name_business=form.cleaned_data["businessName"]
             name_contact=form.cleaned_data["contactName"]
             serial=form.cleaned_data["serialNumber"]
@@ -189,13 +198,13 @@ def update_basic(request):
             elif request.session['unit_type']=="COLD":
                 form=ColdTechQuestionForm()
                 return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
-            return redirect('question/')
+            return redirect('/user/operator/')
     form=BasicForm()
     return render(request, 'operator/basic.html',{'form': form})
 
 def show_admindp(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
-    alls=UnitBasicInfo.objects.all().count()
+    alls=UnitBasicInfo.objects.filter(warranty=True).count()
     new=all.count()
     final_data = []
     today = datetime.date.today()
@@ -209,10 +218,11 @@ def show_admindp(request):
         final_data.append(count)
     return render(request, 'admin/dispatcher.html', {'new':new,'all':alls})
 def get_all_undiagnosed(request):
-    print("undiag")
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
-    print(all)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
+def get_all_diag(request):
+    all=UnitBasicInfo.objects.filter(warranty=True)
+    return render(request, 'request/pre_diagnosis_list.html', {'requests':all})  
 def show_adminop(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
     new=all.count()

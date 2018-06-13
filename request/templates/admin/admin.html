@@ -4,6 +4,18 @@
 {% block css %}
 
 <link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+<style>
+.glyphicon.glyphicon-green-dot:before {
+    color: #20F343;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-red-dot:before {
+    color: #F21616;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+</style>
 
 {% endblock %}
 {% block content %}
@@ -36,6 +48,7 @@
                     <th>Reference</th>
                     <th>Business</th>
                     <th>S/N</th>
+                    <th>Warranty</th>
                     <th>Tech</th>
                     <th>Detail</th>
                   </tr>
@@ -48,6 +61,12 @@
                       <td>{{ r.sksid }}</td>
                       <td>{{ r.businessName }}</td>
                       <td>{{ r.serialNumber }}</td>
+                      <td>{% if r.warranty %}
+                            <span class="glyphicon glyphicon-green-dot"></span>
+                            {% else %}
+                            <span class="glyphicon glyphicon-red-dot"></span>
+                            {% endif %}
+                      </td>
                       <td>{{ r.techName }}</td>
                       <td><a href="/request/{{ r.pk }}">View</a></td>
                     </tr>
@@ -59,6 +78,7 @@
                     <th>Reference</th>
                     <th>Business</th>
                     <th>S/N</th>
+                    <th>Warranty</th>
                     <th>Tech</th>
                     <th>Detail</th>
                   </tr>

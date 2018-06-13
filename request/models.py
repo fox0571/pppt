@@ -70,6 +70,11 @@ class UnitBasicInfo(models.Model):
     location_city=models.CharField(max_length=20)
     location_state=models.CharField(max_length=30)
     location_zip=models.IntegerField()
+    tech_add1=models.CharField(max_length=200,null=True)
+    tech_add2=models.CharField(max_length=200,null=True,blank=True)
+    tech_city=models.CharField(max_length=20,null=True)
+    tech_state=models.CharField(max_length=30,null=True)
+    tech_zip=models.IntegerField(null=True)
     issue=models.TextField()
     warranty=models.NullBooleanField(null=True,blank=True)
     warrantyNote=models.TextField(null=True,blank=True)
@@ -93,6 +98,7 @@ class UnitBasicInfo(models.Model):
         return self.serialNumber
 
 class PartRequest(models.Model):
+    sn=models.CharField(max_length=30,null=True,blank=True)
     sksid=models.CharField(max_length=30)
     contact=models.CharField(max_length=50)
     number=models.CharField(max_length=30)
@@ -104,7 +110,7 @@ class PartRequest(models.Model):
     tracking=models.CharField(max_length=50,null=True,blank=True)
     approved=models.BooleanField(default=False)
     location_add1=models.CharField(max_length=200)
-    location_add2=models.CharField(max_length=200,null=True)
+    location_add2=models.CharField(max_length=200,null=True,blank=True)
     location_city=models.CharField(max_length=20)
     location_state=models.CharField(max_length=30)
     location_zip=models.IntegerField()

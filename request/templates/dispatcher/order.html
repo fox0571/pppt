@@ -26,6 +26,9 @@
     margin-top: 100px;
 
   }
+  h4 {
+     text-decoration: underline;
+  }
   </style>
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -36,36 +39,75 @@
     <div class="order">
       <p>Work Order</p>
       <p>Number</p>
-      <p>{{unit.sksid}}</p>
+      <h4>{{unit.sksid}}</h4>
     </div>
   </header>
     <div class="content">
       <div class="box-body">
          <section class="content">
         <div class="row">
-          <div class="col-xs-2">
-            <p class="text-light-black">SCHEDULED TIME</p>
-        <p class="text-light-black">SERIAL NUMBER</p>
-        <p class="text-light-black">UNIT DESCRIPTION</p>
-        <p class="text-light-black">BUSINESS NAME</p>
-        <p class="text-light-black">LOCATION</p>
-        <p class="text-light-black">. </p>
-        <p class="text-light-black">ISSUE</p>
-        <p class="text-light-black">. </p>
-        <p class="text-light-black">PRE-DIAGNOSIS</p>
+          <div class="col-lg-12">
+            <div class="col-lg-2">
+              <p class="text-light-black">SCHEDULED TIME</p>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-light-black">{{unit.scheDate}}</p>
+            </div>
           </div>
-       
-          <div class="col-xs-4">
-        <p class="text-light-black">{{unit.scheDate}}</p>
-        <p class="text-light-black">{{unit.serialNumber}}</p>
-        <p class="text-light-black">{{ unit.serialNumber}}</p>
-        <p class="text-light-black">{{unit.businessName}}</p>
-        <p class="text-light-black">{{unit.location_add1}}</p>
-        <p class="text-light-black"> {{unit.location_city|upper}} {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
-        <p class="text-light-black">{{unit.issue}}</p>
-        <p class="text-light-black">{{unit.pre_diagnosis}}</p>
+          <div class="col-lg-12">
+            <div class="col-lg-2">
+              <p class="text-light-black">SERIAL NUMBER</p>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-light-black">{{ unit.serialNumber}}</p>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="col-lg-2">
+              <p class="text-light-black">UNIT DESCRIPTION</p>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-light-black">{{ unit.serialNumber}}</p>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="col-lg-2">
+              <p class="text-light-black">BUSINESS NAME</p>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-light-black">{{unit.businessName}}</p>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="col-lg-2">
+              <p class="text-light-black">LOCATION</p>
+            </div>
+            <div class="col-lg-4">
+              <div class="col-lg-12">
+                <p class="text-light-black">{{unit.location_add1}} {{unit.location_add2}}</p>
+              </div>
+              <div class="col-lg-12">
+                <p class="text-light-black">{{unit.location_city|upper}} {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="col-lg-2">
+              <p class="text-light-black">ISSUE</p>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-light-black">{{unit.issue}}</p>
+            </div>
+          </div> 
+          <div class="col-lg-12">
+            <div class="col-lg-2">
+              <p class="text-light-black">PRE-DIAGNOSIS</p>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-light-black">{{unit.pre_diagnosis}}</p>
+            </div>
+          </div> 
          </div>
-          </div>
       </section>
       </div>
     </div>

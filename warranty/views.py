@@ -70,7 +70,7 @@ def update(request,pk):
         unit.warranty=warranty
         unit.warrantyNote=note
         unit.areaCode=code
-        last_unit=UnitBasicInfo.objects.filter(areaCode=code).order_by('-id')
+        last_unit=UnitBasicInfo.objects.filter(warranty=True).filter(areaCode=code).order_by('-sksid')
         sks=""
         month1=0
         new_sks=""
