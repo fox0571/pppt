@@ -45,7 +45,7 @@
                   <div class="box-body">
                     <div class="form-group">
                       {{ form.add1.errors }}
-                      <label for="{{ form.businessName.id_for_label }}">Address1: </label>{{ form.add1 }}
+                      <label for="{{ form.businessName.id_for_label }}">Street: </label>{{ form.add1 }}
                     </div>
                     <div class="form-group">
                       {{ form.add2.errors }}
@@ -81,8 +81,8 @@
                 <label for="{{ form.type.id_for_label }}">Please select the type of this unit: </label>{{ form.type }}
               </div>
               <div class="form-group">
-                {{ form.serialNumber.errors }}
-                <label for="{{ form.serialNumber.id_for_label }}">Serial Number: </label>{{ form.serialNumber }}
+                
+                <label for="{{ form.serialNumber.id_for_label }}">Serial Number: </label>{{ form.serialNumber.errors }}{{ form.serialNumber }}
               </div>
               <div class="form-group">
                 {{ form.issue.errors }}

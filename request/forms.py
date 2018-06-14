@@ -1,5 +1,15 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
+from django.utils.translation import gettext_lazy as _
+import re
 
+def validate_sn(value):
+    if not re.match(r'^[a-zA-Z]{3,4}', value):
+        raise ValidationError(
+            _('%(value)s is not a valid serial number'),
+            params={'value': value},
+        )
 CHOICES_0 = (("ON","ON"),("OFF","OFF"))
 CHOICES_1 = (("YES","YES"),("NO","NO"),("UNKNOWN","UNKNOWN"))
 CHOICES_2 = (("ON","ON"),("OFF","OFF"),("FLASHING","FLASHING"))
@@ -64,6 +74,13 @@ class BasicForm(forms.Form):
     issue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Enter the description of issue'}))
     type = forms.ChoiceField(choices=CHOICES_7,widget=forms.RadioSelect(attrs={'class': 'radio'}))
     double_check = forms.BooleanField(required=True)
+
+    def clean_serialNumber(self):
+        sn = self.cleaned_data['serialNumber']
+        print("cus_validator")
+        if not re.match(r'^[a-zA-Z]{3,4}', sn):
+            raise forms.ValidationError("Not a valid serial number")
+        return sn
 class WarrantyForm(forms.Form):
     waranty = forms.ChoiceField(choices=CHOICES_WARRANTY,widget=forms.RadioSelect(attrs={'class': 'form-control'}))
     note = forms.CharField(widget=forms.Textarea)
@@ -80,7 +97,8 @@ class BasicInfoForm(forms.Form):
     state = forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}))
     zip = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     businessHours = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
-    serialNumber = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the serial number'}))
+    serialNumber = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the serial number'}))
     issue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Enter the description of issue'}))
     filter = forms.ChoiceField(choices=CHOICES_4,widget=forms.Select(attrs={'class': 'form-control'}))
     displayTemp = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature on the display?'}))
@@ -92,7 +110,13 @@ class BasicInfoForm(forms.Form):
     condFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
-
+    
+    def clean(self):
+        cleaned_data = super(BasicInfoForm, self).clean()
+        sn = cleaned_data.get('serialNumber')
+        print("cus_validator")
+        if not re.match(r'^[a-zA-Z]{3,4}', sn):
+            raise forms.ValidationError("Not a valid serial number")
 class PartForm(forms.Form):
     number1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
     name1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)

@@ -41,7 +41,12 @@
             <h3 class="box-title">Parts Information</h3>
           </div>
           <div class="box-body">
-            <p class="text-light-blue">Tracking: {{unit.tracking}}</p>
+            {% if parts %}
+              {% for p in parts%}
+                <p class="text-light-blue">{{p.number}} {{p.name}} {{p.qty}} {{p.tracking}}</p>
+              {% endfor %}
+
+            {% endif %}
           </div>
         </div>
         <div class="box box-primary">

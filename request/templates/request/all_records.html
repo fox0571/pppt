@@ -23,13 +23,9 @@
     {% if request %}
     <section class="content-header">
       <h1>
-        Requests List
-        <small>Requests List</small>
+        Records List
+        <small>All records</small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">Requests List</li>
-      </ol>
     </section>
     <section class="content">
       <div class="row">
@@ -44,6 +40,8 @@
                     <th>Business</th>
                     <th>S/N</th>
                     <th>Warranty</th>
+                    <th>Called</th>
+                    <th>Statue</th>
                     <th>Tech</th>
                     <th>Detail</th>
                   </tr>
@@ -62,6 +60,13 @@
                             <span class="glyphicon glyphicon-red-dot"></span>
                             {% endif %}
                       </td>
+                      <td>{{ r.callTime }}</td>
+                      <td>{% if r.finished %}
+                            <span class="glyphicon glyphicon-green-dot"></span>
+                            {% else %}
+                            <span class="glyphicon glyphicon-red-dot"></span>
+                            {% endif %}
+                      </td>
                       <td>{{ r.techName }}</td>
                       <td><a href="/request/{{ r.pk }}">View</a></td>
                     </tr>
@@ -74,6 +79,8 @@
                     <th>Business</th>
                     <th>S/N</th>
                     <th>Warranty</th>
+                    <th>Called</th>
+                    <th>Statue</th>
                     <th>Tech</th>
                     <th>Detail</th>
                   </tr>

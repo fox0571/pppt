@@ -16,7 +16,7 @@ def get_all_records(request):
     return render(request, 'operator/list.html', {'request':request_list})
 def get_all_dispatcher_records(request):
     code = request.session['user_code']
-    request_list = UnitBasicInfo.objects.all().exclude(pre_diagnosis=None).filter(areaCode=code).filter(finished=True).order_by('-callTime')
+    request_list = UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).order_by('-callTime')
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_scheduled_records(request):
     code = request.session['user_code']
@@ -24,8 +24,7 @@ def get_all_scheduled_records(request):
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_new_records(request):
     code = request.session['user_code']
-    print(code)
-    request_list = UnitBasicInfo.objects.all().filter(warranty=True).filter(areaCode=code).filter(scheDate=None).order_by('-callTime')
+    request_list = UnitBasicInfo.objects.all().exclude(pre_diagnosis=None).filter(warranty=True).filter(areaCode=code).filter(scheDate=None).order_by('-callTime')
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_part_records(request):
     code = request.session['user_code']
@@ -41,7 +40,8 @@ def get_today_records(request):
     return render(request, 'operator/list.html', {'request':request_list})
 def show_follow_up(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
-    return render(request, 'dispatcher/followup.html', {'unit': unit})
+    parts = PartRequest.objects.all().filter(sksid=unit.sksid)
+    return render(request, 'dispatcher/followup.html', {'unit': unit,'parts':parts})
 def show_service_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()
@@ -56,7 +56,7 @@ def show_dispatcher_page(request):
     name=request.session['user_name']
     code = request.session['user_code']
     user = Users.objects.get(code=code)
-    a=UnitBasicInfo.objects.all().filter(areaCode=code).filter(scheDate=None).count()
+    a=UnitBasicInfo.objects.all().filter(areaCode=code).filter(warranty=True).filter(scheDate=None).count()
     b=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=False).exclude(scheDate=None).count()
     c=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).count()
     d=PartRequest.objects.all().filter(code=code).count()

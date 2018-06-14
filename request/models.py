@@ -65,6 +65,7 @@ class UnitBasicInfo(models.Model):
     serialNumber=models.CharField(max_length=50)
     phone=models.CharField(max_length=15,null=True)
     email=models.EmailField(null=True,blank=True)
+    business_hour=models.CharField(max_length=80,null=True,blank=True)
     location_add1=models.CharField(max_length=200)
     location_add2=models.CharField(max_length=200,null=True,blank=True)
     location_city=models.CharField(max_length=20)

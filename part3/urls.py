@@ -18,7 +18,7 @@ from django.urls import include, path
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from users import views
-
+from request import views as vws
 urlpatterns = [
     url(r'^$',views.login),
     url(r'^logout/$',views.logout),
@@ -26,5 +26,5 @@ urlpatterns = [
     path('user/',include('users.urls')),
     path('request/',include('request.urls', namespace="request")),
     path('warranty/',include('warranty.urls')),
-    path('render/pdf/', Pdf.as_view())
+    url(r'^render/pdf/(?P<pk>\d+)/$', vws.Pdf.as_view())
 ]

@@ -9,7 +9,7 @@ from .render import Render
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
 class Pdf(View):
-    def get(self, request):
+    def get(self, request,pk):
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
         params = {
             'unit':unit
@@ -172,6 +172,7 @@ def update_part_request(request,pk):
             part.save()
             return redirect('/request/part/')
 def update_basic(request):
+    form=BasicForm()
     if request.method == "POST":
         form = BasicForm(request.POST)
         if form.is_valid():
@@ -179,6 +180,7 @@ def update_basic(request):
             name_contact=form.cleaned_data["contactName"]
             serial=form.cleaned_data["serialNumber"]
             phone=form.cleaned_data["phoneCustomer"]
+            business_hour=form.cleaned_data["businessHours"]
             email=form.cleaned_data["emailAddress"]
             add1=form.cleaned_data["add1"]
             add2=form.cleaned_data["add2"]
@@ -195,6 +197,7 @@ def update_basic(request):
             new_unit.serialNumber=serial
             new_unit.phone=phone
             new_unit.email=email
+            new_unit.business_hour=business_hour
             new_unit.location_add1=add1
             new_unit.location_add2=add2
             new_unit.location_city=city
@@ -210,7 +213,7 @@ def update_basic(request):
                 form=ColdTechQuestionForm()
                 return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
             return redirect('/user/operator/')
-    form=BasicForm()
+        return render(request, 'operator/basic.html',{'form': form})
     return render(request, 'operator/basic.html',{'form': form})
 
 def show_admindp(request):
@@ -270,17 +273,29 @@ def update_tech_info(request,pk):
             tech_phone=form.cleaned_data["tech_phone"]
             tech_email=form.cleaned_data["tech_email"]
             tech_note=form.cleaned_data["tech_note"]
+            tech_add1 = form.cleaned_data["tech_add1"]
+            tech_add2 = form.cleaned_data["tech_add2"]
+            tech_city = form.cleaned_data["tech_city"]
+            tech_state = form.cleaned_data["tech_state"]
+            tech_zip = form.cleaned_data["tech_zip"]
+
             schedule_time=form.cleaned_data["schedule_time"]
             unit=get_object_or_404(UnitBasicInfo, pk=pk)
             unit.techName=tech_name
             unit.techPhone=tech_phone
             unit.techEmail=tech_email
             unit.scheDate=schedule_time
+            unit.tech_add1=tech_add1
+            unit.tech_add2=tech_add2
+            unit.tech_city=tech_city
+            unit.tech_state=tech_state
+            unit.tech_zip=tech_zip
+
             a_note=("Scheduled Time: "+str(schedule_time)+"\n"
                     +"Name: "+str(tech_name)+"\n"
-                    +"Phone "+str(tech_phone)+"\n"
-                    +"Email "+tech_email+"\n"
-                    +"Note "+str(tech_note)+"\n"
+                    +"Phone: "+str(tech_phone)+"\n"
+                    +"Email: "+tech_email+"\n"
+                    +"Note: "+str(tech_note)+"\n"
                     )
             print(tech_note)
             if unit.techNote:
@@ -299,12 +314,9 @@ def show_question(request,pk):
     else:
         redirect('/user')
 def show_tech_question_page(request):
-    print("1")
     if request.method == "POST":
-        print("2")
         form = BasicForm(request.POST)
         if form.is_valid():
-            print("3")
             name_business=form.cleaned_data["businessName"]
             name_contact=form.cleaned_data["contactName"]
             serial=form.cleaned_data["serialNumber"]
