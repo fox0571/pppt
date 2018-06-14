@@ -26,4 +26,5 @@ urlpatterns = [
     path('user/',include('users.urls')),
     path('request/',include('request.urls', namespace="request")),
     path('warranty/',include('warranty.urls')),
+    path('render/pdf/', Pdf.as_view())
 ]

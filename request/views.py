@@ -4,8 +4,17 @@ from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
 from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
+from django.views.generic import View
+from .render import Render
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
+class Pdf(View):
+    def get(self, request):
+        unit=get_object_or_404(UnitBasicInfo, pk=pk)
+        params = {
+            'unit':unit
+        }
+        return Render.render('dispatcher/order.html', params)
 def get_order(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     return render(request, 'dispatcher/order.html', {'unit':unit})
@@ -222,7 +231,7 @@ def get_all_undiagnosed(request):
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_all_diag(request):
     all=UnitBasicInfo.objects.filter(warranty=True)
-    return render(request, 'request/pre_diagnosis_list.html', {'requests':all})  
+    return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def show_adminop(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
     new=all.count()
