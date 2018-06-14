@@ -78,14 +78,16 @@ def update_part(request,pk):
             if request.POST.get('to_customer', False):
                 contact=unit.contactName
                 add1=unit.location_add1
-                add2=unit.location_add2
+                if unit.location_add2:
+                    add2=unit.location_add2
                 city=unit.location_city
                 state=unit.location_state
                 zip=unit.location_zip
             elif request.POST.get('to_tech', False):
                 contact=unit.techName
                 add1=unit.tech_add1
-                add2=unit.tech_add2
+                if unit.tech_add2:
+                    add2=unit.tech_add2
                 city=unit.tech_city
                 state=unit.tech_state
                 zip=unit.tech_zip
