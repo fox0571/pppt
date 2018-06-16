@@ -53,15 +53,32 @@ def update_follow_customer(request,pk):
     return render(request, 'dispatcher/followup.html', {'unit': unit})
 def show_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
-    return render(request,'request/detail.html',{'unit':unit})
+    id=unit.sksid
+    parts = PartRequest.objects.all().filter(sksid=id)
+    para={
+        'unit':unit,
+        'parts':parts,
+    }
+    return render(request,'request/detail.html',para)
 # def request_part(request,pk):
 #     form=PartForm()
 #     unit=get_object_or_404(UnitBasicInfo, pk=pk)
 #     sksid=unit.sksid
 #     parts=PartRequest.objects.all().filter(sksid=sksid)
 #     return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit})
+def part_dashboard(request):
+    new=PartRequest.objects.all().filter(tracking=None).count()
+    all=PartRequest.objects.all().count()
+    para={
+        "new":new,
+        "all":all,
+    }
+    return render(request, 'part/dashboard.html',para)
 def show_part_list(request):
-    part = PartRequest.objects.all()
+    part = PartRequest.objects.all().order_by("tracking")
+    return render(request, 'request/part_request_list.html', {'request':part})
+def show_new_part(request):
+    part = PartRequest.objects.all().filter(tracking=None)
     return render(request, 'request/part_request_list.html', {'request':part})
 def show_part_detail(request,pk):
     part = get_object_or_404(PartRequest, pk=pk)
@@ -142,6 +159,7 @@ def update_part(request,pk):
                 new_part_request.qty=int(q2)
                 new_part_request.code=unit.areaCode
                 new_part_request.pre_diagnosis=unit.pre_diagnosis
+                new_part_request.sn=unit.serialNumber
                 new_part_request.save()
             if n3!="" and q3!="" and m3!="":
                 new_part_request=PartRequest()
@@ -157,6 +175,7 @@ def update_part(request,pk):
                 new_part_request.qty=int(q3)
                 new_part_request.code=unit.areaCode
                 new_part_request.pre_diagnosis=unit.pre_diagnosis
+                new_part_request.sn=unit.serialNumber
                 new_part_request.save()
             return redirect("/user/dispatcher/")
     return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit})
@@ -225,12 +244,11 @@ def show_admindp(request):
     delta= datetime.timedelta(today.weekday())
 
     start = today-delta
-    print(start)
     for user in OPERATOR_GROUP:
         count = UnitBasicInfo.objects.filter(receiver=user).filter(
             callTime__gte=start).count()
         final_data.append(count)
-    return render(request, 'admin/dispatcher.html', {'new':new,'all':alls})
+    return render(request, 'dispatcher/admin.html', {'new':new,'all':alls})
 def get_all_undiagnosed(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
@@ -264,6 +282,8 @@ def update_diagnosis(request,pk):
             unit.save()
             return redirect('/request/diag')
 def update_tech_info(request,pk):
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    form=DispatchForm()
     if request.method == "POST":
         form=DispatchForm(request.POST)
         print(form.errors)
@@ -303,7 +323,7 @@ def update_tech_info(request,pk):
             else:
                 unit.techNote=a_note
             unit.save()
-            return redirect('/user/')
+    return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form})
 def show_question(request,pk):
     if request.session['unit_type']=="HOT":
         form=HotTechQuestionForm()

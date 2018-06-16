@@ -1,5 +1,16 @@
 {% extends 'request/index.html' %}
 {% load static %}
+{% block css %}
+<style type="text/css">
+h1{
+  text-align: center;
+  font-size: 60px;
+}
+p{
+  text-align: center;
+}
+</style>
+{% endblock %}
 {% block content %}
 
 <!-- Content Wrapper. Contains page content -->
@@ -26,7 +37,7 @@
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
-                  <h3>{{ new }}</h3>
+                  <h1>{{ new }}</h1>
 
                   <p>New</p>
                 </div>
@@ -41,7 +52,7 @@
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3>{{ sche }}</h3>
+                  <h1>{{ sche }}</h1>
 
                   <p>Scheduled</p>
                 </div>
@@ -56,7 +67,7 @@
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>{{ fin }}</h3>
+                  <h1>{{ fin }}</h1>
 
                   <p>Finished</p>
                 </div>
@@ -71,11 +82,12 @@
       </div>
       <div class="box">
         <div class="box-body">
+          <div class="row">
           <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-red">
               <div class="inner">
-                <h3>{{ parts }}</h3>
+                <h1>{{ parts }}</h1>
 
                 <p>All My Part Requests</p>
               </div>
@@ -85,6 +97,7 @@
               <a href="/user/dispatcher/part" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
+        </div>
         </div>
         <!-- /.box-body -->
       </div>

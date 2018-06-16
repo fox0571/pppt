@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/$', views.show_detail,name='detail'),
     url(r'^(?P<pk>\d+)/part/$', views.update_part, name='part'),
     url(r'^(?P<pk>\d+)/order/$', views.get_order, name='order'),
-    url(r'^part/$', views.show_part_list, name='part_list'),
+    url(r'^part/$', views.part_dashboard, name='part_list'),
     url(r'^part/(?P<pk>\d+)/$', views.show_part_detail, name='part_detail'),
     url(r'^part/(?P<pk>\d+)/update/$', views.update_part_request, name='request_detail'),
     url(r'^(?P<pk>\d+)/part/update/$', views.update_part, name='part'),
@@ -41,4 +41,6 @@ urlpatterns = [
     url(r'^adminop/$', views.show_adminop, name='adminop'),
     url(r'^diag/$', views.get_all_undiagnosed, name='alldiag'),
     url(r'^diag/all/$', views.get_all_diag, name='ad'),
+    url(r'^part/all/$', views.show_part_list, name='part_list'),
+    url(r'^part/new/$', views.show_new_part, name='n_part'),
 ]

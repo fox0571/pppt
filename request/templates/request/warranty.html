@@ -37,7 +37,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td>
                             <div class="post">
-                                <a href="/warranty/{{ r.pk }}">{{ r.serialNumber }}</a>
+                                <a href="/warranty/{{ r.pk }}">{{ r.serialNumber|upper }}</a>
                             </div>
                         </td>
                         <td>{{ r.callTime }}</td>

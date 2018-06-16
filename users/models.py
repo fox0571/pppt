@@ -10,6 +10,7 @@ class Users(models.Model):
         ("adminop","ADMIN_OP"),
         ("admindp","ADMIN_DP"),
         ("admin","ADMIN"),
+        ("account","ACCOUNT")
     )
     name=models.CharField(max_length=50)
     code=models.CharField(max_length=10)

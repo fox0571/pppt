@@ -15,7 +15,8 @@ GROUPS = (
             (12,"Jackie"),
             (13,"Warranty check"),
             (0,"ADMIN"),
-            (15,"Parts")
+            (15,"Parts"),
+            (16,"Account"),
 )
 
 STATES = (

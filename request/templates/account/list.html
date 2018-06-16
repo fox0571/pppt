@@ -20,7 +20,7 @@
 
 <div class="content-wrapper">
   <section class="content">
-    {% if request %}
+    {% if unit %}
     <section class="content-header">
       <h1>
         Records List
@@ -43,12 +43,12 @@
                     <th>Called</th>
                     <th>Statue</th>
                     <th>Tech</th>
-                    <th>Detail</th>
+                    <th>Invoice</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                    {% for r in request %}
+                    {% for r in unit %}
                     <tr>
                       <td>{{ forloop.counter }}</td>
                       <td>{{ r.sksid }}</td>
@@ -68,7 +68,7 @@
                             {% endif %}
                       </td>
                       <td>{{ r.techName }}</td>
-                      <td><a href="/request/{{ r.pk }}">View</a></td>
+                      <td><a href="/warranty/account/{{ r.pk }}/">View</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

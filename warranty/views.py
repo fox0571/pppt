@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from request.models import UnitBasicInfo
 from users.models import Users
 from django.utils import timezone
-from .forms import WarrantyForm
+from .forms import WarrantyForm, AccountForm
 
 #show all serial numbers
 def show_all(request):
@@ -51,6 +51,18 @@ def reg_month(month):
         return "0"+str(month)
     else:
         return str(month)
+def ac_list(request):
+    unit=UnitBasicInfo.objects.all()
+    return render(request, 'account/list.html',{'unit':unit})
+def account(request,pk):
+    form=AccountForm()
+    unit=get_object_or_404(UnitBasicInfo,pk=pk)
+    if request.method == "POST":
+        form=AccountForm(request.POST)
+        if form.is_valid():
+            pass
+            return redirect("/warranty/account/")
+    return render(request, 'account/rate.html',{'form':form,'unit':unit})
 def generate_default_sksid(month,year,code):
     return "SKS"+ reg_month(month)+str(year)+"-"+"D"+str(code)+"-1"
 def update(request,pk):
@@ -70,13 +82,12 @@ def update(request,pk):
         unit.warranty=warranty
         unit.warrantyNote=note
         unit.areaCode=code
-        last_unit=UnitBasicInfo.objects.filter(warranty=True).filter(areaCode=code).order_by('-sksid')
+        last_unit=UnitBasicInfo.objects.filter(warranty=True).filter(areaCode=code).order_by('-pk')
         sks=""
         month1=0
         new_sks=""
         if len(last_unit)!=0:
             last_unit=last_unit[0]
-            print(last_unit)
             month1=last_unit.callTime.month
             year1=last_unit.callTime.year
             sks=last_unit.sksid.split("-")

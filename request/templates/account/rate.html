@@ -1,0 +1,94 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Basic Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">Incident Number:{{unit.sksid|upper }}</p>
+            <p class="text-light-blue">Business Name: {{unit.businessName|upper }}</p>
+            <p class="text-light-blue">Contact Name: {{unit.contactName|upper }}</p>
+            <p class="text-light-blue">Serial Number: {{unit.serialNumber|upper}}</p>
+            <p class="text-light-blue">Phone: {{unit.phone|upper}}</p>
+            <p class="text-light-blue">Email: {{unit.email|upper}}</p>
+            <p class="text-light-blue">Address: {{unit.location_add1|upper}} {{unit.location_add2|upper}} {{unit.location_city|upper}}
+              {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
+            <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
+            <p class="text-light-blue">Technical Support Questions: {{unit.tsq|upper|linebreaks}}</p>
+            <p class="text-light-blue">Received by {{unit.receiver}} @ {{unit.callTime}}</p>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Tech Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">Tech: {{unit.techName}}</p>
+            <p class="text-light-blue">Phone: {{unit.techPhone}}</p>
+            <p class="text-light-blue">Email: {{unit.techEmail}}</p>
+            <p class="text-light-blue">Note: {{unit.techNote|linebreaks}}</p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Parts Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">Tracking: {{unit.tracking}}</p>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Follow Up With Customer</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">{{unit.followup_customer|upper|linebreaks}}</p>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Follow Up With Technician</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">{{unit.followup_tech|upper|linebreaks}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Account Information</h3>
+          </div>
+          <div class="box-body">
+            <form class='form' action="/warranty/account/{{ unit.pk }}/" method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <p>Total Service Call Cost: $ 
+                <span id="total" class="hidden-xs"></span>
+                <script>
+                  var d = new Date();
+                  var a = document.getElementById("id_labor_c").value
+                  document.getElementById("total").innerHTML = a;
+                </script>
+              </p>
+              
+              <button type="submit" class="btn btn-primary pull-left">update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+

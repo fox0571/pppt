@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^all/$', views.show_all, name='all'),
     url(r'^(?P<pk>\d+)/$', views.show_detail, name='warranty_detail'),
     url(r'^(?P<pk>\d+)/update/$', views.update, name='warranty_update'),
+    url(r'^account/(?P<pk>\d+)/$', views.account, name='account'),
+    url(r'^account/$', views.ac_list, name='ac_list'),
     ]

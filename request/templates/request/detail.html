@@ -70,11 +70,69 @@
             <h3 class="box-title">Parts Information</h3>
           </div>
           <div class="box-body">
-            <p class="text-light-blue">Tracking: {{unit.tracking}}</p>
+            {% if parts %}
+              <table id="assets_table" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Date</th>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Tracking</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                    {% for p in parts %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ p.request_time }}</td>
+                      <td>{{ p.number }}</td>
+                      <td>{{ p.name }}</td>
+                      <td>{{ p.qty }}</td>
+                      <td>{% if p.tracking %}
+                        <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{p.tracking}}" target="_blank">
+                        {{p.tracking}}
+                        </a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>No.</th>
+                    <th>Date</th>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Tracking</th>
+                  </tr>
+                </tfoot>
+              </table>
+              {% endif %}
           </div>
         </div>
       </div>
     </div>
   </section>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+
+<script>
+  $(function () {
+    $('#assets_table').DataTable({
+      "paging": false,       <!-- 允许分页 -->
+      "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+      "searching": false,    <!-- 允许内容搜索 -->
+      "ordering": true,     <!-- 允许排序 -->
+      "info": false,         <!-- 显示信息 -->
+      "autoWidth": false,    <!-- 固定宽度 -->
+    });
+  });
+</script>
 {% endblock %}

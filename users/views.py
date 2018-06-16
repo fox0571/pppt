@@ -7,6 +7,10 @@ from request.models import UnitBasicInfo, PartRequest
 # Create your views here.
 
 #show all unverified serial numbers
+OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
+def show_detail_op(request,pk):
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
+    return render(request, 'operator/detail.html', {'unit':unit})
 def show_waiting(request):
     all=UnitBasicInfo.objects.filter(warranty=None)
     return render(request, 'request/warranty.html', {'requests':all})
@@ -62,8 +66,17 @@ def show_dispatcher_page(request):
     d=PartRequest.objects.all().filter(code=code).count()
     return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c,'parts':d})
 def show_admin_page(request):
-    units=UnitBasicInfo.objects.all().order_by('-callTime')
-    return render(request, 'admin/admin.html',{'reqeust':units})
+    final_data = []
+    today = datetime.date.today()
+    delta= datetime.timedelta(today.weekday())
+
+    start = today-delta
+    for user in OPERATOR_GROUP:
+        count = UnitBasicInfo.objects.filter(receiver=user).filter(
+            callTime__gte=start).count()
+        final_data.append(count)
+    return render(request, 'admin/dashboard.html', {'data':final_data})
+
 def show_page(request):
     group = request.session['user_group']
     if group=="dispatcher":
@@ -77,9 +90,11 @@ def show_page(request):
     if group=="admindp":
         return redirect('/request/admindp/')
     if group=="admin":
-        return redirect('/request/all/')
+        return redirect('/user/admin/')
     if group=="parts":
         return redirect('/request/part/')
+    if group=="account":
+        return redirect('/warranty/account/')
     return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c})
 def login(request):
     message=""
