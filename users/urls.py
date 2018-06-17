@@ -19,6 +19,7 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from . import views
 from request import views as vws
+from warranty import views as wa_vws
 urlpatterns = [
     url(r'^dispatcher/part/$', views.get_all_part_records, name='dispatcher_part'),
     url(r'^login/$', views.login, name='login'),
@@ -26,7 +27,7 @@ urlpatterns = [
     url(r'^parts/$',views.show_page, name='show'),
     url(r'^dispatcher/new/(?P<pk>\d+)/$', views.show_service_detail, name='service_detail'),
     url(r'^dispatcher/follow/(?P<pk>\d+)/$', views.show_follow_up, name='follow_up'),
-    url(r'^operator/(?P<pk>\d+)/$', views.show_detail_op, name='detail_op'),    
+    url(r'^operator/(?P<pk>\d+)/$', views.show_detail_op, name='detail_op'),
     url(r'^operator/all/$', views.get_all_records, name='all'),
     url(r'^operator/today/$', views.get_today_records, name='today'),
     url(r'^operator/oow/$', views.get_all_oow_records, name='oow'),
@@ -40,4 +41,5 @@ urlpatterns = [
     url(r'^admindp/$', vws.show_admindp, name='admindp'),
     url(r'^adminop/$', vws.show_adminop, name='adminop'),
     url(r'^admin/$', views.show_admin_page, name='admin'),
+    url(r'^account/$', wa_vws.ac_list, name='ac_list'),
 ]

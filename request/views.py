@@ -2,7 +2,7 @@ import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
-from .forms import BasicForm, RequestForm, BasicInfoForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
+from .forms import BasicForm, RequestForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
@@ -236,27 +236,18 @@ def update_basic(request):
     return render(request, 'operator/basic.html',{'form': form})
 
 def show_admindp(request):
-    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False)
     alls=UnitBasicInfo.objects.filter(warranty=True).count()
     new=all.count()
-    final_data = []
-    today = datetime.date.today()
-    delta= datetime.timedelta(today.weekday())
-
-    start = today-delta
-    for user in OPERATOR_GROUP:
-        count = UnitBasicInfo.objects.filter(receiver=user).filter(
-            callTime__gte=start).count()
-        final_data.append(count)
     return render(request, 'dispatcher/admin.html', {'new':new,'all':alls})
 def get_all_undiagnosed(request):
-    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_all_diag(request):
     all=UnitBasicInfo.objects.filter(warranty=True)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def show_adminop(request):
-    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis=None)
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False)
     new=all.count()
     final_data = []
     today = datetime.date.today()
@@ -279,6 +270,7 @@ def update_diagnosis(request,pk):
             note=form.cleaned_data["note"]
             unit=get_object_or_404(UnitBasicInfo, pk=pk)
             unit.pre_diagnosis=note
+            unit.pre_diagnosis_flag=True
             unit.save()
             return redirect('/request/diag')
 def update_tech_info(request,pk):

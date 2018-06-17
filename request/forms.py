@@ -86,37 +86,7 @@ class WarrantyForm(forms.Form):
     note = forms.CharField(widget=forms.Textarea)
 class PreDiagnosisForm(forms.Form):
     note = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
-class BasicInfoForm(forms.Form):
-    businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    contactName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    phoneCustomer = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    emailAddress = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
-    add1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    add2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'APT, UNIT, SUITE'}),required=False)
-    city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    state = forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}))
-    zip = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    businessHours = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
-    serialNumber = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the serial number'}))
-    issue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Enter the description of issue'}))
-    filter = forms.ChoiceField(choices=CHOICES_4,widget=forms.Select(attrs={'class': 'form-control'}))
-    displayTemp = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature on the display?'}))
-    realTemp = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature with your own thermometer?'}))
-    controller = forms.ChoiceField(choices=CHOICES_3,widget=forms.Select(attrs={'class': 'form-control'}))
-    snowflake = forms.ChoiceField(choices=CHOICES_2,widget=forms.Select(attrs={'class': 'form-control'}))
-    fan = forms.ChoiceField(choices=CHOICES_0,widget=forms.Select(attrs={'class': 'form-control'}))
-    iceEvap = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
-    condFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
-    evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
-    comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
-    
-    def clean(self):
-        cleaned_data = super(BasicInfoForm, self).clean()
-        sn = cleaned_data.get('serialNumber')
-        print("cus_validator")
-        if not re.match(r'^[a-zA-Z]{3,4}', sn):
-            raise forms.ValidationError("Not a valid serial number")
+    double_check = forms.BooleanField(required=True)
 class PartForm(forms.Form):
     number1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
     name1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)

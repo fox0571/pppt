@@ -4,6 +4,7 @@ from request.models import UnitBasicInfo
 from users.models import Users
 from django.utils import timezone
 from .forms import WarrantyForm, AccountForm
+from . import models
 
 #show all serial numbers
 def show_all(request):
@@ -63,50 +64,42 @@ def account(request,pk):
             pass
             return redirect("/warranty/account/")
     return render(request, 'account/rate.html',{'form':form,'unit':unit})
-def generate_default_sksid(month,year,code):
-    return "SKS"+ reg_month(month)+str(year)+"-"+"D"+str(code)+"-1"
-def update(request,pk):
+def new_sksid(m,y,code):
+    id=""
+    user=get_object_or_404(Users, code=code)
+    c_t=user.current_tasks
+    c_m=user.current_month
+    if m==c_m:
+        user.current_tasks=c_t+1
+        id="SKS"+ reg_month(m)+str(y)+"-D"+str(code)+str(user.current_tasks)
+    else:
+        user.current_tasks=1
+        if c_m==12:
+            user.current_month=1
+            id="SKS01"+str(y+1)+"-D"+str(code)+str(user.current_tasks)
+        else:
+            user.current_month=m
+            id="SKS"+ reg_month(m)+str(y)+"-D"+str(code)+str(user.current_tasks)
+    user.save()
+    return id
+def update_warranty(request,pk):
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    form=WarrantyForm()
     if request.method == "POST":
         form=WarrantyForm(request.POST)
         if form.is_valid():
             warranty=form.cleaned_data["warranty"]
             note=form.cleaned_data["warrantyNote"]
-        unit=get_object_or_404(UnitBasicInfo, pk=pk)
-
-        #improve the way generate the sksid
-
-        month=unit.callTime.month
-        year=unit.callTime.year
-        area=unit.location_state
-        code = get_code(area)
-        unit.warranty=warranty
-        unit.warrantyNote=note
-        unit.areaCode=code
-        last_unit=UnitBasicInfo.objects.filter(warranty=True).filter(areaCode=code).order_by('-pk')
-        sks=""
-        month1=0
-        new_sks=""
-        if len(last_unit)!=0:
-            last_unit=last_unit[0]
-            month1=last_unit.callTime.month
-            year1=last_unit.callTime.year
-            sks=last_unit.sksid.split("-")
-            sks_pre=sks[0]
-            sks_middle="D"+str(code)
-            sks_last=sks[2]
-            if month1==month:
-                new_sks=sks_pre+"-"+sks_middle+"-"+str(int(sks_last)+1)
-            else:
-                if month==1:
-                    sks_pre="SKS01"+str(year)
-                    new_sks=sks_pre+"-"+sks_middle+"-"+str(int(sks_last)+1)
-                else:
-                    sks_pre="SKS"+reg_month(month)+str(year)
-                    new_sks=sks_pre+"-"+sks_middle+"-"+str(int(sks_last)+1)
-        else:
-            new_sks=generate_default_sksid(month,year,code)
-        unit.sksid=new_sks
-        unit.save()
-        return redirect('/warranty/')
-    else:
-        return render(request, 'request/warranty_detail.html', {'unit': warranty,'form':form})
+            month=unit.callTime.month
+            year=unit.callTime.year
+            area=unit.location_state
+            code = get_code(area)
+            unit.warranty=warranty
+            unit.warrantyNote=note
+            unit.areaCode=code
+            new_id=new_sksid(month,year,code)
+            unit.sksid=new_id
+            unit.save()
+            return redirect('/warranty/')
+        return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form})
+    return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form})

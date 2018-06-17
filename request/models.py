@@ -91,6 +91,7 @@ class UnitBasicInfo(models.Model):
     sksid=models.CharField(max_length=20,null=True,blank=True)
     finished=models.BooleanField(default=False)
     pre_diagnosis=models.TextField(null=True,blank=True)
+    pre_diagnosis_flag=models.BooleanField(blank=True,default=False)
     followup_customer=models.TextField(null=True,blank=True)
     followup_customer_time=models.DateTimeField(null=True,auto_now=True)
     followup_tech=models.TextField(null=True,blank=True)

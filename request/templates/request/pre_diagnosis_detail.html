@@ -39,6 +39,11 @@
                   {{ form.note.errors }}
                   <label for="{{ form.note.id_for_label }}">Note</label>{{ form.note }}
                 </div>
+                <div class="checkbox">
+                  <label>
+                    {{ form.double_check }}Double check before you submit
+                  </label>
+                </div>
                 <button type="submit" class="btn btn-primary pull-right">update</button>
               </div>
             </div>

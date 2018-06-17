@@ -14,25 +14,24 @@
     <!-- Main content -->
     <section class="content">
       <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Operator Weekly Statistics</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="box-header with-border">
+              <h3 class="box-title">Operator Weekly Statistics</h3>
+            </div>
+            <div class="box-body">
+              <canvas id="myChart" width="400" height="300"></canvas>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="box-header with-border">
+              <h3 class="box-title">Dispatcher Monthly Statistics</h3>
+            </div>
+            <div class="box-body">
+              <canvas id="myChart2" width="400" height="300"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="box-body">
-          <canvas id="myChart" width="700" height="500"></canvas>
-        </div>
-        <!-- /.box-body -->
-      </div>
-      <!-- /.box -->
-    </section>
-    <section class="content">
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Operator Weekly Statistics</h3>
-        </div>
-        <div class="box-body">
-          <canvas id="myChart" width="700" height="500"></canvas>
-        </div>
-        <!-- /.box-body -->
       </div>
       <!-- /.box -->
     </section>
@@ -41,26 +40,36 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static "bower_components/chart.js/Chart.js" %}"></script>
+<script src="{% static "plugins/chart.js/Chart.bundle.min.js" %}"></script>
 <script type="text/javascript">
-$( document ).ready(function() {
-    var data = {
-        labels: ['Anna', 'Bradon', 'Jackie', 'Randi'],
-        datasets: [
-            {
-                label: "Site Registrations in the Last 30 Days",
-                backgroundColor: "rgba(220,110,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: {{ data }}
-            }
-        ]
-    };
-    var ctx = document.getElementById("myChart").getContext("2d");
-    var myBarChart = new Chart(ctx).Bar(data);
-});
-</script
+new Chart(document.getElementById("myChart2"),{
+  "type":"bar",
+  "data":{
+    "labels": ['Jane', 'Chloe', 'Daniela', 'Yesi' , "Samantha" , "Katrina"],
+    "datasets":[{
+      "label":"This Month",
+      "fill": false,
+      "backgroundColor": "rgba(255, 99, 132, 0.2)",
+      "data": {{ data2 }},
+      "borderWidth":1
+      }]
+    },
+    "options":{"scales":{"yAxes":[{"ticks":{"beginAtZero":true}}]}}
+  });
+new Chart(document.getElementById("myChart"),{
+  "type":"bar",
+  "data":{
+    "labels": ['Anna', 'Brandon', 'Jackie', 'Randi' , "Christina"],
+    "datasets":[{
+      "label":"This Week",
+      "fill": false,
+      "backgroundColor": "rgba(54, 162, 235, 0.2)",
+      "data": {{ data }},
+      "borderWidth":1
+      }]
+    },
+    "options":{"scales":{"yAxes":[{"ticks":{"beginAtZero":true}}]}}
+  });
+
+</script>
 {% endblock %}
