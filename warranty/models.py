@@ -10,5 +10,6 @@ class Invoice(models.Model):
 	material_c = models.DecimalField(max_digits=7, decimal_places=2,null=True)
 	total_c = models.DecimalField(max_digits=7, decimal_places=2,null=True)
 	sksid = models.CharField(max_length=30,null=True,blank=True)
+	add_time = models.DateTimeField(auto_now_add=True,blank=True)
 	def __str__(self):
 		return self.invoice

@@ -1,6 +1,13 @@
 
 {% extends 'request/index.html' %}
 {% load static %}
+{% block css %}
+<style>
+#total{
+  text-decoration: underline;
+}
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="content-wrapper">
@@ -37,7 +44,7 @@
             <p class="text-light-blue">Note: {{unit.techNote|linebreaks}}</p>
           </div>
         </div>
-        
+
       </div>
       <div class="col-md-4">
         <div class="box box-primary">
@@ -70,19 +77,39 @@
           <div class="box-header with-border">
             <h3 class="box-title">Account Information</h3>
           </div>
+          {% if invoices %}
+          <div class="box-body">
+            <table id="assets_table" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Invoice</th>
+                  <th>Total Cost</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                  {% for p in invoices %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ p.invoice }}</td>
+                    <td>${{ p.total_c }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
           <div class="box-body">
             <form class='form' action="/warranty/account/{{ unit.pk }}/" method="post">
               {% csrf_token %}
               {{ form.as_p }}
-              <p>Total Service Call Cost: $ 
+              <p>
+              <button onclick="count()" type="button" class="btn btn-success btn-sm">Count</button>
+              Total Service Call Cost: $
                 <span id="total" class="hidden-xs"></span>
-                <script>
-                  var d = new Date();
-                  var a = document.getElementById("id_labor_c").value
-                  document.getElementById("total").innerHTML = a;
-                </script>
               </p>
-              
+
               <button type="submit" class="btn btn-primary pull-left">update</button>
           </div>
         </div>
@@ -91,4 +118,14 @@
   </section>
 </div>
 {% endblock %}
-
+{% block script %}
+<script>
+function count() {
+  var l_c = parseFloat(document.getElementById("id_labor_c").value);
+  var t_c = parseFloat(document.getElementById("id_travel_c").value);
+  var m_c = parseFloat(document.getElementById("id_material_c").value);
+  var total = l_c+t_c+m_c;
+  document.getElementById("total").innerHTML = total.toFixed(2);
+}
+</script>
+{% endblock %}
