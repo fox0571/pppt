@@ -4,7 +4,7 @@ from request.models import UnitBasicInfo
 from users.models import Users
 from django.utils import timezone
 from .forms import WarrantyForm, AccountForm
-from . import models
+from .models import Invoice
 
 #show all serial numbers
 def show_all(request):
@@ -58,12 +58,21 @@ def ac_list(request):
 def account(request,pk):
     form=AccountForm()
     unit=get_object_or_404(UnitBasicInfo,pk=pk)
+    inv=Invoice.objects.all().filter(sksid=unit.sksid)
     if request.method == "POST":
-        form=AccountForm(request.POST)
+        new_invoice=Invoice()
+        form=AccountForm(request.POST,instance=new_invoice)
         if form.is_valid():
-            pass
-            return redirect("/warranty/account/")
-    return render(request, 'account/rate.html',{'form':form,'unit':unit})
+            new_invoice = form.save(commit=False)
+            tot=(new_invoice.travel_c
+                +new_invoice.labor_c
+                +new_invoice.material_c)
+            new_invoice.sksid=unit.sksid
+            new_invoice.total_c=tot
+            new_invoice.save()
+            return redirect("#/")
+        return render(request, 'account/rate.html',{'form':form,'unit':unit,'invoices':inv})
+    return render(request, 'account/rate.html',{'form':form,'unit':unit,'invoices':inv})
 def new_sksid(m,y,code):
     id=""
     user=get_object_or_404(Users, code=code)
