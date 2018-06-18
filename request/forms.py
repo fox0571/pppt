@@ -48,7 +48,7 @@ class HotTechQuestionForm(forms.Form):
     double_check = forms.BooleanField(required=True)
 class ColdTechQuestionForm(forms.Form):
     filter = forms.ChoiceField(choices=CHOICES_4,widget=forms.Select(attrs={'class': 'form-control'}))
-    displayTemp = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature on the display?'}))
+    displayTemp = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature on the display?'}))
     realTemp = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'What is the temperature with your own thermometer?'}))
     door = forms.ChoiceField(choices=CHOICES_6,widget=forms.Select(attrs={'class': 'form-control'}))
     controller = forms.ChoiceField(choices=CHOICES_3,widget=forms.Select(attrs={'class': 'form-control'}))

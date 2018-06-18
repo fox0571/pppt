@@ -106,6 +106,7 @@ def update_warranty(request,pk):
             unit.warranty=warranty
             unit.warrantyNote=note
             unit.areaCode=code
+            #if under warranty:
             new_id=new_sksid(month,year,code)
             unit.sksid=new_id
             unit.save()

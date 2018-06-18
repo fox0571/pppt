@@ -278,8 +278,6 @@ def update_tech_info(request,pk):
     form=DispatchForm()
     if request.method == "POST":
         form=DispatchForm(request.POST)
-        print(form.errors)
-        print(form["schedule_time"])
         if form.is_valid():
             tech_name=form.cleaned_data["tech_name"]
             tech_phone=form.cleaned_data["tech_phone"]
@@ -362,11 +360,12 @@ def show_tech_question_page(request):
                 return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
             elif request.session['unit_type']=="COLD":
                 form=ColdTechQuestionForm()
-                print(4)
                 return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
             else:
                 redirect('/user')
 def update_hot(request,pk):
+    unit=UnitBasicInfo.objects.get(pk=pk)
+    form=HotTechQuestionForm()
     if request.method == "POST":
         form = HotTechQuestionForm(request.POST)
         if form.is_valid():
@@ -380,8 +379,12 @@ def update_hot(request,pk):
             unit=UnitBasicInfo.objects.get(pk=pk)
             unit.tsq=tsq
             unit.save()
-    return redirect('/user')
+            return redirect('/user')
+        return render(request, 'request/tech_question_hot.html', {'form':form,'unit':unit})
+    return render(request, 'request/tech_question_hot.html', {'form':form,'unit':unit})
 def update_cold(request,pk):
+    unit=UnitBasicInfo.objects.get(pk=pk)
+    form=ColdTechQuestionForm()
     if request.method == "POST":
         form = ColdTechQuestionForm(request.POST)
         if form.is_valid():
@@ -400,12 +403,11 @@ def update_cold(request,pk):
                 +"Controller: "+tsq4+"\n"+"Snowflake Icon: "+tsq5+"\n"+"Fan Icon: "+tsq6+"\n"
                 +"Ice on Evap: "+tsq7+"\n"+"Cond Fan Running: "+tsq8+"\n"+"Evap Fan Running: "+tsq9+"\n"
                 +"Compressor running: "+tsq10+"\n"+"Door issue: "+tsq11+"\n")
-            unit=UnitBasicInfo.objects.get(pk=pk)
             unit.tsq=tsq
             unit.save()
-    return redirect('/user')
-
-
+            return redirect('/user')
+        return render(request, 'request/tech_question_cold.html', {'form':form,'unit':unit})
+    return render(request, 'request/tech_question_cold.html', {'form':form,'unit':unit})
 def available(request):
     form=CheckForm()
     return render(request, 'request/check.html',{'form': form})
