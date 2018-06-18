@@ -42,7 +42,8 @@
                     <tr>
                       <th>No.</th>
                       <th>S/N</th>
-                      <th>Statue</th>
+                      <th>Business</th>
+                      <th>Status</th>
                       <th>Date</th>
                     </tr>
                   </thead>
@@ -56,6 +57,7 @@
                                 <a href="/request/pre_diagnosis/{{ r.pk }}">{{ r.serialNumber|upper }}</a>
                             </div>
                         </td>
+                        <td>{{ r.businessName }}</td>
                         <td>{% if r.pre_diagnosis_flag %}
                             <span class="glyphicon glyphicon-green-dot"></span>
                             {% else %}
@@ -72,7 +74,8 @@
                     <tr>
                       <th>No.</th>
                       <th>S/N</th>
-                      <th>Statue</th>
+                      <th>Business</th>
+                      <th>Status</th>
                       <th>Date</th>
                     </tr>
                   </tfoot>
