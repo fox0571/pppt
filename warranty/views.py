@@ -71,15 +71,15 @@ def new_sksid(m,y,code):
     c_m=user.current_month
     if m==c_m:
         user.current_tasks=c_t+1
-        id="SKS"+ reg_month(m)+str(y)+"-D"+str(code)+str(user.current_tasks)
+        id="SKS"+ reg_month(m)+str(y)+"-D"+str(code)+"-"+str(user.current_tasks)
     else:
         user.current_tasks=1
         if c_m==12:
             user.current_month=1
-            id="SKS01"+str(y+1)+"-D"+str(code)+str(user.current_tasks)
+            id="SKS01"+str(y+1)+"-D"+str(code)+"-"+str(user.current_tasks)
         else:
             user.current_month=m
-            id="SKS"+ reg_month(m)+str(y)+"-D"+str(code)+str(user.current_tasks)
+            id="SKS"+ reg_month(m)+str(y)+"-D"+str(code)+"-"+str(user.current_tasks)
     user.save()
     return id
 def update_warranty(request,pk):
