@@ -104,7 +104,7 @@ class PartRequest(models.Model):
     sksid=models.CharField(max_length=30)
     contact=models.CharField(max_length=50)
     number=models.CharField(max_length=30)
-    name=models.CharField(max_length=30)
+    name=models.CharField(max_length=70)
     code=models.IntegerField()
     shipping_method=models.CharField(max_length=20,choices=SHIPPING_METHOD,blank=True)
     qty=models.IntegerField()

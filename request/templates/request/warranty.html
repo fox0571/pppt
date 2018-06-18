@@ -27,6 +27,7 @@
                     <tr>
                       <th>No.</th>
                       <th>S/N</th>
+                      <th>Business</th>
                       <th>Date</th>
                     </tr>
                   </thead>
@@ -40,6 +41,7 @@
                                 <a href="/warranty/{{ r.pk }}">{{ r.serialNumber|upper }}</a>
                             </div>
                         </td>
+                        <td>{{ r.businessName }}</td>
                         <td>{{ r.callTime }}</td>
                       </tr>
                       {% empty %}
@@ -50,6 +52,7 @@
                     <tr>
                       <th>No.</th>
                       <th>S/N</th>
+                      <th>Business</th>
                       <th>Date</th>
                     </tr>
                   </tfoot>

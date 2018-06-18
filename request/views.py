@@ -75,8 +75,8 @@ def part_dashboard(request):
     }
     return render(request, 'part/dashboard.html',para)
 def show_part_list(request):
-    part = PartRequest.objects.all().order_by("tracking")
-    return render(request, 'request/part_request_list.html', {'request':part})
+    part = PartRequest.objects.all()
+    return render(request, 'part/list.html', {'request':part})
 def show_new_part(request):
     part = PartRequest.objects.all().filter(tracking=None)
     return render(request, 'request/part_request_list.html', {'request':part})
