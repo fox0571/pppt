@@ -176,6 +176,7 @@ def update_part(request,pk):
                 new_part_request.sn=unit.serialNumber
                 new_part_request.save()
             return redirect("/user/dispatcher/")
+        return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
     return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
 def update_part_request(request,pk):
     if request.method == "POST":
@@ -193,8 +194,13 @@ def edit_basic(request,pk):
     if request.method == "POST":
         form = FirstForm(request.POST, instance=unit)
         if form.is_valid():
+            sn=form.cleaned_data["serialNumber"]
+            pre_sn=unit.serialNumber
+            if sn!=pre_sn:
+                unit.warranty=NoNE
             unit = form.save()
             unit_type=form.cleaned_data["type"]
+            sn=form.cleaned_data["type"]
             request.session["unit_type"]=unit_type
             if request.session['unit_type']=="HOT":
                 form=HotTechQuestionForm()
@@ -205,7 +211,7 @@ def edit_basic(request,pk):
             return redirect('/user/operator/')
     else:
         form = FirstForm(instance=unit)
-    return render(request, 'operator/basic_edit.html', {'form':form,'pk':unit.pk})
+    return render(request, 'operator/basic_edit.html', {'form':form,'unit':unit,'pk':unit.pk})
 def update_basic(request):
     form=FirstForm()
     if request.method == "POST":
