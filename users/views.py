@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginForm, DispatchForm, ChangePassword
-from request.forms import PartForm
+from request.forms import PartForm, FirstForm
 from .models import Users
 from request.models import UnitBasicInfo, PartRequest
 # Create your views here.
@@ -10,7 +10,8 @@ from request.models import UnitBasicInfo, PartRequest
 OPERATOR_GROUP=["Anna","Brandon","Jackie","Randi","Christina"]
 def show_detail_op(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
-    return render(request, 'operator/detail.html', {'unit':unit})
+    form = FirstForm(instance=unit)
+    return render(request, 'operator/basic.html', {'form':form})
 def show_waiting(request):
     all=UnitBasicInfo.objects.filter(warranty=None)
     return render(request, 'request/warranty.html', {'requests':all})

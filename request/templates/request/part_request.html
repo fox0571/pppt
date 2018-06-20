@@ -23,6 +23,7 @@
             </div>
             <div class="box-body">
               {% if parts %}
+              <p>Ship to: {{ add }}</p>
               <table id="assets_table" class="table table-bordered table-striped">
                 <thead>
                   <tr>
@@ -187,6 +188,11 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="checkbox">
+          <label>
+            {{ form.double_check }}Double check before you submit
+          </label>
         </div>
         <button type="submit" class="btn btn-primary pull-right">update</button>
     </form>

@@ -1,15 +1,11 @@
 from django import forms
+from django.forms import ModelForm
+from .models import UnitBasicInfo
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 import re
 
-def validate_sn(value):
-    if not re.match(r'^[a-zA-Z]{3,4}', value):
-        raise ValidationError(
-            _('%(value)s is not a valid serial number'),
-            params={'value': value},
-        )
 CHOICES_0 = (("ON","ON"),("OFF","OFF"))
 CHOICES_1 = (("YES","YES"),("NO","NO"),("UNKNOWN","UNKNOWN"))
 CHOICES_2 = (("ON","ON"),("OFF","OFF"),("FLASHING","FLASHING"))
@@ -59,22 +55,29 @@ class ColdTechQuestionForm(forms.Form):
     evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     double_check = forms.BooleanField(required=True)
-class BasicForm(forms.Form):
-    businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    contactName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
-    phoneCustomer = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}))
-    emailAddress = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
-    add1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    add2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'APT, UNIT, SUITE'}),required=False)
-    city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    state = forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}))
-    zip = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    businessHours = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),required=False)
-    serialNumber = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the serial number'}))
-    issue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Enter the description of issue'}))
+class FirstForm(ModelForm):
     type = forms.ChoiceField(choices=CHOICES_7,widget=forms.RadioSelect(attrs={'class': 'radio'}))
     double_check = forms.BooleanField(required=True)
-
+    class Meta:
+        model = UnitBasicInfo
+        fields = ['businessName','contactName','phone','email',
+                  'location_add1','location_add2','location_city','location_state',
+                  'location_zip','business_hour','serialNumber','issue',
+                  ]
+        widgets= {
+            'businessName':forms.TextInput(attrs={'class': 'form-control',}),
+            'contactName':forms.TextInput(attrs={'class': 'form-control',}),
+            'phone':forms.TextInput(attrs={'class': 'form-control','id': 'phone'}),
+            'email':forms.TextInput(attrs={'class': 'form-control','placeholder': 'Leave it blank if unknown'}),
+            'location_add1':forms.TextInput(attrs={'class': 'form-control'}),
+            'location_add2':forms.TextInput(attrs={'class': 'form-control','placeholder': 'APT, UNIT, SUITE'}),
+            'location_city':forms.TextInput(attrs={'class': 'form-control'}),
+            'location_state':forms.Select(choices=STATES,attrs={'class': 'form-control'}),
+            'location_zip':forms.TextInput(attrs={'class': 'form-control'}),
+            'business_hour':forms.TextInput(attrs={'class': 'form-control',}),
+            'serialNumber':forms.TextInput(attrs={'class': 'form-control',}),
+            'issue':forms.Textarea(attrs={'class': 'form-control'}),
+        }
     def clean_serialNumber(self):
         sn = self.cleaned_data['serialNumber']
         print("cus_validator")
@@ -106,6 +109,7 @@ class PartForm(forms.Form):
     phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}),required=False)
     to_customer=forms.BooleanField(required=False)
     to_tech=forms.BooleanField(required=False)
+    double_check = forms.BooleanField(required=True)
 class RequestForm(forms.Form):
     SKSID = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
     businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the business name'}))

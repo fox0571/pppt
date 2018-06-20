@@ -9,25 +9,26 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="{% static "bower_components/bootstrap/dist/css/bootstrap.min.css" %}">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{% static "bower_components/font-awesome/css/font-awesome.min.css" %}">
-  <link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+  
   <style>
-  .order {
-      width: 300px;
-      height: 60px;
+  .header {
+      width: 200px;
+      height: 120px;
       margin-top: 30px;
       margin-left: 650px;
+      border-style: double;
   }
   .footer {
     margin-top: 300px;
   }
   .content{
     margin-top: 100px;
-
   }
   h4 {
      text-decoration: underline;
+  }
+  .container{
+    margin-left: 50px;
   }
   </style>
   <link rel="stylesheet"
@@ -42,7 +43,7 @@
       <h4>{{unit.sksid}}</h4>
     </div>
   </header>
-    <div class="content">
+  <div class="content">
       <div class="box-body">
          <section class="content">
         <div class="row">
@@ -57,14 +58,6 @@
           <div class="col-lg-12">
             <div class="col-lg-2">
               <p class="text-light-black">SERIAL NUMBER</p>
-            </div>
-            <div class="col-lg-4">
-              <p class="text-light-black">{{ unit.serialNumber}}</p>
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <div class="col-lg-2">
-              <p class="text-light-black">UNIT DESCRIPTION</p>
             </div>
             <div class="col-lg-4">
               <p class="text-light-black">{{ unit.serialNumber}}</p>
@@ -122,7 +115,7 @@
             <div class="col-lg-4">
               <p class="text-light-black">{{unit.issue}}</p>
             </div>
-          </div> 
+          </div>
           <div class="col-lg-12">
             <div class="col-lg-2">
               <p class="text-light-black">PRE-DIAGNOSIS</p>
@@ -130,7 +123,7 @@
             <div class="col-lg-4">
               <p class="text-light-black">{{unit.pre_diagnosis}}</p>
             </div>
-          </div> 
+          </div>
          </div>
       </section>
       </div>
@@ -145,9 +138,5 @@
         <p>Contact the person who sent you this order</p>
   </footer>
   </div>
-  <!-- jQuery 3 -->
-  <script src="{% static "bower_components/jquery/dist/jquery.min.js" %}"></script>
-  <!-- Bootstrap 3.3.7 -->
-  <script src="{% static "bower_components/bootstrap/dist/js/bootstrap.min.js" %}"></script>
-</body>
+  </body>
 </html>

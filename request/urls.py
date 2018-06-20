@@ -9,6 +9,7 @@ urlpatterns = [
     #path('detail', views.submit, name='submit'),
     path('operator/', include([
         path('basic/', views.update_basic),
+        path('edit/',views.edit_basic, name='edit_basic'),
         path('question/(?P<pk>\d+)/', views.show_tech_question_page,name='basic1'),
     ])),
     url(r'^tech/follow/(?P<pk>\d+)/',views.update_follow_tech,name='tech_follow'),

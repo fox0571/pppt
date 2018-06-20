@@ -2,7 +2,7 @@ import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
-from .forms import BasicForm, RequestForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
+from .forms import FirstForm, RequestForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
@@ -60,12 +60,6 @@ def show_detail(request,pk):
         'parts':parts,
     }
     return render(request,'request/detail.html',para)
-# def request_part(request,pk):
-#     form=PartForm()
-#     unit=get_object_or_404(UnitBasicInfo, pk=pk)
-#     sksid=unit.sksid
-#     parts=PartRequest.objects.all().filter(sksid=sksid)
-#     return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit})
 def part_dashboard(request):
     new=PartRequest.objects.all().filter(tracking=None).count()
     all=PartRequest.objects.all().count()
@@ -89,6 +83,10 @@ def update_part(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     sksid=unit.sksid
     parts=PartRequest.objects.all().filter(sksid=sksid)
+    add=""
+    if parts.count()!=0:
+        p=parts[0]
+        add=p.location_add1+" "+p.location_add2+', '+p.location_city+" "+p.location_state
     if request.method == "POST":
         form = PartForm(request.POST)
         if form.is_valid():
@@ -178,7 +176,7 @@ def update_part(request,pk):
                 new_part_request.sn=unit.serialNumber
                 new_part_request.save()
             return redirect("/user/dispatcher/")
-    return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit})
+    return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
 def update_part_request(request,pk):
     if request.method == "POST":
         form=PartRequestUpdateForm(request.POST)
@@ -190,39 +188,32 @@ def update_part_request(request,pk):
             part.note=note
             part.save()
             return redirect('/request/part/')
-def update_basic(request):
-    form=BasicForm()
+def edit_basic(request,pk):
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
     if request.method == "POST":
-        form = BasicForm(request.POST)
+        form = FirstForm(request.POST, instance=unit)
         if form.is_valid():
-            name_business=form.cleaned_data["businessName"]
-            name_contact=form.cleaned_data["contactName"]
-            serial=form.cleaned_data["serialNumber"]
-            phone=form.cleaned_data["phoneCustomer"]
-            business_hour=form.cleaned_data["businessHours"]
-            email=form.cleaned_data["emailAddress"]
-            add1=form.cleaned_data["add1"]
-            add2=form.cleaned_data["add2"]
-            city=form.cleaned_data["city"]
-            state=form.cleaned_data["state"]
-            zip=form.cleaned_data["zip"]
-            issue=form.cleaned_data["issue"]
+            unit = form.save()
             unit_type=form.cleaned_data["type"]
             request.session["unit_type"]=unit_type
-            request.session["unit_sn"]=serial
-            new_unit=UnitBasicInfo()
-            new_unit.businessName=name_business
-            new_unit.contactName=name_contact
-            new_unit.serialNumber=serial
-            new_unit.phone=phone
-            new_unit.email=email
-            new_unit.business_hour=business_hour
-            new_unit.location_add1=add1
-            new_unit.location_add2=add2
-            new_unit.location_city=city
-            new_unit.location_state=state
-            new_unit.location_zip=zip
-            new_unit.issue=issue
+            if request.session['unit_type']=="HOT":
+                form=HotTechQuestionForm()
+                return render(request, 'request/tech_question_hot.html', {'form':form,'unit':unit})
+            elif request.session['unit_type']=="COLD":
+                form=ColdTechQuestionForm()
+                return render(request, 'request/tech_question_cold.html', {'form':form,'unit':unit})
+            return redirect('/user/operator/')
+    else:
+        form = FirstForm(instance=unit)
+    return render(request, 'operator/basic_edit.html', {'form':form,'pk':unit.pk})
+def update_basic(request):
+    form=FirstForm()
+    if request.method == "POST":
+        form = FirstForm(request.POST)
+        if form.is_valid():
+            new_unit=form.save(commit=False)
+            unit_type=form.cleaned_data["type"]
+            request.session["unit_type"]=unit_type
             new_unit.receiver=request.session['user_name']
             new_unit.save()
             if request.session['unit_type']=="HOT":
