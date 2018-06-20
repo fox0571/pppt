@@ -80,7 +80,7 @@ class UnitBasicInfo(models.Model):
     warranty=models.NullBooleanField(null=True,blank=True)
     warrantyNote=models.TextField(null=True,blank=True)
     tsq=models.TextField(null=True,blank=True)
-    techName=models.CharField(max_length=50,null=True,blank=True)
+    techName=models.CharField(max_length=100,null=True,blank=True)
     techPhone=models.CharField(max_length=15,null=True,blank=True)
     techEmail=models.EmailField(null=True,blank=True)
     scheDate=models.DateField(null=True,blank=True)
