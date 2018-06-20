@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Smart Kitchen Service</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <style type="text/css">
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+        .box-body{
+          margin-left: 50px;
+        }
+        .table {
+            width: 80%;
+            max-width: 80%;
+            margin-bottom: 5px;
+            background-color: #fff;
+            border-spacing: 30px 5px;
+        }
+        .table th{
+          width:220px;
+          padding: 5px;
+          text-align: left;
+        }
+        .table td {
+            border-bottom: 1px solid #000;
+            text-align: left;
+        }
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #000;
+        }
+        .table tbody + tbody {
+            border-top: 2px solid #000;
+        }
+        .table .table {
+            background-color: #fff;
+        }
+        .footer {
+          margin-left:50px;
+          margin-top: 200px;
+        }
+        .content{
+          margin-top: 100px;
+          margin-bottom: 200px;
+        }
+        .head{
+          margin-left:500px;
+        }
+        h4 {
+           text-decoration: underline;
+        }
+        div{
+          margin-bottom: 20px;
+        }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="head">
+      <div class="logo">
+        
+      </div>
+      <div class="pn">
+        <p>Work Order</p>
+        <p>Number</p>
+        <h4>{{unit.sksid}}</h4>
+      </div>
+    </div>
+    <div class="content">
+      <div class="box-body">
+        <table class="table">
+          <tr>
+            <th>SCHEDULED TIME</th>
+            <td>{{unit.scheDate}}</td>
+          </tr>
+          <tr>
+            <th>SERIAL NUMBER</th>
+            <td>{{ unit.serialNumber}}</td>
+          </tr>
+          <tr>
+            <th>BUSINESS NAME</th>
+            <td>{{unit.businessName}}</td>
+          </tr>
+          <tr>
+            <th>CONTACT</th>
+            <td>{{unit.contactName|upper}}</td>
+          </tr>
+          <tr>
+            <th>PHONE</th>
+            <td>{{unit.phone}}</td>
+          </tr>
+          <tr>
+            <th>BUSINESS HOUR</th>
+            <td>{{unit.business_hour}}</td>
+          </tr>
+          <tr>
+            <th>LOCATION</th>
+            <td>{{unit.location_add1}} 
+                {% if unit.location_add2 %}
+                  {{unit.location_add2}}
+                  {% endif %}<br />
+                {{unit.location_city|upper}}, {{unit.location_state|upper}} {{unit.location_zip|upper}}
+            </td>
+          </tr>
+          <tr>
+            <th>ISSUE</th>
+            <td>{{unit.issue}}</td>
+          </tr>
+          <tr>
+            <th>PRE-DIAGNOSIS</th>
+            <td>{{unit.pre_diagnosis}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="ft">
+        <p>
+          If parts have been sent prior to your company’s diagnosis please keep in mind that we still expect your technician to do a thorough diagnosis and decide what parts are needed, if any, to repair the unit.  The parts we sent are ones we think your technician may need after his/her diagnosis.
+        </p>
+        <p>
+          Please contact The Dispatcher if the service call is expected/begins to exceed $300.
+        </p>
+          I have notified the customer of the Atosa Warranty Terms. If the issue is anything maintenance related (dirty filter, insufficient airflow, improper voltage, etc.), please bill the customer directly.  Atosa is not responsible for maintenance related issues.
+        <p>
+          For Tech Support, Please Contact:
+          (800) 683-8660 ext 101
+        </p>
+        <p>
+          To Order Parts related to this Service call, Please contact the dispatcher who sent this service call. 
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

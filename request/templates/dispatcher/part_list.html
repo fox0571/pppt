@@ -32,6 +32,7 @@
                     <tr>
                       <th>No.</th>
                       <th>Incident Number</th>
+                      <th>Business</th>
                       <th>Tracking</th>
                       <th>Date</th>
                     </tr>
@@ -42,6 +43,7 @@
                       <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ r.sksid }}</td>
+                        <td>{{ r.businessName }}</td>
                         <td>{% if not r.tracking %}
                               <label>Waiting....</label>
                             {% else %}
@@ -58,6 +60,7 @@
                     <tr>
                       <th>No.</th>
                       <th>Incident Number</th>
+                      <th>Business</th>
                       <th>Tracking</th>
                       <th>Date</th>
                     </tr>

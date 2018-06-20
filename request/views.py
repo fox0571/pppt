@@ -6,15 +6,25 @@ from .forms import FirstForm, RequestForm, HotTechQuestionForm, ColdTechQuestion
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
+from warranty.models import Invoice
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
 class Pdf(View):
     def get(self, request,pk):
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
+        inv=Invoice.objects.all().filter(sksid=unit.sksid)
         params = {
-            'unit':unit
+            'unit':unit,
+            'invoices':inv,
         }
-        return Render.render('dispatcher/order.html', params)
+        return Render.render('account/print_page.html', params)
+class Pdf_work_order(View):
+    def get(self, request,pk):
+        unit=get_object_or_404(UnitBasicInfo, pk=pk)
+        params = {
+            'unit':unit,
+        }
+        return Render.render('dispatcher/pdf.html', params)
 def get_order(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     return render(request, 'dispatcher/order.html', {'unit':unit})

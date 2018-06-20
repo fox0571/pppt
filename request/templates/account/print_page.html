@@ -1,6 +1,13 @@
 
-{% extends 'request/index.html' %}
+{% extends 'account/base.html' %}
 {% load static %}
+{% block css %}
+<style>
+#total{
+  text-decoration: underline;
+}
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="content-wrapper">
@@ -21,77 +28,90 @@
             <p class="text-light-blue">Address: {{unit.location_add1|upper}} {{unit.location_add2|upper}} {{unit.location_city|upper}}
               {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
             <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
-            <p class="text-light-blue">Technical Support Questions: {{unit.tsq|upper|linebreaks}}</p>
             <p class="text-light-blue">Received by {{unit.receiver}} @ {{unit.callTime}}</p>
           </div>
           <!-- /.box-body -->
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Pre-diagnosis</h3>
-          </div>
-          <div class="box-body">
-            <p class="text-light-blue">Note: {{unit.pre_diagnosis}}</p>
-          </div>
-        </div>
-	<div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Parts Information</h3>
-          </div>
-          <div class="box-body">
-            {% if parts %}
-              {% for p in parts%}
-                <p class="text-light-blue">{{p.number}} {{p.name}} {{p.qty}} {{p.tracking}}</p>
-                <p class="text-light-blue">{{p.note}}</p>
-              {% endfor %}
-
-            {% endif %}
-          </div>
         </div>
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">Tech Information</h3>
           </div>
           <div class="box-body">
-            <p class="text-light-blue">{{unit.techNote|linebreaks}}</p>
+            <p class="text-light-blue">Tech: {{unit.techName}}</p>
+            <p class="text-light-blue">Phone: {{unit.techPhone}}</p>
+            <p class="text-light-blue">Email: {{unit.techEmail}}</p>
+            <p class="text-light-blue">Note: {{unit.techNote|linebreaks}}</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Parts Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">Tracking: {{unit.tracking}}</p>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Follow Up With Customer</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">{{unit.followup_customer|upper|linebreaks}}</p>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Follow Up With Technician</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">{{unit.followup_tech|upper|linebreaks}}</p>
           </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Follow-up with customer</h3>
+            <h3 class="box-title">Account Information</h3>
           </div>
+          {% if invoices %}
           <div class="box-body">
-            <p class="text-light-blue">Note: {{unit.followup_customer|linebreaks}}</p>
-            <div class="form-group">
-              <form class='form' action="/request/customer/follow/{{ unit.pk }}/" method="post">
-                {% csrf_token %}
-                <textarea class="form-control" rows="5" name="customer" id="follow_up_customer" required></textarea>
-                <button type="submit" class="btn btn-primary pull-right">update</button>
-              </form>
-            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Invoice</th>
+                  <th>Total Cost</th>
+                  <th>Travel Cost</th>
+                  <th>Labor Cost</th>
+                  <th>Material Cost</th>
+                  <th>Travel Hour</th>
+                  <th>Labor Hour</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for p in invoices %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ p.invoice }}</td>
+                    <td>${{ p.total_c }}</td>
+                    <td>${{ p.travel_c }}</td>
+                    <td>${{ p.labor_c }}</td>
+                    <td>${{ p.material_c }}</td>
+                    <td>{{ p.travel_t }}</td>
+                    <td>{{ p.labor_t }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
           </div>
-        </div>
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Follow-up with technician</h3>
-          </div>
-          <div class="box-body">
-            <p class="text-light-blue">Note: {{unit.followup_tech|linebreaks}}</p>
-            <div class="form-group">
-              <form class='form' action="/request/tech/follow/{{ unit.pk }}/" method="post">
-                {% csrf_token %}
-                <textarea class="form-control" rows="5" name="tech" id="follow_up_tech" required></textarea>
-                <button type="submit" class="btn btn-primary pull-right">update</button>
-              </form>
-            </div>
-          </div>
+          {% endif %}
         </div>
       </div>
     </div>
   </section>
 </div>
 {% endblock %}
+

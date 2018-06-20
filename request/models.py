@@ -110,6 +110,7 @@ class PartRequest(models.Model):
     qty=models.IntegerField()
     request_time=models.DateField(auto_now_add=True)
     tracking=models.CharField(max_length=50,null=True,blank=True)
+    note = models.TextField(null=True,blank=True)
     approved=models.BooleanField(default=False)
     location_add1=models.CharField(max_length=200)
     location_add2=models.CharField(max_length=200,null=True,blank=True)
