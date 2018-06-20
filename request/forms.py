@@ -109,7 +109,6 @@ class PartForm(forms.Form):
     phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}),required=False)
     to_customer=forms.BooleanField(required=False)
     to_tech=forms.BooleanField(required=False)
-    double_check = forms.BooleanField(required=True)
 class RequestForm(forms.Form):
     SKSID = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
     businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the business name'}))

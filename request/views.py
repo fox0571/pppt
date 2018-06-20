@@ -72,7 +72,7 @@ def show_part_list(request):
     part = PartRequest.objects.all()
     return render(request, 'part/list.html', {'request':part})
 def show_new_part(request):
-    part = PartRequest.objects.all().filter(tracking=None)
+    part = PartRequest.objects.all().filter(tracking=None).order_by('location_add1')
     return render(request, 'request/part_request_list.html', {'request':part})
 def show_part_detail(request,pk):
     part = get_object_or_404(PartRequest, pk=pk)
@@ -88,8 +88,10 @@ def update_part(request,pk):
         p=parts[0]
         add=p.location_add1+" "+p.location_add2+', '+p.location_city+" "+p.location_state
     if request.method == "POST":
+
         form = PartForm(request.POST)
         if form.is_valid():
+            print("test")
             new_part_request=PartRequest()
             new_part_request.sksid=sksid
             contact=""
@@ -175,7 +177,7 @@ def update_part(request,pk):
                 new_part_request.pre_diagnosis=unit.pre_diagnosis
                 new_part_request.sn=unit.serialNumber
                 new_part_request.save()
-            return redirect("/user/dispatcher/")
+            return redirect("#/")
         return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
     return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
 def update_part_request(request,pk):
@@ -191,13 +193,14 @@ def update_part_request(request,pk):
             return redirect('/request/part/')
 def edit_basic(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
+    pre_sn=unit.serialNumber
     if request.method == "POST":
         form = FirstForm(request.POST, instance=unit)
         if form.is_valid():
             sn=form.cleaned_data["serialNumber"]
-            pre_sn=unit.serialNumber
-            if sn!=pre_sn:
-                unit.warranty=NoNE
+            if sn != pre_sn:
+                print (sn)
+                unit.warranty=None
             unit = form.save()
             unit_type=form.cleaned_data["type"]
             sn=form.cleaned_data["type"]

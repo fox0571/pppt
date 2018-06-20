@@ -5,7 +5,7 @@
 
 <div class="content-wrapper">
   <section class="content">
-    <form action="update/" method="POST" class="post-form">
+    <form action="#/" method="POST" class="post-form">
         {% csrf_token %}
         <div class="col-md-6">
           <div class="box box-primary">
@@ -189,8 +189,11 @@
             </div>
           </div>
         </div>
-        
+        <div>
+        <a href="/user/dispatcher/new/{{ unit.pk }}/"> Go to Tech Page</a>
         <button type="submit" class="btn btn-primary pull-right">update</button>
+
+        </div>
     </form>
   </section>
 </div>
