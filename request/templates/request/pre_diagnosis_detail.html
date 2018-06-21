@@ -6,7 +6,7 @@
 <div class="content-wrapper">
   <section class="content">
     <div class="row">
-      <form class='form' action="update/" method="post">
+      <form class='form' action="#/" method="post">
         {% csrf_token %}
           <div class="col-md-6">
             <div class="box box-primary">
@@ -45,13 +45,14 @@
               </div>
               <div class="box-body">
                 <div class="form-group">
-                  {{ form.note.errors }}
-                  <label for="{{ form.note.id_for_label }}">Note</label>{{ form.note }}
+                  {{ form.pre_diagnosis.errors }}
+                  <label for="{{ form.pre_diagnosis.id_for_label }}">Note</label>{{ form.pre_diagnosis }}
                 </div>
                 <div class="checkbox">
                   <label>
-                    {{ form.double_check }}Double check before you submit
-                  </label>
+                    {{ form.pre_diagnosis_pending }}Move to Pending Box.
+                    <p>Uncheck it if you are going to finish it</p>
+                   </label>
                 </div>
                 <button type="submit" class="btn btn-primary pull-right">update</button>
               </div>

@@ -2,7 +2,7 @@ import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
 from django.utils import timezone
-from .forms import FirstForm, RequestForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
+from .forms import FirstForm, RequestForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
@@ -244,14 +244,17 @@ def update_basic(request):
             return redirect('/user/operator/')
         return render(request, 'operator/basic.html',{'form': form})
     return render(request, 'operator/basic.html',{'form': form})
-
 def show_admindp(request):
-    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False)
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False).filter(pre_diagnosis_pending=False)
     alls=UnitBasicInfo.objects.filter(warranty=True).count()
     new=all.count()
-    return render(request, 'dispatcher/admin.html', {'new':new,'all':alls})
+    pending=UnitBasicInfo.objects.filter(pre_diagnosis_pending=True).count()
+    return render(request, 'dispatcher/admin.html', {'new':new,'all':alls,'pending':pending})
 def get_all_undiagnosed(request):
-    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False)
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False).filter(pre_diagnosis_pending=False)
+    return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
+def get_all_pending_undiagnosed(request):
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_pending=True)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_all_diag(request):
     all=UnitBasicInfo.objects.filter(warranty=True)
@@ -269,20 +272,24 @@ def show_adminop(request):
             callTime__gte=start).count()
         final_data.append(count)
     return render(request, 'request/operator_supervisor.html', {'new':new,'data':final_data})
-def get_detail_undiagnosed(request,pk):
+def diagnosis(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
-    form=PreDiagnosisForm()
-    return render(request, 'request/pre_diagnosis_detail.html', {'unit': unit,'form':form})
-def update_diagnosis(request,pk):
     if request.method == "POST":
-        form=PreDiagnosisForm(request.POST)
+        form=DiagnosisForm(request.POST,instance=unit)
         if form.is_valid():
-            note=form.cleaned_data["note"]
-            unit=get_object_or_404(UnitBasicInfo, pk=pk)
-            unit.pre_diagnosis=note
-            unit.pre_diagnosis_flag=True
-            unit.save()
+            unit=form.save(commit=False)
+            print (unit.pre_diagnosis_pending)
+            if not unit.pre_diagnosis_pending:
+                unit.timestamp_diagnosis=datetime.datetime.now()
+                unit.pre_diagnosis_flag=True
+                unit.save()
+            else:
+                unit.pre_diagnosis_pending=True
+                unit.save()
             return redirect('/request/diag')
+    else:
+        form=DiagnosisForm(instance=unit)
+    return render(request, 'request/pre_diagnosis_detail.html', {'unit': unit,'form':form})
 def update_tech_info(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()

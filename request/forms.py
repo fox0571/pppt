@@ -87,6 +87,13 @@ class FirstForm(ModelForm):
 class WarrantyForm(forms.Form):
     waranty = forms.ChoiceField(choices=CHOICES_WARRANTY,widget=forms.RadioSelect(attrs={'class': 'form-control'}))
     note = forms.CharField(widget=forms.Textarea)
+class DiagnosisForm(ModelForm):
+    class Meta:
+        model = UnitBasicInfo
+        fields = ['pre_diagnosis','pre_diagnosis_pending']
+        widgets = {
+            'pre_diagnosis':forms.Textarea(attrs={'class': 'form-control'})
+        }
 class PreDiagnosisForm(forms.Form):
     note = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
     double_check = forms.BooleanField(required=True)
