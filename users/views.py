@@ -25,7 +25,7 @@ def get_all_dispatcher_records(request):
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_scheduled_records(request):
     code = request.session['user_code']
-    request_list = UnitBasicInfo.objects.all().filter(pre_diagnosis_flag=True).filter(areaCode=code).filter(finished=False).exclude(scheDate=None).order_by('-callTime')
+    request_list = UnitBasicInfo.objects.all().filter(pre_diagnosis_flag=True).filter(areaCode=code).filter(finished=False).exclude(scheDate=None).order_by('scheDate')
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_new_records(request):
     code = request.session['user_code']

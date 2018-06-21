@@ -96,7 +96,10 @@ def update_part(request,pk):
     add=""
     if parts.count()!=0:
         p=parts[0]
-        add=p.location_add1+" "+p.location_add2+', '+p.location_city+" "+p.location_state
+        add2=""
+        if p.location_add2:
+            add2=p.location_add2
+        add=p.location_add1+" "+add2+', '+p.location_city+" "+p.location_state
     if request.method == "POST":
 
         form = PartForm(request.POST)
@@ -257,7 +260,7 @@ def get_all_pending_undiagnosed(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_pending=True)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_all_diag(request):
-    all=UnitBasicInfo.objects.filter(warranty=True)
+    all=UnitBasicInfo.objects.filter(warranty=True).order_by("-timestamp_diagnosis")
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def show_adminop(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False)
@@ -305,7 +308,6 @@ def update_tech_info(request,pk):
             tech_city = form.cleaned_data["tech_city"]
             tech_state = form.cleaned_data["tech_state"]
             tech_zip = form.cleaned_data["tech_zip"]
-
             schedule_time=form.cleaned_data["schedule_time"]
             unit=get_object_or_404(UnitBasicInfo, pk=pk)
             unit.techName=tech_name
@@ -317,14 +319,13 @@ def update_tech_info(request,pk):
             unit.tech_city=tech_city
             unit.tech_state=tech_state
             unit.tech_zip=tech_zip
-
             a_note=("Scheduled Time: "+str(schedule_time)+"\n"
                     +"Name: "+str(tech_name)+"\n"
                     +"Phone: "+str(tech_phone)+"\n"
                     +"Email: "+tech_email+"\n"
                     +"Note: "+str(tech_note)+"\n"
+                    +"Location: "+tech_add1+" "+tech_add2+" "+tech_city+" "+tech_state+"\n"
                     )
-            print(tech_note)
             if unit.techNote:
                 unit.techNote=unit.techNote+"\n"+a_note
             else:

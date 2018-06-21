@@ -20,11 +20,14 @@
                 <div class="box-body">
                   <p class="text-light-blue">Incident Number:{{unit.sksid|upper }}</p>
                   <p class="text-light-blue">Business Name: {{unit.businessName|upper }}</p>
+                  <p class="text-light-blue">Business Hour: {{unit.business_hour|upper }}</p>
                   <p class="text-light-blue">Contact Name: {{unit.contactName|upper }}</p>
                   <p class="text-light-blue">Serial Number: {{unit.serialNumber|upper}}</p>
                   <p class="text-light-blue">Phone: {{unit.phone|upper}}</p>
                   <p class="text-light-blue">Email: {{unit.email|upper}}</p>
-                  <p class="text-light-blue">Address: {{unit.location_add1|upper}} {{unit.location_add2|upper}} {{unit.location_city|upper}}
+                  <p class="text-light-blue">Address: {{unit.location_add1|upper}} {% if unit.location_add2 %}
+                  {{unit.location_add2|upper}} 
+                  {% endif %} {{unit.location_city|upper}}
                     {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
                   <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
                   <p class="text-light-blue">Technical Support Questions: {{unit.tsq|upper|linebreaks}}</p>
@@ -32,26 +35,35 @@
                 </div>
                 <!-- /.box-body -->
               </div>
+            </div>
+            <div class="col-md-4">
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title">Diagnose Information</h3>
                 </div>
                 <div class="box-body">
-                  <div class="box-body">
-                    <p class="text-light-black">{{unit.pre_diagnosis}}</p>
-                  </div>
+                  <p class="text-light-black">{{unit.pre_diagnosis|linebreaks}}</p>
+                  <p>{{unit.timestamp_diagnosis}}</p>
                 </div>
-                <!-- /.box-body -->
+              </div>
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Warranty Information</h3>
+                </div>
+                <div class="box-body">
+                  <p>Warranty: {{unit.warranty}}</p>
+                  <P>Note: {{ unit.warrantyNote|upper|linebreaks}}</P>
+                </div>
               </div>
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title">Current Tech Information</h3>
                 </div>
                 <div class="box-body">
-
                   <p class="text-light-blue">{{unit.techNote|linebreaks}}</p>
                 </div>
               </div>
+              
             </div>
             <div class="col-md-4">
               <div class="box box-primary">
