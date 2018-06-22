@@ -43,6 +43,7 @@
                     <th>No.</th>
                     <th>Ref</th>
                     <th>Business</th>
+                    <th>Phone</th>
                     <th>S/N</th>
                     <th>Warranty</th>
                     <th>Called</th>
@@ -58,6 +59,7 @@
                       <td>{{ forloop.counter }}</td>
                       <td>{{ r.sksid }}</td>
                       <td>{{ r.businessName }}</td>
+                      <td>{{ r.phone }}</td>
                       <td>{{ r.serialNumber|upper }}</td>
                       <td>{% if r.warranty == True %}
                             <span class="glyphicon glyphicon-green-dot"></span>
@@ -84,6 +86,7 @@
                     <th>No.</th>
                     <th>Ref</th>
                     <th>Business</th>
+                    <th>Phone</th>
                     <th>S/N</th>
                     <th>Warranty</th>
                     <th>Called</th>
