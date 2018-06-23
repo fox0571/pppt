@@ -212,7 +212,6 @@ def edit_basic(request,pk):
         if form.is_valid():
             sn=form.cleaned_data["serialNumber"]
             if sn != pre_sn:
-                print (sn)
                 unit.warranty=None
             unit = form.save()
             unit_type=form.cleaned_data["type"]

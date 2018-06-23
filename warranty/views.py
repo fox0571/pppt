@@ -55,6 +55,19 @@ def reg_month(month):
 def ac_list(request):
     unit=UnitBasicInfo.objects.all()
     return render(request, 'account/list.html',{'unit':unit})
+def invoice_list(request):
+    invoices=Invoice.objects.all().order_by("-pk")
+    return render(request, 'account/invoices.html',{'invoices':invoices})
+def invoice_edit(request,pk):
+    invoice=get_object_or_404(Invoice,pk=pk)
+    if request.method == "POST":
+        form=AccountForm(request.POST,instance=invoice)
+        if form.is_valid():
+            invoice=form.save()
+            return redirect("/warranty/account/invoice/")
+    else:
+        form=AccountForm(instance=invoice)
+    return render(request, 'account/invoice_edit.html',{'form':form})
 def account(request,pk):
     form=AccountForm()
     unit=get_object_or_404(UnitBasicInfo,pk=pk)

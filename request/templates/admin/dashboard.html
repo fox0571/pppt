@@ -42,7 +42,8 @@
 {% block script %}
 <script src="{% static "plugins/chart.js/Chart.bundle.min.js" %}"></script>
 <script type="text/javascript">
-new Chart(document.getElementById("myChart2"),{
+var canvasP = document.getElementById("myChart");
+var ct1=new Chart(document.getElementById("myChart2"),{
   "type":"bar",
   "data":{
     "labels": ['Jane', 'Chloe', 'Daniela', 'Yesi' , "Samantha" , "Katrina"],
@@ -56,7 +57,7 @@ new Chart(document.getElementById("myChart2"),{
     },
     "options":{"scales":{"yAxes":[{"ticks":{"beginAtZero":true}}]}}
   });
-new Chart(document.getElementById("myChart"),{
+var ct2=new Chart(document.getElementById("myChart"),{
   "type":"bar",
   "data":{
     "labels": ['Anna', 'Brandon', 'Jackie', 'Randi' , "Christina"],
@@ -71,5 +72,20 @@ new Chart(document.getElementById("myChart"),{
     "options":{"scales":{"yAxes":[{"ticks":{"beginAtZero":true}}]}}
   });
 
+  canvasP.onclick=function(evt) {
+      var firstPoint = ct2.getElementAtEvent(evt)[0];
+
+      if (firstPoint) {
+          var label = ct2.data.labels[firstPoint._index];
+          console.log(label);
+          var value = ct2.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
+          console.log(value);
+          switch (label) {
+            case "Anna": location.href = '#/'; break;
+            case "Brandon": location.href = '#/'; break;
+            case 2: location.href = '#/'; break;
+          }
+      }
+  }
 </script>
 {% endblock %}
