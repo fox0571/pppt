@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'request.apps.RequestConfig',
     'warranty.apps.WarrantyConfig',
     'users.apps.UsersConfig',
+    'units.apps.UnitsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
