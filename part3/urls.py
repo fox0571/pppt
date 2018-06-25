@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^logout/$',views.logout),
     path('admin/', admin.site.urls),
     path('user/',include('users.urls')),
+    path('unit/',include('units.urls')),
     path('request/',include('request.urls', namespace="request")),
     path('warranty/',include('warranty.urls')),
     url(r'^render/pdf/(?P<pk>\d+)/$', vws.Pdf.as_view()),

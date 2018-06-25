@@ -3,8 +3,9 @@ from django.db import models
 # Create your models here.
 class Part(models.Model):
     number=models.CharField(max_length=30)
-    description_eng=models.CharField(max_length=90)
-    description_chn=models.CharField(max_length=100)
+    name_eng=models.CharField(max_length=90)
+    name_chn=models.CharField(max_length=100)
+    description=models.CharField(max_length=100,default="part")
     inventory=models.IntegerField(default=0)
     price_fob = models.DecimalField(max_digits=7,decimal_places=2,default=0.00)
     price_list = models.DecimalField(max_digits=7,decimal_places=2)

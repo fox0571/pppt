@@ -1,0 +1,94 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    
+    <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <form action="#/" method="POST" class="post-form">
+          {% csrf_token %}
+          <div class="col-xs-3">
+            <div class="form-group">
+              <label>Model:</label>
+              <input type="text" name="model" class="form-control">
+              <br />
+              <button type="submit" class="btn pull-left">Search
+            </div>
+          </div>
+        </form>
+      </section>
+      {% if request %}
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="box">
+              <div class="box-body">
+                <table id="assets_table" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Part #</th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>End User Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for r in request %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ r.number }}</td>
+                        <td>{{ r.name_eng }}</td>
+                        <td>{{ r.description }}</td>
+                        <td> $ {{ r.price_enduser }}</td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>No.</th>
+                      <th>Part #</th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>End User Price</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+      </section>
+      {% else %}
+        <p>No Records.</p>
+      {% endif %}
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script>
+  $(function () {
+    $('#assets_table').DataTable({
+      "paging": true,       
+      "lengthChange": true, 
+      "searching": true,    
+      "ordering": true,     
+      "info": true,         
+      "autoWidth": false,    
+      "iDisplayLength": 50
+    });
+  });
+</script>
+{% endblock %}

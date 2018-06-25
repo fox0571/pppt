@@ -70,12 +70,12 @@ class UnitBasicInfo(models.Model):
     location_add2=models.CharField(max_length=200,null=True,blank=True)
     location_city=models.CharField(max_length=20)
     location_state=models.CharField(max_length=30)
-    location_zip=models.IntegerField()
+    location_zip=models.CharField(max_length=20)
     tech_add1=models.CharField(max_length=200,null=True,blank=True)
     tech_add2=models.CharField(max_length=200,null=True,blank=True)
     tech_city=models.CharField(max_length=20,null=True,blank=True)
     tech_state=models.CharField(max_length=30,null=True,blank=True)
-    tech_zip=models.IntegerField(null=True,blank=True)
+    tech_zip=models.CharField(max_length=20,null=True,blank=True)
     issue=models.TextField()
     warranty=models.NullBooleanField(null=True,blank=True)
     warrantyNote=models.TextField(null=True,blank=True)
@@ -118,7 +118,7 @@ class PartRequest(models.Model):
     location_add2=models.CharField(max_length=200,null=True,blank=True)
     location_city=models.CharField(max_length=20)
     location_state=models.CharField(max_length=30)
-    location_zip=models.IntegerField()
+    location_zip=models.CharField(max_length=20)
     pre_diagnosis=models.TextField(null=True,blank=True)
     def __str__(self):
         return self.sksid
