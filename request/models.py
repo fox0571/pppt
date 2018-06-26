@@ -33,26 +33,7 @@ class Address(models.Model):
     class Meta:
         abstract=True
 
-class Partsinv(models.Model):
-    item = models.CharField(db_column='Item', blank=True, null=True,max_length=100)  # Field name made lowercase.
-    number = models.CharField(primary_key=True,max_length=20,blank=True)
-    group_id = models.CharField(db_column='Group_ID', blank=True, null=True,max_length=100)  # Field name made lowercase.
-    class_id = models.CharField(db_column='Class_ID', blank=True, null=True,max_length=100)  # Field name made lowercase.
-    inventory = models.IntegerField(db_column='Inventory', blank=True, null=True)  # Field name made lowercase.
-    low_inv = models.IntegerField(blank=True)
-    high_inv = models.IntegerField(blank=True)
-    location = models.CharField(max_length=20,blank=True)
-    def __str__(self):
-        return self.number
 
-    class Meta:
-        managed = False
-        db_table = 'partsinv'
-
-class CheckForm(ModelForm):
-    class Meta:
-        model = Partsinv
-        fields=['number']
 class TimeRecord(models.Model):
     ref=models.IntegerField()
     call=models.DateTimeField()
@@ -122,3 +103,11 @@ class PartRequest(models.Model):
     pre_diagnosis=models.TextField(null=True,blank=True)
     def __str__(self):
         return self.sksid
+
+class Tag(models.Model):
+    name = models.CharField(max_length=70)
+    model = models.ManyToManyField(UnitBasicInfo)
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ('name',)

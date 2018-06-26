@@ -1,6 +1,6 @@
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import CheckForm, Partsinv, UnitBasicInfo, PartRequest
+from .models import UnitBasicInfo, PartRequest
 from django.utils import timezone
 from .forms import FirstForm, RequestForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
