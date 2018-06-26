@@ -29,7 +29,7 @@ def get_all_scheduled_records(request):
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_new_records(request):
     code = request.session['user_code']
-    request_list = UnitBasicInfo.objects.all().filter(pre_diagnosis_flag=True).filter(warranty=True).filter(areaCode=code).filter(scheDate=None).order_by('-callTime')
+    request_list = UnitBasicInfo.objects.all().filter(pre_diagnosis_flag=True).filter(warranty=True).filter(areaCode=code).filter(scheDate=None).exclude(finished=True).order_by('-callTime')
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_part_records(request):
     code = request.session['user_code']
@@ -61,7 +61,7 @@ def show_dispatcher_page(request):
     name=request.session['user_name']
     code = request.session['user_code']
     user = Users.objects.get(code=code)
-    a=UnitBasicInfo.objects.all().filter(areaCode=code).filter(warranty=True).filter(pre_diagnosis_flag=True).filter(scheDate=None).count()
+    a=UnitBasicInfo.objects.all().filter(areaCode=code).filter(warranty=True).filter(pre_diagnosis_flag=True).filter(scheDate=None).exclude(finished=True).count()
     b=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=False).exclude(scheDate=None).count()
     c=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).count()
     d=PartRequest.objects.all().filter(code=code).count()
