@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from taggit.managers import TaggableManager
 
 SHIPPING_METHOD = (
     ('NDA','NEXT DAY AIR'),
@@ -79,6 +80,8 @@ class UnitBasicInfo(models.Model):
     followup_customer_time=models.DateTimeField(null=True,auto_now=True)
     followup_tech=models.TextField(null=True,blank=True)
     followup_tech_time=models.DateTimeField(null=True,auto_now=True)
+
+    tags = TaggableManager()
     def __str__(self):
         return self.serialNumber
 
