@@ -105,7 +105,10 @@ class PartRequest(models.Model):
     location_zip=models.CharField(max_length=20)
     pre_diagnosis=models.TextField(null=True,blank=True)
     def __str__(self):
-        return self.sksid
+        return self.sksid+','+self.number
+
+    class Meta:
+        ordering = ('number',)
 
 class Tag(models.Model):
     name = models.CharField(max_length=70)

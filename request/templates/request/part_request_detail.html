@@ -18,7 +18,9 @@
               <p class="text-light-blue">Incident Number: {{part.sksid|upper }}</p>
               <p class="text-light-blue">Contact: {{part.contact|upper }}</p>
               <p class="text-light-blue">Address: {{part.location_add1|upper}}
-                {{part.location_add2|upper}}, {{part.location_city|upper}}
+                {% if part.location_add2 %}
+              {{part.location_add2|upper}} 
+              {% endif %}, {{part.location_city|upper}}
                 {{part.location_state|upper}} {{part.location_zip|upper}}</p>
               <p class="text-light-blue">Part Number: {{part.number|upper}}</p>
               <p class="text-light-blue">Description: {{part.name|upper}}</p>
@@ -31,7 +33,7 @@
               <h3 class="box-title">Pre-diagnosis</h3>
             </div>
             <div class="box-body">
-             <p class="text-light-blue">{{part.pre_diagnosis}}</p>
+             <p class="text-light-blue">{{part.pre_diagnosis|linebreaks}}</p>
             </div>
           </div>
           <div class="box box-primary">

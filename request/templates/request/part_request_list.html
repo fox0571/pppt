@@ -46,7 +46,10 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ r.sksid }}</td>
                         <td>{{ r.sn }}</td>
-                        <td>{{ r.location_add1 }} {{ r.location_add2 }} {{r.location_zip}}</td>
+                        <td>{{ r.location_add1 }} 
+                        {% if r.location_add2 %}
+                        {{ r.location_add2 }}
+                        {% endif %} {{r.location_zip}}</td>
                         <td>{% if not r.tracking %}
                               <a href="/request/part/{{ r.pk }}">
                                 <div class="col-md-6">
@@ -112,6 +115,7 @@
       "ordering": true,     <!-- 允许排序 -->
       "info": true,         <!-- 显示信息 -->
       "autoWidth": false,    <!-- 固定宽度 -->
+      "iDisplayLength": 40,
       dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
