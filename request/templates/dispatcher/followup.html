@@ -70,6 +70,7 @@
               <form class='form' action="/request/customer/follow/{{ unit.pk }}/" method="post">
                 {% csrf_token %}
                 <textarea class="form-control" rows="5" name="customer" id="follow_up_customer" required></textarea>
+                
                 <button type="submit" class="btn btn-primary pull-right">update</button>
               </form>
             </div>
@@ -90,6 +91,10 @@
             </div>
           </div>
         </div>
+        <label>
+          <input type="checkbox" class="flat-red" name="statue" value="finished">
+          Mark it as finished
+        </label>
       </div>
     </div>
   </section>

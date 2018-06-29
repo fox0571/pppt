@@ -1,5 +1,6 @@
-{% extends 'request/index.html' %}
+{% extends 'adm/index.html' %}
 {% load static %}
+
 {% block content %}
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -48,7 +49,7 @@ var ct1=new Chart(document.getElementById("myChart2"),{
   "data":{
     "labels": ['Jane', 'Chloe', 'Daniela', 'Yesi' , "Samantha" , "Katrina"],
     "datasets":[{
-      "label":"This Month",
+      "label":{{c2}},
       "fill": false,
       "backgroundColor": "rgba(255, 99, 132, 0.2)",
       "data": {{ data2 }},
@@ -62,7 +63,7 @@ var ct2=new Chart(document.getElementById("myChart"),{
   "data":{
     "labels": ['Anna', 'Brandon', 'Jackie', 'Randi' , "Christina"],
     "datasets":[{
-      "label":"This Week",
+      "label":{{c1}},
       "fill": false,
       "backgroundColor": "rgba(54, 162, 235, 0.2)",
       "data": {{ data }},

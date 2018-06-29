@@ -69,6 +69,8 @@ def show_dispatcher_page(request):
 def show_admin_page(request):
     final_data = []
     final_data2 = []
+    c1=0
+    c2=0
     today = datetime.date.today()
     delta= datetime.timedelta(today.weekday())
 
@@ -77,10 +79,18 @@ def show_admin_page(request):
         count = UnitBasicInfo.objects.filter(receiver=user).filter(
             callTime__gte=start).count()
         final_data.append(count)
+        c1=c1+count
     for code in [1,2,3,4,5,6]:
         count = Users.objects.get(code=code).current_tasks
         final_data2.append(count)
-    return render(request, 'admin/dashboard.html', {'data':final_data,'data2':final_data2})
+        c2=c2+count
+    para = {
+        'data':final_data,
+        'data2':final_data2,
+        'c1':c1,
+        'c2':c2
+    }
+    return render(request, 'adm/dashboard.html', para)
 
 def show_page(request):
     group = request.session['user_group']

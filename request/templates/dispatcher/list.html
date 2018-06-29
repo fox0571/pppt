@@ -46,7 +46,6 @@
                       <th>Tech</th>
                       <th>Parts</th>
                       <th>Follow-up</th>
-                      <th>Status</th>
                       <th>PDF</th>
                     </tr>
                   </thead>
@@ -76,15 +75,6 @@
                           </a>
                         </td>
                         <td>
-                          <a href="/request/statue/{{ r.pk }}">
-                            {% if not r.finished %}
-                              Not yet
-                            {% else %}
-                              Finished
-                            {% endif %}
-                          </a>
-                        </td>
-                        <td>
                           <a href="/render/pdf_work/{{ r.pk }}" target="_blank">
                             View
                           </a>
@@ -105,7 +95,6 @@
                       <th>Tech</th>
                       <th>Parts</th>
                       <th>Follow-up</th>
-                      <th>Status</th>
                       <th>PDF</th>
                     </tr>
                   </tfoot>

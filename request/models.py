@@ -81,10 +81,11 @@ class UnitBasicInfo(models.Model):
     followup_tech=models.TextField(null=True,blank=True)
     followup_tech_time=models.DateTimeField(null=True,auto_now=True)
 
-    tags = TaggableManager()
     def __str__(self):
+        if self.sksid:
+            return self.sksid+", "+self.serialNumber
         return self.serialNumber
-
+    
 class PartRequest(models.Model):
     sn=models.CharField(max_length=30,null=True,blank=True)
     sksid=models.CharField(max_length=30)
@@ -117,3 +118,7 @@ class Tag(models.Model):
         return self.name
     class Meta:
         ordering = ('name',)
+
+class FileSimpleModel(models.Model):
+    sksid = models.CharField(max_length=20,null=True,blank=True)
+    file_field = models.FileField(upload_to="pppt/static/%Y/%m/%d/")

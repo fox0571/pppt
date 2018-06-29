@@ -22,6 +22,8 @@ from request import views as vws
 urlpatterns = [
     url(r'^$',views.login),
     url(r'^logout/$',views.logout),
+    url(r'^data/$',vws.analysis),
+    url(r'^upload/(?P<pk>\d+)/$',vws.upload_file),
     path('admin/', admin.site.urls),
     path('user/',include('users.urls')),
     path('unit/',include('units.urls')),

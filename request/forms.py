@@ -139,3 +139,6 @@ class TagForm(ModelForm):
         widgets = {
             'name':forms.TextInput(attrs={'class': 'form-control','placeholder': 'Create a tag!'})
         }
+
+class FileUploadForm(forms.Form):
+    my_file = forms.FileField()

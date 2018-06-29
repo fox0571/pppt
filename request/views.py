@@ -1,14 +1,64 @@
 import datetime
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import UnitBasicInfo, PartRequest, Tag
+from .models import UnitBasicInfo, PartRequest, Tag, FileSimpleModel
 from django.utils import timezone
-from .forms import TagForm, FirstForm, RequestForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
+from .forms import FileUploadForm,TagForm, FirstForm, RequestForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
 from warranty.models import Invoice
+from django.contrib import messages
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
+STATES = (
+    ("AL","Alabama"),("AK","Alaska"),("AS","American Samoa"),("AZ","Arizona"),
+    ("AR","Arkansas"),("CA","California"),("CO","Colorado"),("CT","Connecticut"),
+    ("DE","Delaware"),("DC","District Of Columbia"),("FM", "Federated States Of Micronesia"),
+    ("FL", "Florida"),("GA", "Georgia"),("GU", "Guam"),("HI", "Hawaii"),("ID", "Idaho"),
+    ("IL", "Illinois"),("IN", "Indiana"),("IA", "Iowa"),("KS", "Kansas"),("KY", "Kentucky"),
+    ("LA", "Louisiana"),("ME", "Maine"),("MH", "Marshall Islands"),("MD", "Maryland"),
+    ("MA", "Massachusetts"),("MI", "Michigan"),("MN", "Minnesota"),("MS", "Mississippi"),
+    ("MO", "Missouri"),("MT", "Montana"),("NE", "Nebraska"),("NV", "Nevada"),
+    ("NH", "New Hampshire"),("NJ", "New Jersey"),("NM", "New Mexico"),("NY", "New York"),
+    ("NC", "North Carolina"),("ND", "North Dakota"),("MP", "Northern Mariana Islands"),("OH", "Ohio"),
+    ("OK", "Oklahoma"),("OR", "Oregon"),("PW", "Palau"),("PA", "Pennsylvania"),("PR", "Puerto Rico"),
+    ("RI", "Rhode Island"),("SC", "South Carolina"),("SD", "South Dakota"),("TN", "Tennessee"),
+    ("TX", "Texas"),("UT", "Utah"),("VT", "Vermont"),("VI", "Virgin Islands"),("VA", "Virginia"),
+    ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
+)
+def upload_file(request,pk):
+    unit=get_object_or_404(UnitBasicInfo,pk=pk)
+    message=""
+    if request.method == 'POST':
+        my_form = FileUploadForm(request.POST, request.FILES)
+        if my_form.is_valid():
+            file_model = FileSimpleModel()
+            file_model.file_field = my_form.cleaned_data['my_file']
+            sksid=unit.sksid
+            file_model.sksid=sksid
+            file_model.save()
+            message="Upload successfully!"
+            return render(request, 'request/upload.html', {'form': my_form,'unit':unit,'messages':message})
+        return redirect("#/")
+    else:
+        my_form = FileUploadForm()
+    return render(request, 'request/upload.html', {'form': my_form,'unit':unit,'messages':message})
+def analysis(request):
+    code_list=[]
+    name_list=[]
+    number=[]
+    for (code,name) in STATES:
+        code_list.append(code)
+        n=UnitBasicInfo.objects.filter(location_state=code).count()
+        number.append(n)
+        name_list.append(name)
+    para={
+        'code':code_list,
+        'number':number,
+        'name':name_list,
+    }
+    return render(request,'adm/analysis_location_based.html',para)
 class Pdf(View):
     def get(self, request,pk):
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
@@ -42,23 +92,33 @@ def update_statue(request,pk):
 def update_follow_tech(request,pk):
     if request.method == "POST":
         note=request.POST.get("tech","")
+        statue=request.POST.get("statue","")
         note=str(datetime.datetime.now(tz=None))+"\n"+note
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
         if unit.followup_tech:
             unit.followup_tech=unit.followup_tech+"\n"+note
         else:
             unit.followup_tech=note
+        if statue=="finished":
+            unit.finished=True
+        else:
+            unit.finished=False
         unit.save()
     return render(request, 'dispatcher/followup.html', {'unit': unit})
 def update_follow_customer(request,pk):
     if request.method == "POST":
         note=request.POST.get("customer","")
+        statue=request.POST.get("statue","")
         note=str(datetime.datetime.now(tz=None))+"\n"+note
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
         if unit.followup_customer:
             unit.followup_customer=unit.followup_customer+"\n"+note
         else:
             unit.followup_customer=note
+        if statue=="finished":
+            unit.finished=True
+        else:
+            unit.finished=False
         unit.save()
     return render(request, 'dispatcher/followup.html', {'unit': unit})
 def show_detail(request,pk):

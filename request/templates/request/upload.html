@@ -1,0 +1,24 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block css %}
+
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    {{ messages }}
+    <form action="/upload/{{unit.pk}}/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit"/>
+</form>
+  </section>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

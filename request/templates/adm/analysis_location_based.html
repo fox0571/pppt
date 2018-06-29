@@ -1,0 +1,48 @@
+{% extends 'adm/index.html' %}
+{% load static %}
+
+{% block content %}
+<section class="content">
+  <div class="box">
+    <div id="myDiv">
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/chart.js/Chart.bundle.min.js" %}"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+  myDiv=document.getElementById('myDiv');
+  trace = {
+    type: 'choropleth',
+    locationmode: 'USA-states',
+    locations: {{code|safe}},
+    z: {{number}},
+    text: {{name|safe}},
+    colorbar: {
+        title: 'Service Calls',
+        thickness: 0.2
+    },
+    marker: {
+        line:{
+            color: 'rgb(255,255,255)',
+            width: 2
+        }
+    }
+  };
+  var layout = {
+      title: 'Service Calls by State',
+      width: 1600,
+      height: 800,
+      geo:{
+          scope: 'usa',
+          showlakes: true,
+          lakecolor: 'rgb(255,255,255)'
+      }
+  };
+  fig={data:[trace],layout:layout};   
+  Plotly.newPlot('myDiv',fig);
+</script>
+{% endblock %}
