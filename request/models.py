@@ -111,7 +111,7 @@ class PartRequest(models.Model):
         ordering = ('number',)
 
 class Tag(models.Model):
-    name = models.CharField(max_length=70)
+    name = models.CharField(max_length=70,blank=True)
     model = models.ManyToManyField(UnitBasicInfo)
     def __str__(self):
         return self.name

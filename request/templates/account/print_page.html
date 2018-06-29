@@ -107,6 +107,14 @@
               </tbody>
             </table>
           </div>
+          <div class="box-body">
+            <p>Note:</p>
+            {% if invoices %}
+              {% for p in invoices %}
+                <p>{{ p.invoice }}: {{p.note}}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
           {% endif %}
         </div>
       </div>

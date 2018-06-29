@@ -1,8 +1,8 @@
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import UnitBasicInfo, PartRequest
+from .models import UnitBasicInfo, PartRequest, Tag
 from django.utils import timezone
-from .forms import FirstForm, RequestForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
+from .forms import TagForm, FirstForm, RequestForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
@@ -101,10 +101,8 @@ def update_part(request,pk):
             add2=p.location_add2
         add=p.location_add1+" "+add2+', '+p.location_city+" "+p.location_state
     if request.method == "POST":
-
         form = PartForm(request.POST)
         if form.is_valid():
-            print("test")
             new_part_request=PartRequest()
             new_part_request.sksid=sksid
             contact=""
@@ -274,13 +272,42 @@ def show_adminop(request):
             callTime__gte=start).count()
         final_data.append(count)
     return render(request, 'request/operator_supervisor.html', {'new':new,'data':final_data})
+def add_tag(request,pk):
+    pass
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    all_tags = Tag.objects.all()
+    if request.method == "POST":
+        select_tags = request.POST.getlist('tags[]')
+        tag_form=TagForm(request.POST)
+        if tag_form.is_valid():
+            new_tag=tag_form.save()
+            new_tag.model.add(unit)
+        if select_tags:
+            for t in select_tags:
+                tag=get_object_or_404(Tag,pk=t)
+                tag.model.add(unit)
+    return redirect("#/")
 def diagnosis(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    all_tags = Tag.objects.all()
     if request.method == "POST":
         form=DiagnosisForm(request.POST,instance=unit)
+        select_tags = request.POST.getlist('tags[]')
+        tag_form=TagForm(request.POST)
+
+
+        if tag_form.is_valid():
+            if tag_form.cleaned_data["name"]!="":
+                new_tag=tag_form.save()
+                new_tag.model.add(unit)
+        if select_tags:
+            for t in select_tags:
+                tag=get_object_or_404(Tag,pk=t)
+                tag.model.add(unit)
+
+
         if form.is_valid():
             unit=form.save(commit=False)
-            print (unit.pre_diagnosis_pending)
             if not unit.pre_diagnosis_pending:
                 unit.timestamp_diagnosis=datetime.datetime.now()
                 unit.pre_diagnosis_flag=True
@@ -291,7 +318,14 @@ def diagnosis(request,pk):
             return redirect('/request/diag')
     else:
         form=DiagnosisForm(instance=unit)
-    return render(request, 'request/pre_diagnosis_detail.html', {'unit': unit,'form':form})
+        tag_form=TagForm()
+    para ={
+        'unit': unit,
+        'form': form,
+        'tag_form' :tag_form,
+        'tags': all_tags,
+    }
+    return render(request, 'request/pre_diagnosis_detail.html', para)
 def update_tech_info(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()

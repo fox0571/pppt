@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import UnitBasicInfo
+from .models import UnitBasicInfo, Tag
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
@@ -131,3 +131,11 @@ class RequestForm(forms.Form):
 class PartRequestUpdateForm(forms.Form):
     tracking = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Tracking number'}))
     note = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'ETA'}))
+
+class TagForm(ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['name']
+        widgets = {
+            'name':forms.TextInput(attrs={'class': 'form-control','placeholder': 'Create a tag!'})
+        }

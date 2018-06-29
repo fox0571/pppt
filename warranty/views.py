@@ -63,7 +63,12 @@ def invoice_edit(request,pk):
     if request.method == "POST":
         form=AccountForm(request.POST,instance=invoice)
         if form.is_valid():
-            invoice=form.save()
+            invoice=form.save(commit=False)
+            tot=(invoice.travel_c
+                +invoice.labor_c
+                +invoice.material_c)
+            invoice.total_c=tot
+            invoice.save()
             return redirect("/warranty/account/invoice/")
     else:
         form=AccountForm(instance=invoice)
