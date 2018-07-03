@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^$',views.login),
     url(r'^logout/$',views.logout),
     url(r'^data/$',vws.analysis),
+    url(r'^data/1/$',vws.analysis_service_daily),
     url(r'^upload/(?P<pk>\d+)/$',vws.upload_file),
     path('admin/', admin.site.urls),
     path('user/',include('users.urls')),

@@ -44,6 +44,18 @@ def upload_file(request,pk):
     else:
         my_form = FileUploadForm()
     return render(request, 'request/upload.html', {'form': my_form,'unit':unit,'messages':message})
+def analysis_service_daily(request):
+    date=[]
+    service=[]
+    u=UnitBasicInfo.objects.dates('callTime','day')
+    for i in u:
+        date.append(i.strftime('%Y-%m-%d'))
+        service.append(UnitBasicInfo.objects.filter(callTime__contains=i).count())
+    para={
+        'date':date,
+        'service':service,
+    }
+    return render(request,'adm/analysis_service_daily.html',para)
 def analysis(request):
     code_list=[]
     name_list=[]
