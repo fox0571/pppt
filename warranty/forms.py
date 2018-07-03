@@ -23,5 +23,6 @@ class AccountForm(forms.ModelForm):
             "travel_c": "Travel Cost",
             "labor_c": "Labor Cost",
             "material_c": "Material Cost",
-            "labor_t": "Labor Hours"
+            "labor_t": "Labor Hours",
+            "file": "Upload"
         }

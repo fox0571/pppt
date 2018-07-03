@@ -100,7 +100,7 @@
           </div>
           {% endif %}
           <div class="box-body">
-            <form class='form' action="/warranty/account/{{ unit.pk }}/" method="post">
+            <form class='form' action="/warranty/account/{{ unit.pk }}/" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               {{ form.as_p }}
               <p>

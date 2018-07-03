@@ -134,3 +134,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = "C:\\inetpub\\wwwroot\\pppt\\static\\"
+
+MEDIA_ROOT = "C:\\inetpub\\wwwroot\\pppt\\request\\static\\media\\"
+MEDIA_URL = '/static/media/'

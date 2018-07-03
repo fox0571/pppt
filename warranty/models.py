@@ -12,5 +12,6 @@ class Invoice(models.Model):
 	sksid = models.CharField(max_length=30,null=True,blank=True)
 	add_time = models.DateTimeField(auto_now_add=True,blank=True)
 	note = models.TextField(null=True,blank=True)
+	file = models.FileField(null=True,blank=True,upload_to="invoice/")
 	def __str__(self):
 		return self.invoice

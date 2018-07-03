@@ -19,7 +19,7 @@
             <h3 class="box-title">Account Information</h3>
           </div>
           <div class="box-body">
-            <form class='form' action="#" method="post">
+            <form class='form' action="#" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               {{ form.as_p }}
               <p>
@@ -27,8 +27,20 @@
               Total Service Call Cost: $
                 <span id="total" class="hidden-xs"></span>
               </p>
-
+            
               <button type="submit" class="btn btn-primary pull-left">update</button>
+              </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Invioce Copy</h3>
+          </div>
+          <div class="box-body">
+            <img src={{ invoice.file.url }}>
+            <a href={{ invoice.file.url }} target="_blank">Click me</a>
           </div>
         </div>
       </div>

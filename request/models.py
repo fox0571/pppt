@@ -121,4 +121,4 @@ class Tag(models.Model):
 
 class FileSimpleModel(models.Model):
     sksid = models.CharField(max_length=20,null=True,blank=True)
-    file_field = models.FileField(upload_to="pppt/static/%Y/%m/%d/")
+    file_field = models.FileField(upload_to="pppt/request/static/%Y/%m/%d/")

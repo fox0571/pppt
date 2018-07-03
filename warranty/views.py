@@ -61,7 +61,7 @@ def invoice_list(request):
 def invoice_edit(request,pk):
     invoice=get_object_or_404(Invoice,pk=pk)
     if request.method == "POST":
-        form=AccountForm(request.POST,instance=invoice)
+        form=AccountForm(request.POST,request.FILES,instance=invoice)
         if form.is_valid():
             invoice=form.save(commit=False)
             tot=(invoice.travel_c
@@ -72,7 +72,7 @@ def invoice_edit(request,pk):
             return redirect("/warranty/account/invoice/")
     else:
         form=AccountForm(instance=invoice)
-    return render(request, 'account/invoice_edit.html',{'form':form})
+    return render(request, 'account/invoice_edit.html',{'form':form,'invoice':invoice})
 def account(request,pk):
     form=AccountForm()
     unit=get_object_or_404(UnitBasicInfo,pk=pk)
@@ -116,8 +116,8 @@ def update_warranty(request,pk):
         if form.is_valid():
             warranty=form.cleaned_data["warranty"]
             note=form.cleaned_data["warrantyNote"]
-            month=unit.callTime.month
-            year=unit.callTime.year
+            month=datetime.datetime.now().month
+            year=datetime.datetime.now().year
             area=unit.location_state
             code = get_code(area)
             unit.warranty=warranty
