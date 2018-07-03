@@ -14,32 +14,18 @@
 <script src="{% static "plugins/plotly.min.js" %}"></script>
 <script>
   myDiv=document.getElementById('myDiv');
-  trace = {
-    type: 'choropleth',
-    locationmode: 'USA-states',
-    locations: {{code|safe}},
-    z: {{number}},
-    text: {{name|safe}},
-    colorbar: {
-        title: 'Service Calls',
-        thickness: 20
-    },
-    marker: {
-        line:{
-            color: 'rgb(255,255,255)',
-            width: 2
-        }
-    }
+  var trace = {
+    type: "scatter",
+    mode: "lines",
+    name: 'AAPL High',
+    x: {{ date|safe }},
+    y: {{ service|safe}},
+    line: {color: '#17BECF'}
   };
   var layout = {
-      title: 'Service Calls by State',
+      title: 'Daily Service Calls',
       width: 1600,
       height: 800,
-      geo:{
-          scope: 'usa',
-          showlakes: true,
-          lakecolor: 'rgb(255,255,255)'
-      }
   };
   fig={data:[trace],layout:layout};   
   Plotly.newPlot('myDiv',fig);
