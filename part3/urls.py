@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^logout/$',views.logout),
     url(r'^data/$',vws.analysis),
     url(r'^data/1/$',vws.analysis_service_daily),
+    url(r'^data/2/$',vws.analysis_model_based),
+    url(r'^data/3/$',vws.analysis_type_based),
     url(r'^upload/(?P<pk>\d+)/$',vws.upload_file),
     path('admin/', admin.site.urls),
     path('user/',include('users.urls')),

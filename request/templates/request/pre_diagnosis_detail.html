@@ -25,7 +25,7 @@
                 <p class="text-light-blue">Phone: {{unit.phone|upper}}</p>
                 <p class="text-light-blue">Email: {{unit.email|upper}}</p>
                 <p class="text-light-blue">Address: {{unit.location_add1|upper}} {% if unit.location_add2 %}
-              {{unit.location_add2|upper}} 
+              {{unit.location_add2|upper}}
               {% endif %} {{unit.location_city|upper}}
                   {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
                 <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
@@ -51,7 +51,7 @@
                     {% for t in unit.tag_set.all %}
                     <button type="button" class="btn bg-olive">{{t}}</button>
                     {% endfor %}
-                  
+
                 </h3>
               </div>
               <div class="box-body">
@@ -84,7 +84,12 @@
                   <label>
                     {{ form.pre_diagnosis_pending }}Move to Pending Box.
                     <p>Uncheck it if you are going to finish it</p>
-                   </label>
+                  </label>
+                </div>
+                <div class="checkbox">
+                   <label>
+                     {{ form.long_term_pending }}Long Term Pending.
+                  </label>
                 </div>
                 <button type="submit" class="btn btn-primary pull-right">update</button>
               </div>

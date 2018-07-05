@@ -55,7 +55,37 @@ def analysis_service_daily(request):
         'date':date,
         'service':service,
     }
-    return render(request,'adm/analysis_service_daily.html',para)
+    return render(request,'stat/service_daily.html',para)
+def analysis_model_based(request):
+    model=['MBF','MCF','MSF','MGF','MPF','MBB','MBC','MKC','MWF','MMF'
+          ,'ATHP','ATFS','ATO','ATMG','ATCB','ATRC','ATSP','ATSB','ATCM'
+          ,'PPM','PPSL']
+    number=[]
+    for i in model:
+        n=UnitBasicInfo.objects.filter(serialNumber__istartswith=i).count()
+        number.append(n)
+    para={
+        'model':model,
+        'number':number,
+    }
+    return render(request,'stat/model_based.html',para)
+def analysis_type_based(request):
+    number=[]
+    number2=[]
+    total=UnitBasicInfo.objects.all().count()
+    a=UnitBasicInfo.objects.filter(serialNumber__istartswith='M').count()
+    b=UnitBasicInfo.objects.filter(serialNumber__istartswith='AT').count()
+    c=total-a-b
+    d=UnitBasicInfo.objects.filter(serialNumber__icontains='GR').count()
+    number.append(a)
+    number.append(b)
+    number.append(c)
+    number2.append(d)
+    number2.append(total-d)
+    para={
+        'count':number,
+    }
+    return render(request,'stat/type_based.html',para)
 def analysis(request):
     code_list=[]
     name_list=[]
@@ -70,7 +100,7 @@ def analysis(request):
         'number':number,
         'name':name_list,
     }
-    return render(request,'adm/analysis_location_based.html',para)
+    return render(request,'stat/location_based.html',para)
 class Pdf(View):
     def get(self, request,pk):
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
@@ -320,13 +350,23 @@ def show_admindp(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False).filter(pre_diagnosis_pending=False)
     alls=UnitBasicInfo.objects.filter(warranty=True).count()
     new=all.count()
-    pending=UnitBasicInfo.objects.filter(pre_diagnosis_pending=True).count()
-    return render(request, 'dispatcher/admin.html', {'new':new,'all':alls,'pending':pending})
+    pending=UnitBasicInfo.objects.filter(pre_diagnosis_pending=True).filter(long_term_pending=False).count()
+    long=UnitBasicInfo.objects.filter(long_term_pending=True).count()
+    para={
+        'new':new,
+        'all':alls,
+        'pending':pending,
+        'long_pending':long,
+    }
+    return render(request, 'dispatcher/admin.html',para)
 def get_all_undiagnosed(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False).filter(pre_diagnosis_pending=False)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_all_pending_undiagnosed(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_pending=True)
+    return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
+def get_long_pending(request):
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(long_term_pending=True)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_all_diag(request):
     all=UnitBasicInfo.objects.filter(warranty=True).order_by("-timestamp_diagnosis")
@@ -366,8 +406,6 @@ def diagnosis(request,pk):
         form=DiagnosisForm(request.POST,instance=unit)
         select_tags = request.POST.getlist('tags[]')
         tag_form=TagForm(request.POST)
-
-
         if tag_form.is_valid():
             if tag_form.cleaned_data["name"]!="":
                 new_tag=tag_form.save()
@@ -376,8 +414,6 @@ def diagnosis(request,pk):
             for t in select_tags:
                 tag=get_object_or_404(Tag,pk=t)
                 tag.model.add(unit)
-
-
         if form.is_valid():
             unit=form.save(commit=False)
             if not unit.pre_diagnosis_pending:

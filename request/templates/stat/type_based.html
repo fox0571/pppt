@@ -1,0 +1,31 @@
+{% extends 'adm/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+  <section class="content">
+    <div class="box">
+      <div id="myDiv">
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/plotly.min.js" %}"></script>
+<script>
+  myDiv=document.getElementById('myDiv');
+  var data = [{
+    values: {{count|safe}},
+    labels: ['Cold', 'Hot', 'Other'],
+    type: 'pie'
+  }];
+
+  var layout = {
+    height: 400,
+    width: 500
+  };
+  Plotly.newPlot('myDiv', data, layout);
+</script>
+{% endblock %}

@@ -3,9 +3,17 @@
 {% load tz %}
 
 {% block left_nav %}
-<li>
-  <a href="/data/">
+
+<li class="treeview">
+  <a href="#">
     <i class="fa fa-book"></i> <span>Data Analysis</span>
   </a>
+  <ul class="treeview-menu">
+    <li><a href="/data/">By Location</a></li>
+    <li><a href="/data/1">By Date</a></li>
+    <li><a href="/data/2">By Model</a></li>
+    <li><a href="/data/3">By Type</a></li>
+  </ul>
+
 </li>
 {% endblock %}

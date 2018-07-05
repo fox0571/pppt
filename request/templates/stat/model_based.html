@@ -1,0 +1,44 @@
+{% extends 'adm/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+  <section class="content">
+    <div class="box">
+      <div id="myDiv">
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/plotly.min.js" %}"></script>
+<script>
+  myDiv=document.getElementById('myDiv');
+  var trace1 = {
+    x: {{model|safe}},
+    y: {{number|safe}},
+    type: 'bar',
+    text: {{number|safe}},
+    textposition: 'auto',
+    hoverinfo: 'none',
+    marker: {
+      color: 'rgb(158,202,225)',
+      opacity: 0.6,
+      line: {
+        color: 'rbg(8,48,107)',
+        width: 1.5
+      }
+    }
+  };
+
+  var data = [trace1];
+
+  var layout = {
+    title: 'Statistics by Model'
+  };
+
+  Plotly.newPlot('myDiv', data, layout);
+</script>
+{% endblock %}

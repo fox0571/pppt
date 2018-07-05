@@ -2,12 +2,14 @@
 {% load static %}
 
 {% block content %}
-<section class="content">
-  <div class="box">
-    <div id="myDiv">
+<div class="content-wrapper">
+  <section class="content">
+    <div class="box">
+      <div id="myDiv">
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 {% endblock %}
 
 {% block script %}
@@ -24,10 +26,11 @@
   };
   var layout = {
       title: 'Daily Service Calls',
-      width: 1200,
+      width: 800,
       height: 600,
   };
-  fig={data:[trace],layout:layout};   
+
+  fig={data:[trace],layout:layout};
   Plotly.newPlot('myDiv',fig);
 </script>
 {% endblock %}

@@ -90,7 +90,7 @@ class WarrantyForm(forms.Form):
 class DiagnosisForm(ModelForm):
     class Meta:
         model = UnitBasicInfo
-        fields = ['pre_diagnosis','pre_diagnosis_pending']
+        fields = ['pre_diagnosis','pre_diagnosis_pending','long_term_pending']
         widgets = {
             'pre_diagnosis':forms.Textarea(attrs={'class': 'form-control'})
         }

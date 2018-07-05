@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^diag/$', views.get_all_undiagnosed, name='alldiag'),
     url(r'^diag/all/$', views.get_all_diag, name='ad'),
     url(r'^diag/pending/$', views.get_all_pending_undiagnosed, name='pd'),
+    url(r'^diag/long/$', views.get_long_pending, name='long'),
     url(r'^part/all/$', views.show_part_list, name='part_list'),
     url(r'^part/new/$', views.show_new_part, name='n_part'),
 ]

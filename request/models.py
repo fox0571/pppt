@@ -76,6 +76,7 @@ class UnitBasicInfo(models.Model):
     pre_diagnosis_flag=models.BooleanField(blank=True,default=False)
     timestamp_diagnosis=models.DateTimeField(blank=True,null=True)
     pre_diagnosis_pending=models.BooleanField(default=False,blank=True)
+    long_term_pending = models.BooleanField(default=False,blank=True)
     followup_customer=models.TextField(null=True,blank=True)
     followup_customer_time=models.DateTimeField(null=True,auto_now=True)
     followup_tech=models.TextField(null=True,blank=True)
@@ -85,7 +86,7 @@ class UnitBasicInfo(models.Model):
         if self.sksid:
             return self.sksid+", "+self.serialNumber
         return self.serialNumber
-    
+
 class PartRequest(models.Model):
     sn=models.CharField(max_length=30,null=True,blank=True)
     sksid=models.CharField(max_length=30)
