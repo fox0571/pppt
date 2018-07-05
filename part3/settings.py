@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'warranty.apps.WarrantyConfig',
     'users.apps.UsersConfig',
     'units.apps.UnitsConfig',
-    'taggit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,15 +81,10 @@ WSGI_APPLICATION = 'part3.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'service',
-        'USER': 'root',
-        'PASSWORD': 'Atosa123',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '192.168.5.130',
         'OPTIONS': {
-          'autocommit': True,
-	  'use_pure' : True,
+          'read_default_file':'/etc/my.cnf',
         },
     }
 }

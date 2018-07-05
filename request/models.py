@@ -1,6 +1,5 @@
 from django.db import models
 from django.forms import ModelForm
-from taggit.managers import TaggableManager
 
 SHIPPING_METHOD = (
     ('NDA','NEXT DAY AIR'),
