@@ -416,7 +416,8 @@ def diagnosis(request,pk):
                 tag.model.add(unit)
         if form.is_valid():
             unit=form.save(commit=False)
-            if not unit.pre_diagnosis_pending:
+            if ((not unit.pre_diagnosis_pending)
+                and (not unit.long_term_pending)):
                 unit.timestamp_diagnosis=datetime.datetime.now()
                 unit.pre_diagnosis_flag=True
                 unit.save()
