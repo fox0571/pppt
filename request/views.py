@@ -83,7 +83,7 @@ def analysis_cost_based(request):
                 invoice=Invoice.objects.filter(sksid=sksid)
                 n=invoice.count()
                 for i in invoice:
-                    total=total+i.total_c
+                    total=total+float(i.total_c)
         else:
             n=PartRequest.objects.filter(name__icontains=i)
             for p in n:
@@ -91,7 +91,7 @@ def analysis_cost_based(request):
                 invoice=Invoice.objects.filter(sksid=sksid)
                 n=invoice.count()
                 for i in invoice:
-                    total=total+i.total_c
+                    total=total+float(i.total_c)
         y1.append(total/float(n))
         y2.append(total)
     para={
