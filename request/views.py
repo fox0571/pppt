@@ -75,13 +75,13 @@ def analysis_cost_based(request):
     y2=[]
     for i in label:
         total=0.0
-        n=0
+        nn=0
         if i=="Door Switch":
             n=PartRequest.objects.filter(number="W0308012")
             for p in n:
                 sksid=p.sksid
                 invoice=Invoice.objects.filter(sksid=sksid)
-                n=invoice.count()
+                nn=invoice.count()
                 for i in invoice:
                     total=total+float(i.total_c)
         else:
@@ -89,10 +89,13 @@ def analysis_cost_based(request):
             for p in n:
                 sksid=p.sksid
                 invoice=Invoice.objects.filter(sksid=sksid)
-                n=invoice.count()
+                nn=invoice.count()
                 for i in invoice:
                     total=total+float(i.total_c)
-        y1.append(total/float(n))
+        if nn==0:
+            y1.append(0)
+        else:
+            y1.append(total/float(nn))
         y2.append(total)
     para={
         'label':label,
