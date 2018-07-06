@@ -87,6 +87,9 @@ class UnitBasicInfo(models.Model):
             return self.sksid+", "+self.serialNumber
         return self.serialNumber
 
+    class Meta:
+        ordering = ('sksid',)
+
 class PartRequest(models.Model):
     sn=models.CharField(max_length=40,null=True,blank=True)
     sksid=models.CharField(max_length=30)

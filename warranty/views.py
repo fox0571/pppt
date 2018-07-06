@@ -87,6 +87,7 @@ def account(request,pk):
                 +new_invoice.material_c)
             new_invoice.sksid=unit.sksid
             new_invoice.total_c=tot
+            new_invoice.incident=unit
             new_invoice.save()
             return redirect("#/")
         return render(request, 'account/rate.html',{'form':form,'unit':unit,'invoices':inv})

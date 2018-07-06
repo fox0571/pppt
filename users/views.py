@@ -52,12 +52,16 @@ def show_service_detail(request,pk):
     form=DispatchForm()
     return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form})
 def show_operator_page(request):
+    if not request.session.get('is_login', None):
+        return redirect("/user/login/")
     name=request.session['user_name']
     a=UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).count()
     b=UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).count()
     c=UnitBasicInfo.objects.all().filter(receiver=name).count()
     return render(request, 'operator/dashboard.html',{'today':a,'oow':b,'all':c})
 def show_dispatcher_page(request):
+    if not request.session.get('is_login', None):
+        return redirect("/user/login/")
     name=request.session['user_name']
     code = request.session['user_code']
     user = Users.objects.get(code=code)

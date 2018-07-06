@@ -6,6 +6,10 @@
 #total{
   text-decoration: underline;
 }
+p.thick {
+    font-weight: bold;
+}
+
 </style>
 {% endblock %}
 {% block content %}
@@ -30,7 +34,17 @@
             <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
             <p class="text-light-blue">Received by {{unit.receiver}} @ {{unit.callTime}}</p>
           </div>
-          <!-- /.box-body -->
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Warranty Information</h3>
+          </div>
+          <div class="box-body">
+            <div class="box-body">
+            <p>Warranty: {{unit.warranty}}</p>
+            <P style="font-weight: bold;">{{unit.warrantyNote|upper|linebreaks}}</P>
+          </div>
+          </div>
         </div>
         <div class="box box-primary">
           <div class="box-header with-border">
@@ -108,10 +122,12 @@
             </table>
           </div>
           <div class="box-body">
-            <p>Note:</p>
             {% if invoices %}
               {% for p in invoices %}
-                <p>{{ p.invoice }}: {{p.note}}</p>
+                {% if p.note %}
+                  <p>Note:</p>
+                  <p>{{ p.invoice }}: {{p.note}}</p>
+                {% endif %}
               {% endfor %}
             {% endif %}
           </div>

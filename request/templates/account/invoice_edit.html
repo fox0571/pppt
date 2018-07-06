@@ -39,8 +39,10 @@
             <h3 class="box-title">Invioce Copy</h3>
           </div>
           <div class="box-body">
+            {% if invoice.file %}
             <img src={{ invoice.file.url }}>
             <a href={{ invoice.file.url }} target="_blank">Click me</a>
+            {% endif %}
           </div>
         </div>
       </div>

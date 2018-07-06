@@ -38,6 +38,7 @@
                       <th>Material Cost</th>
                       <th>Travel Hour</th>
                       <th>Labor Hour</th>
+                      <th>Print</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -53,6 +54,8 @@
                         <td>${{ p.material_c }}</td>
                         <td>{{ p.travel_t }}</td>
                         <td>{{ p.labor_t }}</td>
+                        <td><a href="/render/pdf/{{ p.incident.pk }}/" target="_blank">
+                        Print</td>
                       </tr>
                       {% endfor %}
                   </tbody>
@@ -86,7 +89,8 @@
       "searching": true,    <!-- 允许内容搜索 -->
       "ordering": true,     <!-- 允许排序 -->
       "info": true,         <!-- 显示信息 -->
-      "autoWidth": true    <!-- 固定宽度 -->
+      "autoWidth": true,    <!-- 固定宽度 -->
+      "iDisplayLength": 50,
     });
   });
 </script>
