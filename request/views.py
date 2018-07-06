@@ -363,7 +363,7 @@ def get_all_undiagnosed(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_flag=False).filter(pre_diagnosis_pending=False)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_all_pending_undiagnosed(request):
-    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_pending=True)
+    all=UnitBasicInfo.objects.filter(warranty=True).filter(pre_diagnosis_pending=True).filter(long_term_pending=False)
     return render(request, 'request/pre_diagnosis_list.html', {'requests':all})
 def get_long_pending(request):
     all=UnitBasicInfo.objects.filter(warranty=True).filter(long_term_pending=True)
