@@ -1,0 +1,65 @@
+{% extends 'adm/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+  <section class="content">
+    <div class="box">
+      <div id="myDiv">
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/plotly.min.js" %}"></script>
+<script>
+  myDiv=document.getElementById('myDiv');
+  var xValue = {{label|safe}};
+
+  var yValue = {{y1|safe}};
+  var yValue2 = {{y2|safe}};
+
+  var trace1 = {
+    x: xValue,
+    y: yValue,
+    type: 'bar',
+    text: Average Cost,
+    textposition: 'auto',
+    hoverinfo: 'none',
+    opacity: 0.5,
+    marker: {
+      color: 'rgb(158,202,225)',
+      line: {
+        color: 'rbg(8,48,107)',
+        width: 1.5
+      }
+    }
+  };
+
+  var trace2 = {
+    x: xValue,
+    y: yValue2,
+    type: 'bar',
+    text: Total Cost,
+    textposition: 'auto',
+    hoverinfo: 'none',
+    marker: {
+      color: 'rgba(58,200,225,.5)',
+      line: {
+        color: 'rbg(8,48,107)',
+        width: 1.5
+      }
+    }
+  };
+
+  var data = [trace1,trace2];
+
+  var layout = {
+    title: 'Cost Statistic'
+  };
+
+  Plotly.newPlot('myDiv', data, layout);
+</script>
+{% endblock %}

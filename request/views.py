@@ -69,6 +69,37 @@ def analysis_model_based(request):
         'number':number,
     }
     return render(request,'stat/model_based.html',para)
+def analysis_cost_based(request):
+    label=["Door Switch","Compressor","Evap"]
+    y1=[]
+    y2=[]
+    for i in label:
+        total=0.0
+        n=0
+        if i=="Door Switch":
+            n=PartRequest.objects.filter(number="W0308012")
+            for p in n:
+                sksid=p.sksid
+                invoice=Invoice.objects.filter(sksid=sksid)
+                n=invoice.count()
+                for i in invoice:
+                    total=total+i.total_c
+        else:
+            n=PartRequest.objects.filter(name__icontains=i)
+            for p in n:
+                sksid=p.sksid
+                invoice=Invoice.objects.filter(sksid=sksid)
+                n=invoice.count()
+                for i in invoice:
+                    total=total+i.total_c
+        y1.append(total/float(n))
+        y2.append(total)
+    para={
+        'label':label,
+        'y1':y1,
+        'y2':y2,
+    }
+    return render(request,'stat/cost_based.html',para)
 def analysis_type_based(request):
     number=[]
     number2=[]
