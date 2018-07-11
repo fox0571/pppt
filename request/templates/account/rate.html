@@ -2,11 +2,13 @@
 {% extends 'account/index.html' %}
 {% load static %}
 {% block css %}
+<link rel="stylesheet" href="{% static "bower_components/select2/dist/css/select2.min.css" %}">
 <style>
 #total{
   text-decoration: underline;
 }
 </style>
+
 {% endblock %}
 {% block content %}
 
@@ -130,6 +132,12 @@
 </div>
 {% endblock %}
 {% block script %}
+<script src="{% static "bower_components/select2/dist/js/select2.full.min.js" %}"></script>
+<script>
+  $(function () {
+    $('.select2').select2()
+  });
+</script>
 <script>
 function count() {
   var l_c = parseFloat(document.getElementById("id_labor_c").value);

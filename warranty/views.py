@@ -47,6 +47,7 @@ def get_code(area):
     for st in LIST_6:
         if st==area:
             return 6
+    return (-1)
 def reg_month(month):
     if month<10:
         return "0"+str(month)
@@ -114,6 +115,7 @@ def update_warranty(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     if request.method == "POST":
         form=WarrantyForm(request.POST,instance=unit)
+        print (unit)
         if form.is_valid():
             warranty=form.cleaned_data["warranty"]
             note=form.cleaned_data["warrantyNote"]
@@ -125,8 +127,9 @@ def update_warranty(request,pk):
             unit.warrantyNote=note
             unit.areaCode=code
             #if under warranty:
-            new_id=new_sksid(month,year,code)
-            unit.sksid=new_id
+            if code != -1:
+                new_id=new_sksid(month,year,code)
+                unit.sksid=new_id
             unit.save()
             return redirect('/warranty/')
         return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form})

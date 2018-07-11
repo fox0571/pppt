@@ -1,0 +1,75 @@
+{% extends 'adm/index.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <section class="content">
+    <form class='form' action="#/" method="post">
+      {% csrf_token %}
+      <section class="content-header">
+        <div class="row">
+          <div class="col-xs-4">
+            <select class="form-control select2" data-placeholder="Select tags" name="tags" id="tags" style="width: 100%;">
+              {% for t in tags %}
+              <option value="{{t.id}}">{{t}}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn bg-blue">GET</button>
+          </div>
+        </div>
+      </section>
+        <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-body">
+                <table id="assets_table" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Serial Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for u in units %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ u.serialNumber }}</td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+      </section>
+    </form>
+    <!-- DataTables -->
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script>
+  $(function () {
+    $('#assets_table').DataTable({
+      "paging": true,       <!-- 允许分页 -->
+      "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+      "searching": true,    <!-- 允许内容搜索 -->
+      "ordering": true,     <!-- 允许排序 -->
+      "info": true,         <!-- 显示信息 -->
+      "autoWidth": true,    <!-- 固定宽度 -->
+      "iDisplayLength": 50,
+    });
+  });
+</script>
+{% endblock %}

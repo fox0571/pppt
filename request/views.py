@@ -56,6 +56,26 @@ def analysis_service_daily(request):
         'service':service,
     }
     return render(request,'stat/service_daily.html',para)
+def analysis_part_based(request):
+    tags=Tag.objects.all()
+    part=PartRequest.objects.all()
+    #u=UnitBasicInfo.objects.filter(pre_diagnosis__icontains="w0308012")
+    #tt=Tag.objects.get(name="Door Switch")
+    # for uu in u:
+    #     tt.model.add(uu)
+    para={'tags':tags}
+    if request.method == "POST":
+        t=request.POST.get('tags','')
+        #print (t,"++")
+        units=UnitBasicInfo.objects.filter(tag__pk=t)
+        #print (t,"--")
+        para={
+            'tags':tags,
+            'units':units,
+        }
+        print("--",para)
+        return render(request,'stat/part_based.html',para)
+    return render(request,'stat/part_based.html',para)
 def analysis_model_based(request):
     model=['MBF','MCF','MSF','MGF','MPF','MBB','MBC','MKC','MWF','MMF'
           ,'ATHP','ATFS','ATO','ATMG','ATCB','ATRC','ATSP','ATSB','ATCM'
@@ -385,11 +405,10 @@ def show_adminop(request):
         final_data.append(count)
     return render(request, 'request/operator_supervisor.html', {'new':new,'data':final_data})
 def add_tag(request,pk):
-    pass
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     all_tags = Tag.objects.all()
     if request.method == "POST":
-        select_tags = request.POST.getlist('tags[]')
+        select_tags = request.POST.getlist('tags')
         tag_form=TagForm(request.POST)
         if tag_form.is_valid():
             new_tag=tag_form.save()
@@ -404,7 +423,8 @@ def diagnosis(request,pk):
     all_tags = Tag.objects.all()
     if request.method == "POST":
         form=DiagnosisForm(request.POST,instance=unit)
-        select_tags = request.POST.getlist('tags[]')
+        select_tags = request.POST.getlist('tags')
+        print (select_tags)
         tag_form=TagForm(request.POST)
         if tag_form.is_valid():
             if tag_form.cleaned_data["name"]!="":

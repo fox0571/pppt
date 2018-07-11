@@ -26,3 +26,6 @@ class AccountForm(forms.ModelForm):
             "labor_t": "Labor Hours",
             "file": "Upload"
         }
+        widgets = {
+            'incident': forms.Select(attrs={'class': 'form-control select2'}),
+        }

@@ -18,6 +18,9 @@
               <label>Model:</label>
               <input type="text" name="model" class="form-control">
               <br />
+              <label>Part:</label>
+              <input type="text" name="part" class="form-control">
+              <br />
               <button type="submit" class="btn pull-left">Search
             </div>
           </div>
@@ -36,6 +39,7 @@
                       <th>No.</th>
                       <th>Part #</th>
                       <th>Name</th>
+                      <th>Apply for</th>
                       <th>Description</th>
                       <th>End User Price</th>
                     </tr>
@@ -46,7 +50,8 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ r.number }}</td>
                         <td>{{ r.name_eng }}</td>
-                        <td>{{ r.description }}</td>
+                        <td>{{ r.model }}</td>
+                        <td>{{ r.description_eng }}</td>
                         <td> $ {{ r.price_enduser }}</td>
                       </tr>
                       {% endfor %}
@@ -56,6 +61,7 @@
                       <th>No.</th>
                       <th>Part #</th>
                       <th>Name</th>
+                      <th>Apply for</th>
                       <th>Description</th>
                       <th>End User Price</th>
                     </tr>
