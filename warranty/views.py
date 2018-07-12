@@ -80,7 +80,7 @@ def account(request,pk):
     inv=Invoice.objects.all().filter(sksid=unit.sksid)
     if request.method == "POST":
         new_invoice=Invoice()
-        form=AccountForm(request.POST,instance=new_invoice)
+        form=AccountForm(request.POST,request.FILES,instance=new_invoice)
         if form.is_valid():
             new_invoice = form.save(commit=False)
             tot=(new_invoice.travel_c

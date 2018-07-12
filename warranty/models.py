@@ -1,6 +1,12 @@
 from django.db import models
 from request.models import UnitBasicInfo
 # Create your models here.
+
+STATUS = (
+    (0,'Waiting'),
+    (1,'Approved'),
+    (2,'Disputed'),
+)
 class Invoice(models.Model):
 	invoice = models.CharField(max_length=20,null=True)
 	travel_t = models.DecimalField(max_digits=5, decimal_places=2,null=True)
@@ -14,5 +20,10 @@ class Invoice(models.Model):
 	note = models.TextField(null=True,blank=True)
 	file = models.FileField(null=True,blank=True,upload_to="invoice/")
 	incident = models.ForeignKey(UnitBasicInfo, on_delete=models.CASCADE,null=True)
+	status = models.IntegerField(choices=STATUS,default=0)
+	dispute_note = models.TextField(null=True,blank=True)
 	def __str__(self):
 		return self.invoice+", "+self.sksid
+
+	class Meta:
+		ordering = ('add_time',)

@@ -15,7 +15,7 @@ class WarrantyForm(forms.ModelForm):
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Invoice
-        exclude = ['total_c','sksid']
+        exclude = ['total_c','sksid','status','dispute_note']
 
         labels = {
             "invoice": "Service Invoice Number",

@@ -97,6 +97,8 @@ def show_admin_page(request):
     return render(request, 'adm/dashboard.html', para)
 
 def show_page(request):
+    if not request.session.get('is_login', None):
+        return redirect("/user/login/")
     group = request.session['user_group']
     if group=="dispatcher":
         return redirect('dispatcher/')

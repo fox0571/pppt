@@ -19,6 +19,8 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from users import views
 from request import views as vws
+from .routers import router
+
 urlpatterns = [
     url(r'^$',views.login),
     url(r'^logout/$',views.logout),
@@ -29,6 +31,7 @@ urlpatterns = [
     url(r'^data/5/$',vws.analysis_part_based),
     url(r'^upload/(?P<pk>\d+)/$',vws.upload_file),
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
     path('user/',include('users.urls')),
     path('unit/',include('units.urls')),
     path('request/',include('request.urls', namespace="request")),
