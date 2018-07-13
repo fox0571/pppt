@@ -124,5 +124,5 @@ class Tag(models.Model):
         ordering = ('name',)
 
 class FileSimpleModel(models.Model):
-    sksid = models.CharField(max_length=20,null=True,blank=True)
-    file_field = models.FileField(upload_to="pppt/request/static/%Y/%m/%d/")
+    incident = models.ForeignKey(UnitBasicInfo, on_delete=models.CASCADE,null=True,blank=True)
+    file_field = models.FileField(upload_to="%Y/%m/%d/")

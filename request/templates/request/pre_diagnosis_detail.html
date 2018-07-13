@@ -50,7 +50,6 @@
                     {% for t in unit.tag_set.all %}
                     <button type="button" class="btn bg-olive">{{t}}</button>
                     {% endfor %}
-
                 </h3>
               </div>
               <div class="box-body">
@@ -70,6 +69,20 @@
                 </div>
               </div>
             </div>
+            {% if files %}
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Files</h3>
+              </div>
+              <div class="box-body">
+                {% for f in files %}
+                  <p>
+                    <a href={{ f.file_field.url }} target="_blank">{{forloop.counter}}</a>
+                  </p>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
             <div class="box box-primary">
               <div class="box-header with-border">
                 <h3 class="box-title">Pre-diagnosis</h3>

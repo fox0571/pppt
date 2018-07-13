@@ -49,6 +49,7 @@
                     <th>Called</th>
                     <th>Status</th>
                     <th>Tech</th>
+                    <th>File</th>
                     <th>Detail</th>
                   </tr>
                 </thead>
@@ -77,6 +78,7 @@
                             {% endif %}
                       </td>
                       <td>{{ r.techName }}</td>
+                      <td><a href="/upload/{{ r.pk }}">Upload</a></td>
                       <td><a href="/request/{{ r.pk }}">View</a></td>
                     </tr>
                     {% endfor %}
@@ -92,6 +94,7 @@
                     <th>Called</th>
                     <th>Status</th>
                     <th>Tech</th>
+                    <th>File</th>
                     <th>Detail</th>
                   </tr>
                 </tfoot>

@@ -35,8 +35,7 @@ def upload_file(request,pk):
         if my_form.is_valid():
             file_model = FileSimpleModel()
             file_model.file_field = my_form.cleaned_data['my_file']
-            sksid=unit.sksid
-            file_model.sksid=sksid
+            file_model.incident=unit
             file_model.save()
             message="Upload successfully!"
             return render(request, 'request/upload.html', {'form': my_form,'unit':unit,'messages':message})
@@ -187,9 +186,11 @@ def show_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     id=unit.sksid
     parts = PartRequest.objects.all().filter(sksid=id)
+    files = FileSimpleModel.objects.all().filter(incident=unit)
     para={
         'unit':unit,
         'parts':parts,
+        'files':files,
     }
     return render(request,'request/detail.html',para)
 def part_dashboard(request):
@@ -420,6 +421,7 @@ def add_tag(request,pk):
     return redirect("#/")
 def diagnosis(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    files = FileSimpleModel.objects.all().filter(incident=unit)
     all_tags = Tag.objects.all()
     if request.method == "POST":
         form=DiagnosisForm(request.POST,instance=unit)
@@ -453,6 +455,7 @@ def diagnosis(request,pk):
         'form': form,
         'tag_form' :tag_form,
         'tags': all_tags,
+        'files': files,
     }
     return render(request, 'request/pre_diagnosis_detail.html', para)
 def update_tech_info(request,pk):
