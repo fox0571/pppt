@@ -17,6 +17,8 @@ GROUPS = (
             (0,"ADMIN"),
             (15,"Parts"),
             (16,"Account"),
+            (17,"In-house Dispatcher 1"),
+            (18,"In-house Dispatcher 2"),
 )
 
 STATES = (

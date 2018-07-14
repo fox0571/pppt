@@ -81,6 +81,7 @@ class UnitBasicInfo(models.Model):
     followup_customer_time=models.DateTimeField(null=True,auto_now=True)
     followup_tech=models.TextField(null=True,blank=True)
     followup_tech_time=models.DateTimeField(null=True,auto_now=True)
+    inhouse = models.BooleanField(default=False)
 
     def __str__(self):
         if self.sksid:

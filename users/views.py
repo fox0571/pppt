@@ -21,15 +21,58 @@ def get_all_records(request):
     return render(request, 'operator/list.html', {'request':request_list})
 def get_all_dispatcher_records(request):
     code = request.session['user_code']
-    request_list = UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).order_by('-callTime')
+    request_list = (UnitBasicInfo.objects.all()
+                    .filter(areaCode=code)
+                    .filter(finished=True)
+                    .filter(inhouse=False)
+                    .order_by('-callTime'))
+    return render(request, 'dispatcher/list.html', {'request':request_list})
+def get_all_dispatcher_records_inhouse(request):
+    code = request.session['user_code']
+    request_list = (UnitBasicInfo.objects.all()
+                    .filter(areaCode=code)
+                    .filter(finished=True)
+                    .filter(inhouse=True)
+                    .order_by('-callTime'))
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_scheduled_records(request):
     code = request.session['user_code']
-    request_list = UnitBasicInfo.objects.all().filter(pre_diagnosis_flag=True).filter(areaCode=code).filter(finished=False).exclude(scheDate=None).order_by('scheDate')
+    request_list = (UnitBasicInfo.objects.all()
+                    .filter(pre_diagnosis_flag=True)
+                    .filter(areaCode=code)
+                    .filter(inhouse=False)
+                    .filter(finished=False)
+                    .exclude(scheDate=None)
+                    .order_by('scheDate'))
+    return render(request, 'dispatcher/list.html', {'request':request_list})
+def get_all_scheduled_records_inhouse(request):
+    request_list = (UnitBasicInfo.objects.all()
+                    .filter(finished=False)
+                    .filter(inhouse=True)
+                    .exclude(scheDate=None)
+                    .order_by('scheDate'))
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_new_records(request):
     code = request.session['user_code']
-    request_list = UnitBasicInfo.objects.all().filter(pre_diagnosis_flag=True).filter(warranty=True).filter(areaCode=code).filter(scheDate=None).exclude(finished=True).order_by('-callTime')
+    request_list = (UnitBasicInfo.objects.all()
+                    .filter(pre_diagnosis_flag=True)
+                    .filter(warranty=True)
+                    .filter(inhouse=False)
+                    .filter(areaCode=code)
+                    .filter(scheDate=None)
+                    .exclude(finished=True)
+                    .order_by('-callTime'))
+    return render(request, 'dispatcher/list.html', {'request':request_list})
+def get_new_records_inhouse(request):
+    code = request.session['user_code']
+    request_list = (UnitBasicInfo.objects.all()
+                    .filter(pre_diagnosis_flag=True)
+                    .filter(warranty=True)
+                    .filter(areaCode=code)
+                    .filter(scheDate=None)
+                    .filter(inhouse=True)
+                    .exclude(finished=True)
+                    .order_by('-callTime'))
     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_part_records(request):
     code = request.session['user_code']
