@@ -47,7 +47,6 @@ class DispatchForm(forms.Form):
     tech_state = forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}))
     tech_zip = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     tech_note = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',}))
-    
     schedule_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class': 'form-control','id':'datetime'}))
 class LoginForm(forms.Form):
     user = forms.ChoiceField(choices=GROUPS,widget=forms.Select(attrs={'class': 'form-control','data-placeholder':"Select a user"}))

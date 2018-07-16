@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import UnitBasicInfo, PartRequest, Tag, FileSimpleModel
 from django.utils import timezone
-from .forms import FileUploadForm,TagForm, FirstForm, RequestForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm, PreDiagnosisForm,PartForm,PartRequestUpdateForm
+from .forms import FileUploadForm, InhouseForm, TagForm, FirstForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm,PartForm,PartRequestUpdateForm
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
@@ -58,16 +58,10 @@ def analysis_service_daily(request):
 def analysis_part_based(request):
     tags=Tag.objects.all()
     part=PartRequest.objects.all()
-    #u=UnitBasicInfo.objects.filter(pre_diagnosis__icontains="w0308012")
-    #tt=Tag.objects.get(name="Door Switch")
-    # for uu in u:
-    #     tt.model.add(uu)
     para={'tags':tags}
     if request.method == "POST":
         t=request.POST.get('tags','')
-        #print (t,"++")
         units=UnitBasicInfo.objects.filter(tag__pk=t)
-        #print (t,"--")
         para={
             'tags':tags,
             'units':units,
@@ -461,7 +455,26 @@ def diagnosis(request,pk):
 def update_tech_info(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     form=DispatchForm()
+    form1=InhouseForm()
     if request.method == "POST":
+        in_house=request.POST.get("inhouse","")
+        if in_house=="True":
+            unit.inhouse=True
+            a_note=(str(datetime.datetime.now())+"\n"+"Send To In-house Tech Dispatcher")
+            if unit.techNote:
+                unit.techNote=unit.techNote+"\n"+a_note
+            else:
+                unit.techNote=a_note
+            unit.save()
+        else:
+            unit.inhouse=False
+            a_note=(str(datetime.datetime.now())+"\n"+"Send Back To Dispatcher"+"\n"+"In-house Tech is not available")
+            if unit.techNote:
+                unit.techNote=unit.techNote+"\n"+a_note
+            else:
+                unit.techNote=a_note
+            unit.save()
+        return redirect('/user/dispatcher/new')
         form=DispatchForm(request.POST)
         if form.is_valid():
             tech_name=form.cleaned_data["tech_name"]
@@ -496,7 +509,7 @@ def update_tech_info(request,pk):
             else:
                 unit.techNote=a_note
             unit.save()
-    return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form})
+    return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form,'form1':form1})
 def show_question(request,pk):
     if request.session['unit_type']=="HOT":
         form=HotTechQuestionForm()

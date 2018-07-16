@@ -23,6 +23,10 @@ STATES = (
     ("TX", "Texas"),("UT", "Utah"),("VT", "Vermont"),("VI", "Virgin Islands"),("VA", "Virginia"),
     ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
 )
+CHOICES_8=(
+    (False, 'To 3rd party tech company'),
+    (True, 'To in-house tech dispatcher'),
+)
 class Address(models.Model):
     contact=models.CharField(max_length=50)
     address1=models.CharField(max_length=200)
@@ -81,7 +85,7 @@ class UnitBasicInfo(models.Model):
     followup_customer_time=models.DateTimeField(null=True,auto_now=True)
     followup_tech=models.TextField(null=True,blank=True)
     followup_tech_time=models.DateTimeField(null=True,auto_now=True)
-    inhouse = models.BooleanField(default=False)
+    inhouse = models.BooleanField(default=False,choices=CHOICES_8)
 
     def __str__(self):
         if self.sksid:

@@ -55,6 +55,13 @@ class ColdTechQuestionForm(forms.Form):
     evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     double_check = forms.BooleanField(required=True)
+class InhouseForm(ModelForm):
+    class Meta:
+        model = UnitBasicInfo
+        fields = ['inhouse']
+        widget = {
+            'inhouse': forms.RadioSelect()
+        }
 class FirstForm(ModelForm):
     type = forms.ChoiceField(choices=CHOICES_7,widget=forms.RadioSelect(attrs={'class': 'radio'}))
     double_check = forms.BooleanField(required=True)
@@ -94,9 +101,6 @@ class DiagnosisForm(ModelForm):
         widgets = {
             'pre_diagnosis':forms.Textarea(attrs={'class': 'form-control'})
         }
-class PreDiagnosisForm(forms.Form):
-    note = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
-    double_check = forms.BooleanField(required=True)
 class PartForm(forms.Form):
     number1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
     name1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
@@ -116,18 +120,6 @@ class PartForm(forms.Form):
     phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}),required=False)
     to_customer=forms.BooleanField(required=False)
     to_tech=forms.BooleanField(required=False)
-class RequestForm(forms.Form):
-    SKSID = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
-    businessName = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the business name'}))
-    serialNumber = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter the serial number'}))
-    issue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'Enter the description of issue'}))
-    contact=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
-    address1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
-    address2=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
-    city=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
-    state=forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
-    zipCode=forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
-    phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Enter SKS number'}))
 class PartRequestUpdateForm(forms.Form):
     tracking = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Tracking number'}))
     note = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder': 'ETA'}))

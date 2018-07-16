@@ -1,4 +1,5 @@
 import datetime
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginForm, DispatchForm, ChangePassword
 from request.forms import PartForm, FirstForm
@@ -21,59 +22,80 @@ def get_all_records(request):
     return render(request, 'operator/list.html', {'request':request_list})
 def get_all_dispatcher_records(request):
     code = request.session['user_code']
-    request_list = (UnitBasicInfo.objects.all()
-                    .filter(areaCode=code)
-                    .filter(finished=True)
-                    .filter(inhouse=False)
+    my_tasks=""
+    if code=="17":
+        my_tasks=UnitBasicInfo.objects.filter(Q(location_state='TX') | Q(location_state='CA')).filter(inhouse=True)
+    elif code=="18":
+        my_tasks=UnitBasicInfo.objects.filter(Q(location_state='MA') | Q(location_state='NJ')).filter(inhouse=True)
+    else:
+        my_tasks=UnitBasicInfo.objects.filter(areaCode=code).filter(inhouse=False)
+    request_list = (my_tasks.filter(finished=True)
                     .order_by('-callTime'))
     return render(request, 'dispatcher/list.html', {'request':request_list})
-def get_all_dispatcher_records_inhouse(request):
-    code = request.session['user_code']
-    request_list = (UnitBasicInfo.objects.all()
-                    .filter(areaCode=code)
-                    .filter(finished=True)
-                    .filter(inhouse=True)
-                    .order_by('-callTime'))
-    return render(request, 'dispatcher/list.html', {'request':request_list})
+# def get_all_dispatcher_records_inhouse(request):
+#     code = request.session['user_code']
+#     if code=="17":
+#         my_tasks=UnitBasicInfo.objects.filter(Q(location_state='TX') | Q(location_state='CA')).filter(inhouse=True)
+#     elif code=="18":
+#         my_tasks=UnitBasicInfo.objects.filter(Q(location_state='MA') | Q(location_state='NJ')).filter(inhouse=True)
+#     request_list = (my_tasks.filter(finished=True)
+#                     .order_by('-callTime'))
+#     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_scheduled_records(request):
     code = request.session['user_code']
-    request_list = (UnitBasicInfo.objects.all()
-                    .filter(pre_diagnosis_flag=True)
-                    .filter(areaCode=code)
-                    .filter(inhouse=False)
+    my_tasks=""
+    if code=="17":
+        my_tasks=UnitBasicInfo.objects.filter(Q(location_state='TX') | Q(location_state='CA')).filter(inhouse=True)
+    elif code=="18":
+        my_tasks=UnitBasicInfo.objects.filter(Q(location_state='MA') | Q(location_state='NJ')).filter(inhouse=True)
+    else:
+        my_tasks=UnitBasicInfo.objects.filter(areaCode=code).filter(inhouse=False)
+    request_list = (my_tasks.filter(pre_diagnosis_flag=True)
                     .filter(finished=False)
                     .exclude(scheDate=None)
                     .order_by('scheDate'))
     return render(request, 'dispatcher/list.html', {'request':request_list})
-def get_all_scheduled_records_inhouse(request):
-    request_list = (UnitBasicInfo.objects.all()
-                    .filter(finished=False)
-                    .filter(inhouse=True)
-                    .exclude(scheDate=None)
-                    .order_by('scheDate'))
-    return render(request, 'dispatcher/list.html', {'request':request_list})
+# def get_all_scheduled_records_inhouse(request):
+#     code = request.session['user_code']
+#     if code=="17":
+#         my_tasks=UnitBasicInfo.objects.filter(Q(location_state='TX') | Q(location_state='CA')).filter(inhouse=True)
+#     elif code=="18":
+#         my_tasks=UnitBasicInfo.objects.filter(Q(location_state='MA') | Q(location_state='NJ')).filter(inhouse=True)
+#     request_list = (my_tasks.filter(finished=False)
+#                     .exclude(scheDate=None)
+#                     .order_by('scheDate'))
+#     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_new_records(request):
     code = request.session['user_code']
-    request_list = (UnitBasicInfo.objects.all()
-                    .filter(pre_diagnosis_flag=True)
+    my_tasks=""
+    if code=="17":
+        my_tasks=UnitBasicInfo.objects.filter(Q(location_state='TX') | Q(location_state='CA')).filter(inhouse=True)
+    elif code=="18":
+        my_tasks=UnitBasicInfo.objects.filter(Q(location_state='MA') | Q(location_state='NJ')).filter(inhouse=True)
+    else:
+        my_tasks=UnitBasicInfo.objects.filter(areaCode=code).filter(inhouse=False)
+        print("-----")
+    print(my_tasks)
+    request_list = (my_tasks.filter(pre_diagnosis_flag=True)
                     .filter(warranty=True)
-                    .filter(inhouse=False)
-                    .filter(areaCode=code)
                     .filter(scheDate=None)
                     .exclude(finished=True)
                     .order_by('-callTime'))
+    for r in request_list:
+        print (r)
     return render(request, 'dispatcher/list.html', {'request':request_list})
-def get_new_records_inhouse(request):
-    code = request.session['user_code']
-    request_list = (UnitBasicInfo.objects.all()
-                    .filter(pre_diagnosis_flag=True)
-                    .filter(warranty=True)
-                    .filter(areaCode=code)
-                    .filter(scheDate=None)
-                    .filter(inhouse=True)
-                    .exclude(finished=True)
-                    .order_by('-callTime'))
-    return render(request, 'dispatcher/list.html', {'request':request_list})
+# def get_new_records_inhouse(request):
+#     code = request.session['user_code']
+#     if code=="17":
+#         my_tasks=UnitBasicInfo.objects.filter(Q(location_state='TX') | Q(location_state='CA')).filter(inhouse=True)
+#     elif code=="18":
+#         my_tasks=UnitBasicInfo.objects.filter(Q(location_state='MA') | Q(location_state='NJ')).filter(inhouse=True)
+#     request_list = (my_tasks.filter(pre_diagnosis_flag=True)
+#                     .filter(warranty=True)
+#                     .filter(scheDate=None)
+#                     .exclude(finished=True)
+#                     .order_by('-callTime'))
+#     return render(request, 'dispatcher/list.html', {'request':request_list})
 def get_all_part_records(request):
     code = request.session['user_code']
     request_list = PartRequest.objects.all().filter(code=code).order_by('-request_time')
@@ -108,9 +130,29 @@ def show_dispatcher_page(request):
     name=request.session['user_name']
     code = request.session['user_code']
     user = Users.objects.get(code=code)
-    a=UnitBasicInfo.objects.all().filter(areaCode=code).filter(warranty=True).filter(pre_diagnosis_flag=True).filter(scheDate=None).exclude(finished=True).count()
-    b=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=False).exclude(scheDate=None).count()
-    c=UnitBasicInfo.objects.all().filter(areaCode=code).filter(finished=True).count()
+    my_tasks=UnitBasicInfo.objects.filter(areaCode=code).filter(inhouse=False)
+    a=my_tasks.filter(warranty=True).filter(pre_diagnosis_flag=True).filter(scheDate=None).exclude(finished=True).count()
+    b=my_tasks.filter(finished=False).exclude(scheDate=None).count()
+    c=my_tasks.filter(finished=True).count()
+    d=PartRequest.objects.all().filter(code=code).count()
+    return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c,'parts':d})
+def show_inhouse_page(request):
+    if not request.session.get('is_login', None):
+        return redirect("/user/login/")
+    name=request.session['user_name']
+    code = request.session['user_code']
+    tasks=""
+    if code=="17":
+        tasks=UnitBasicInfo.objects.filter(Q(location_state='TX') | Q(location_state='CA')).filter(inhouse=True)
+    elif code=="18":
+        tasks=UnitBasicInfo.objects.filter(Q(location_state='MA') | Q(location_state='NJ')).filter(inhouse=True)
+    a=(tasks.filter(scheDate=None)
+        .exclude(finished=True)
+        .count())
+    b=(tasks.filter(finished=False)
+        .exclude(scheDate=None)
+        .count())
+    c=tasks.filter(finished=True).count()
     d=PartRequest.objects.all().filter(code=code).count()
     return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c,'parts':d})
 def show_admin_page(request):
@@ -143,7 +185,10 @@ def show_page(request):
     if not request.session.get('is_login', None):
         return redirect("/user/login/")
     group = request.session['user_group']
+    code = request.session['user_code']
     if group=="dispatcher":
+        if (code == "17") or (code == "18"):
+            return redirect('inhouse/')
         return redirect('dispatcher/')
     if group=="operator":
         return redirect('operator/')
@@ -165,7 +210,6 @@ def login(request):
     if request.session.get('is_login',None):
         return redirect('/user/')
     if request.method == "POST":
-
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             code = login_form.cleaned_data['user']
@@ -178,7 +222,6 @@ def login(request):
                     request.session['user_name'] = user.name
                     group=user.group
                     request.session['user_group'] = group
-                    print(group)
                     return redirect('/user/')
                 else:
                     message = "Wrong password!"
