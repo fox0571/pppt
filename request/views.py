@@ -466,15 +466,57 @@ def update_tech_info(request,pk):
             else:
                 unit.techNote=a_note
             unit.save()
-        else:
-            unit.inhouse=False
-            a_note=(str(datetime.datetime.now())+"\n"+"Send Back To Dispatcher"+"\n"+"In-house Tech is not available")
+            return redirect('/user/dispatcher/new')        
+        form=DispatchForm(request.POST)
+        if form.is_valid():
+            tech_name=form.cleaned_data["tech_name"]
+            tech_phone=form.cleaned_data["tech_phone"]
+            tech_email=form.cleaned_data["tech_email"]
+            tech_note=form.cleaned_data["tech_note"]
+            tech_add1 = form.cleaned_data["tech_add1"]
+            tech_add2 = form.cleaned_data["tech_add2"]
+            tech_city = form.cleaned_data["tech_city"]
+            tech_state = form.cleaned_data["tech_state"]
+            tech_zip = form.cleaned_data["tech_zip"]
+            schedule_time=form.cleaned_data["schedule_time"]
+            unit=get_object_or_404(UnitBasicInfo, pk=pk)
+            unit.techName=tech_name
+            unit.techPhone=tech_phone
+            unit.techEmail=tech_email
+            unit.scheDate=schedule_time
+            unit.tech_add1=tech_add1
+            unit.tech_add2=tech_add2
+            unit.tech_city=tech_city
+            unit.tech_state=tech_state
+            unit.tech_zip=tech_zip
+            a_note=("Scheduled Time: "+str(schedule_time)+"\n"
+                    +"Name: "+str(tech_name)+"\n"
+                    +"Phone: "+str(tech_phone)+"\n"
+                    +"Email: "+tech_email+"\n"
+                    +"Note: "+str(tech_note)+"\n"
+                    +"Location: "+tech_add1+" "+tech_add2+" "+tech_city+" "+tech_state+"\n"
+                    )
             if unit.techNote:
                 unit.techNote=unit.techNote+"\n"+a_note
             else:
                 unit.techNote=a_note
             unit.save()
-        return redirect('/user/dispatcher/new')
+    return render(request, 'dispatcher/tech.html', {'unit': unit,'form':form,'form1':form1})
+def update_inhousetech_info(request,pk):
+    unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    form=DispatchForm()
+    form1=InhouseForm()
+    if request.method == "POST":
+        in_house=request.POST.get("inhouse","")
+        if in_house=="True":
+            unit.inhouse=True
+            a_note=(str(datetime.datetime.now())+"\n"+"Send To In-house Tech Dispatcher")
+            if unit.techNote:
+                unit.techNote=unit.techNote+"\n"+a_note
+            else:
+                unit.techNote=a_note
+            unit.save()
+            return redirect('/user/dispatcher/new')        
         form=DispatchForm(request.POST)
         if form.is_valid():
             tech_name=form.cleaned_data["tech_name"]

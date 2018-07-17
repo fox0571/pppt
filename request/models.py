@@ -37,8 +37,20 @@ class Address(models.Model):
     phone=models.CharField(max_length=15,blank=True)
     class Meta:
         abstract=True
+class Tech(models.Model):
+    business = models.CharField(max_length=100)
+    contact=models.CharField(max_length=50)
+    phone=models.CharField(max_length=15,null=True)
+    email=models.EmailField(null=True,blank=True)
+    address1=models.CharField(max_length=200)
+    address2=models.CharField(max_length=50,blank=True)
+    city=models.CharField(max_length=50)
+    state=models.CharField(max_length=30,choices=STATES)
+    zip=models.CharField(max_length=12)
+    phone=models.CharField(max_length=15,blank=True)
 
-
+    def __str__(self):
+        return self.contact+" - "+self.business
 class TimeRecord(models.Model):
     ref=models.IntegerField()
     call=models.DateTimeField()

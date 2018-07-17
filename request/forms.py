@@ -116,7 +116,7 @@ class PartForm(forms.Form):
     address2=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
     city=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
     state=forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}),required=False)
-    zip=forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    zip=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
     phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}),required=False)
     to_customer=forms.BooleanField(required=False)
     to_tech=forms.BooleanField(required=False)

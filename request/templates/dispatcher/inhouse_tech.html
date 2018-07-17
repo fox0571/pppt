@@ -1,0 +1,184 @@
+
+{% extends 'request/index.html' %}
+{% load static %}
+{% block css %}
+<!-- bootstrap datepicker -->
+<link rel="stylesheet" href="{% static "bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" %}">
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Basic Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">Incident Number:{{unit.sksid|upper }}</p>
+            <p class="text-light-blue">Business Name: {{unit.businessName|upper }}</p>
+            <p class="text-light-blue">Business Hour: {{unit.business_hour|upper }}</p>
+            <p class="text-light-blue">Contact Name: {{unit.contactName|upper }}</p>
+            <p class="text-light-blue">Serial Number: {{unit.serialNumber|upper}}</p>
+            <p class="text-light-blue">Phone: {{unit.phone|upper}}</p>
+            <p class="text-light-blue">Email: {{unit.email|upper}}</p>
+            <p class="text-light-blue">Address: {{unit.location_add1|upper}} {% if unit.location_add2 %}
+            {{unit.location_add2|upper}}
+            {% endif %} {{unit.location_city|upper}}
+              {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
+            <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
+            <p class="text-light-blue">Technical Support Questions: {{unit.tsq|upper|linebreaks}}</p>
+            <p class="text-light-blue">Received by: {{unit.receiver}}</p>
+          </div>
+          <!-- /.box-body -->
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Diagnose Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-black">{{unit.pre_diagnosis|linebreaks}}</p>
+            <p>{{unit.timestamp_diagnosis}}</p>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Warranty Information</h3>
+          </div>
+          <div class="box-body">
+            <p>Warranty: {{unit.warranty}}</p>
+            <P>Note: {{ unit.warrantyNote|upper|linebreaks}}</P>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Current Tech Information</h3>
+          </div>
+          <div class="box-body">
+            <p class="text-light-blue">{{unit.techNote|linebreaks}}</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Tech Information</h3>
+            <form class='form' id='form1' action="#/" method="post">
+              {% csrf_token %}
+              <div class="radio">
+                {{form1.inhouse}}
+                  <button type="submit" class="btn btn-default btn-sm" aria-label="Left Align">
+  <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+</button>
+              </div>
+            </form>
+          </div>
+          <form class='form' id='form' action="#/" method="post">
+            {% csrf_token %}
+            <div class="box-body">
+              <div class="form-group">
+                <select class="form-control select2" data-placeholder="Select tech" name="tech" id="tech" style="width: 100%;">
+                  {% for t in techs %}
+                  <option value="{{t.id}}">{{t}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                {{ form.tech_name.errors }}
+                <label for="{{ form.tech_name.id_for_label }}">Tech Name</label>{{ form.tech_name }}
+              </div>
+              <div class="form-group">
+                {{ form.tech_phone.errors }}
+                <label for="{{ form.tech_phone.id_for_label }}">Tech Phone:</label>{{ form.tech_phone }}
+              </div>
+              <div class="form-group">
+                {{ form.tech_email.errors }}
+                <label for="{{ form.tech_email.id_for_label }}">Tech Email:</label>{{ form.tech_email }}
+              </div>
+              <div class="form-group">
+                {{ form.tech_add1.errors }}
+                <label for="{{ form.tech_add1.id_for_label }}">Address:</label>{{ form.tech_add1 }}
+              </div>
+              <div class="form-group">
+                {{ form.tech_add2.errors }}
+                <label for="{{ form.tech_add2.id_for_label }}">Address2 (Optional):</label>{{ form.tech_add2 }}
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    {{ form.tech_city.errors }}
+                    <label for="{{ form.tech_add1.id_for_label }}">City:</label>{{ form.tech_city }}
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    {{ form.tech_state.errors }}
+                    <label for="{{ form.tech_add1.id_for_label }}">State:</label>{{ form.tech_state }}
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    {{ form.tech_zip.errors }}
+                    <label for="{{ form.tech_add1.id_for_label }}">Zip:</label>{{ form.tech_zip }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                {{ form.tech_note.errors }}
+                <label for="{{ form.tech_note.id_for_label }}">Note:</label>{{ form.tech_note }}
+              </div>
+              <div class="input-group date">
+                {{ form.schedule_date.errors }}
+                <label for="{{ form.schedule_date.id_for_label }}">Scheduled Time:</label>{{ form.schedule_time }}
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary pull-right">update</button>
+          </form>
+        </div>
+        <a href="/request/{{ unit.pk }}/part/"> Go to Part Page</a>
+        <a> ------ </a>
+        <a href="/render/pdf_work/{{ unit.pk }}/" target="_blank">Print</a>
+        <a> ------ </a>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- bootstrap datepicker -->
+<script src="{% static "bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.date.extensions.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.extensions.js" %}"></script>
+<script>
+var selector = document.getElementById("phone");
+var form = document.getElementById("form");
+var form1 = document.getElementById("form1");
+var inhouse = form1.elements["inhouse"];
+var fieldCount = form.elements.length;
+  $(function (){
+    // if($('inhouse').prop("checked")==true){
+    //   var i;
+    //   for (i=0;i<fieldCount;i++){
+    //     form.elements[i].disabled=true;
+    //   }
+    // }
+    $(selector).inputmask({"mask": "(999) 999-9999"});
+    $('#datepicker').datepicker({
+      autoclose: true
+    });
+    $('#datetime').inputmask("datetime",{
+     mask: "2/1/y h:s",
+     placeholder: "mm/dd/yyyy hh:mm",
+     leapday: "-29-02",
+     separator: "-",
+     alias: "mm-dd-yyyy"
+   });
+  });
+</script>
+{% endblock %}
