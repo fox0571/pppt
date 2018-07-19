@@ -56,9 +56,26 @@ def reg_month(month):
 def ac_list(request):
     unit=UnitBasicInfo.objects.all()
     return render(request, 'account/list.html',{'unit':unit})
-def invoice_list(request):
-    invoices=Invoice.objects.all().order_by("-pk")
+def invoice_dashboard(request):
+    invoices=Invoice.objects.all()
+    new=invoices.filter(processed=False).count()
+    finished=invoices.filter(processed=True).count()
+    para = {
+        'new':new,
+        'finished':finished
+    }
+    return render(request, 'account/invoice_dashboard.html',para)
+def invoice_waiting(request):
+    invoices=Invoice.objects.all().filter(processed=False).order_by("-pk")
+    return render(request, 'account/invoices_process_list.html',{'invoices':invoices})
+def invoice_processed(request):
+    invoices=Invoice.objects.all().filter(processed=True).order_by("-pk")
     return render(request, 'account/invoices.html',{'invoices':invoices})
+def invoice_pro(request,pk):
+    invoice=get_object_or_404(Invoice,pk=pk)
+    invoice.processed=True
+    invoice.save()
+    return redirect("/warranty/account/invoice/new/")
 def invoice_edit(request,pk):
     invoice=get_object_or_404(Invoice,pk=pk)
     if request.method == "POST":

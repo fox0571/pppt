@@ -40,6 +40,8 @@
                       <th>No.</th>
                       <th>ID</th>
                       <th>Business</th>
+                      <th>State</th>
+                      <th>Zip</th>
                       <th>S/N</th>
                       <th>Phone</th>
                       <th>Date</th>
@@ -56,6 +58,8 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ r.sksid }}</td>
                         <td>{{ r.businessName }}</td>
+                        <td>{{ r.location_state}}</td>
+                        <td>{{ r.location_zip}}</td>
                         <td>{{ r.serialNumber|upper }}</td>
                         <td>{{ r.phone }}</td>
                         <td>{{ r.callTime }}</td>

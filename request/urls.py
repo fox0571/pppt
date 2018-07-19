@@ -2,6 +2,7 @@ from django.urls import path
 from django.conf.urls import url, include
 
 from . import views
+from warranty import views as wvs
 
 app_name = 'request'
 urlpatterns = [
@@ -48,5 +49,6 @@ urlpatterns = [
     url(r'^invoice/$', views.invoice_dashboard, name='invoice'),
     url(r'^invoice/(?P<method>\d+)/$', views.invoice_list, name='invoice_list'),
     url(r'^invoice/approve/(?P<pk>\d+)/$', views.invoice_approve, name='invoice_approve'),
+    url(r'^invoice/process/(?P<pk>\d+)/$', wvs.invoice_pro, name='invoice_process'),
 
 ]
