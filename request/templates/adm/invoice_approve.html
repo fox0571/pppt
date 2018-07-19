@@ -1,0 +1,54 @@
+
+{% extends 'account/index.html' %}
+{% load static %}
+{% block css %}
+
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Account Information</h3>
+          </div>
+          <div class="box-body">
+            <form class='form' action="#" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit" class="btn btn-primary pull-left">update</button>
+              </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Invioce Copy</h3>
+          </div>
+          <div class="box-body">
+            {% if invoice.file %}
+            <img src={{ invoice.file.url }}>
+            <a href={{ invoice.file.url }} target="_blank">Click me</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Service Details</h3>
+          </div>
+          <div class="box-body">
+            <a href="/render/pdf/{{ invoice.incident.pk }}/" target="_blank">Click me</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}

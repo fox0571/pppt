@@ -1,5 +1,5 @@
 
-{% extends 'account/index.html' %}
+{% extends 'adm/index.html' %}
 {% load static %}
 
 {% block css %}
@@ -51,7 +51,11 @@
                       <th>Invoice</th>
                       <th>Incident Number</th>
                       <th>Total Cost</th>
-                      <th>Tech</th>
+                      <th>Travel Cost</th>
+                      <th>Labor Cost</th>
+                      <th>Material Cost</th>
+                      <th>Travel Hour</th>
+                      <th>Labor Hour</th>
                       <th>Status</th>
                       <th>Print</th>
                     </tr>
@@ -60,11 +64,15 @@
                       {% for p in invoices %}
                       <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td><a href="/warranty/account/invoice/{{p.pk}}/">
+                        <td><a href="/request/invoice/approve/{{p.pk}}/">
                           {{ p.invoice }}</a></td>
                         <td>{{ p.sksid }}</td>
                         <td>${{ p.total_c }}</td>
-                        <td>{{ p.incident.techName}}
+                        <td>${{ p.travel_c }}</td>
+                        <td>${{ p.labor_c }}</td>
+                        <td>${{ p.material_c }}</td>
+                        <td>{{ p.travel_t }}</td>
+                        <td>{{ p.labor_t }}</td>
                         <td>{% if p.status == 1 %}
                             <span class="glyphicon glyphicon-green-dot"></span>
                             {% elif p.status == 2 %}
@@ -72,7 +80,7 @@
                             {% else %}
                             <span class="glyphicon glyphicon-yellow-dot"></span>
                             {% endif %}
-                        </td>
+                      </td>
                         <td><a href="/render/pdf/{{ p.incident.pk }}/" target="_blank">
                         Print</td>
                       </tr>

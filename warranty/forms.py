@@ -11,7 +11,14 @@ class WarrantyForm(forms.ModelForm):
         widgets = {
             'warrantyNote': forms.Textarea(attrs={'class': 'form-control','rows':'5'}),
         }
+class ApproveForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ['status','dispute_note']
 
+        labels = {
+            "dispute_note":"Dispute Note",
+        }
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Invoice

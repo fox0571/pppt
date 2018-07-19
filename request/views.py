@@ -8,6 +8,7 @@ from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
 from warranty.models import Invoice
+from warranty.forms import ApproveForm
 from django.contrib import messages
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
@@ -27,6 +28,18 @@ STATES = (
     ("TX", "Texas"),("UT", "Utah"),("VT", "Vermont"),("VI", "Virgin Islands"),("VA", "Virginia"),
     ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
 )
+def invoice_approve(request,pk):
+    invoice=get_object_or_404(Invoice,pk=pk)
+    print("-----")
+    if request.method == "POST":
+        form=ApproveForm(request.POST,instance=invoice)
+        if form.is_valid():
+            invoice=form.save(commit=False)
+            invoice.save()
+            return redirect("/request/invoice/")
+    else:
+        form=ApproveForm(instance=invoice)
+    return render(request, 'adm/invoice_approve.html',{'form':form,'invoice':invoice})
 def upload_file(request,pk):
     unit=get_object_or_404(UnitBasicInfo,pk=pk)
     message=""
@@ -66,7 +79,6 @@ def analysis_part_based(request):
             'tags':tags,
             'units':units,
         }
-        print("--",para)
         return render(request,'stat/part_based.html',para)
     return render(request,'stat/part_based.html',para)
 def analysis_model_based(request):
@@ -118,9 +130,16 @@ class Pdf(View):
     def get(self, request,pk):
         unit=get_object_or_404(UnitBasicInfo, pk=pk)
         inv=Invoice.objects.all().filter(sksid=unit.sksid)
+        parts=PartRequest.objects.all().filter(sksid=unit.sksid)
+        sign=unit.callTime.timestamp()*1000
+        for i in inv:
+            print (i.status,type(i.status))
+        print(sign)
         params = {
             'unit':unit,
             'invoices':inv,
+            'parts':parts,
+            'sign':sign,
         }
         return Render.render('account/print_page.html', params)
 class Pdf_work_order(View):
@@ -399,6 +418,46 @@ def show_adminop(request):
             callTime__gte=start).count()
         final_data.append(count)
     return render(request, 'request/operator_supervisor.html', {'new':new,'data':final_data})
+def invoice_dashboard(request):
+    invoices=Invoice.objects.all()
+    all=invoices.count()
+    new=invoices.filter(status=0).count()
+    approved=invoices.filter(status=1).count()
+    dispute=invoices.filter(status=2).count()
+    para = {
+        'new':new,
+        'approved':approved,
+        'all':all,
+        'dispute':dispute,
+    }
+    return render(request, 'adm/invoice.html', para)
+def invoice_list(request,method):
+    invoices=Invoice.objects.all()
+    if method=="0":
+        i=invoices.filter(status="0")
+        para={
+            'invoices':i,
+        }
+        return render(request,'adm/invoice_list.html',para)
+    if method=="3":
+        i=invoices
+        para={
+            'invoices':i,
+        }
+        return render(request,'adm/invoice_list.html',para)
+    if method=="2":
+        i=invoices.filter(status="2")
+        para={
+            'invoices':i,
+        }
+        return render(request,'adm/invoice_list.html',para)
+    if method=="1":
+        i=invoices.filter(status="1")
+        para={
+            'invoices':i,
+        }
+        return render(request,'adm/invoice_list.html',para)
+    return redirect('/request/invoice')
 def add_tag(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     all_tags = Tag.objects.all()
@@ -466,7 +525,7 @@ def update_tech_info(request,pk):
             else:
                 unit.techNote=a_note
             unit.save()
-            return redirect('/user/dispatcher/new')        
+            return redirect('/user/dispatcher/new')
         form=DispatchForm(request.POST)
         if form.is_valid():
             tech_name=form.cleaned_data["tech_name"]
@@ -516,7 +575,7 @@ def update_inhousetech_info(request,pk):
             else:
                 unit.techNote=a_note
             unit.save()
-            return redirect('/user/dispatcher/new')        
+            return redirect('/user/dispatcher/new')
         form=DispatchForm(request.POST)
         if form.is_valid():
             tech_name=form.cleaned_data["tech_name"]

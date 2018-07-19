@@ -45,4 +45,8 @@ urlpatterns = [
     url(r'^diag/long/$', views.get_long_pending, name='long'),
     url(r'^part/all/$', views.show_part_list, name='part_list'),
     url(r'^part/new/$', views.show_new_part, name='n_part'),
+    url(r'^invoice/$', views.invoice_dashboard, name='invoice'),
+    url(r'^invoice/(?P<method>\d+)/$', views.invoice_list, name='invoice_list'),
+    url(r'^invoice/approve/(?P<pk>\d+)/$', views.invoice_approve, name='invoice_approve'),
+
 ]

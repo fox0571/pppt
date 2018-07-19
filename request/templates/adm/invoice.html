@@ -28,7 +28,7 @@ p{
 
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">This Month</h3>
+          <h3 class="box-title">Invoices</h3>
         </div>
 
         <div class="box-body">
@@ -44,22 +44,36 @@ p{
                 <div class="icon">
                   <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="/user/dispatcher/new" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/request/invoice/0" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <!-- ./col -->
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <div class="small-box bg-yellow">
+              <div class="small-box bg-green">
                 <div class="inner">
-                  <h1>{{ sche }}</h1>
+                  <h1>{{ approved }}</h1>
 
                   <p>Approved</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="/user/dispatcher/scheduled" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/request/invoice/1" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-yellow">
+                <div class="inner">
+                  <h1>{{ dispute }}</h1>
+
+                  <p>Disputed</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="/request/invoice/2" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
           </div>
@@ -72,14 +86,14 @@ p{
             <!-- small box -->
             <div class="small-box bg-red">
               <div class="inner">
-                <h1>{{ parts }}</h1>
+                <h1>{{ all }}</h1>
 
                 <p>All</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="/user/dispatcher/part" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="/reqeust/invoice/3" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
         </div>
