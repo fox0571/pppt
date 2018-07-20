@@ -144,7 +144,7 @@ def show_dispatcher_page(request):
     code = request.session['user_code']
     user = Users.objects.get(code=code)
     my_tasks=UnitBasicInfo.objects.filter(areaCode=code).filter(inhouse=False)
-    a=my_tasks.filter(warranty=True).filter(pre_diagnosis_flag=True).filter(scheDate=None).exclude(finished=True).count()
+    a=my_tasks.filter(warranty=True).filter(pre_diagnosis_flag=True).filter(pre_diagnosis_pending=False).filter(scheDate=None).exclude(finished=True).count()
     b=my_tasks.filter(finished=False).exclude(scheDate=None).count()
     c=my_tasks.filter(finished=True).count()
     d=PartRequest.objects.all().filter(code=code).count()

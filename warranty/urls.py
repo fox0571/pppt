@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^account/invoice/$', views.invoice_dashboard, name='invoice_dashboard'),
     url(r'^account/invoice/new/$', views.invoice_waiting, name='invoice_waiting'),
     url(r'^account/invoice/processed/$', views.invoice_processed, name='invoice_processed'),
+    url(r'^account/invoice/all/$', views.invoice_all, name='invoice_all'),
     url(r'^account/invoice/(?P<pk>\d+)/$', views.invoice_edit, name='invoice_edit'),
     ]

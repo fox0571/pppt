@@ -164,15 +164,16 @@ def update_statue(request,pk):
         return redirect('/user/dispatcher/scheduled/')
     return render(request, 'dispatcher/statue.html', {'unit':unit})
 def update_follow_tech(request,pk):
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
     if request.method == "POST":
         note=request.POST.get("tech","")
         statue=request.POST.get("statue","")
         note=str(datetime.datetime.now(tz=None))+"\n"+note
-        unit=get_object_or_404(UnitBasicInfo, pk=pk)
         if unit.followup_tech:
             unit.followup_tech=unit.followup_tech+"\n"+note
         else:
             unit.followup_tech=note
+        print (statue, type(statue))
         if statue=="finished":
             unit.finished=True
         else:
@@ -180,15 +181,16 @@ def update_follow_tech(request,pk):
         unit.save()
     return render(request, 'dispatcher/followup.html', {'unit': unit})
 def update_follow_customer(request,pk):
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
     if request.method == "POST":
         note=request.POST.get("customer","")
         statue=request.POST.get("statue","")
         note=str(datetime.datetime.now(tz=None))+"\n"+note
-        unit=get_object_or_404(UnitBasicInfo, pk=pk)
         if unit.followup_customer:
             unit.followup_customer=unit.followup_customer+"\n"+note
         else:
             unit.followup_customer=note
+        print (statue, type(statue))
         if statue=="finished":
             unit.finished=True
         else:
