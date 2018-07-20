@@ -1,16 +1,32 @@
 
-{% extends 'request/index.html' %}
+{% extends 'account/index.html' %}
 {% load static %}
+
 {% block css %}
 <link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+
+<style>
+.glyphicon.glyphicon-green-dot:before {
+    color: #20F343;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-yellow-dot:before {
+    color: #FFD700;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-red-dot:before {
+    color: #F21616;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+</style>
 {% endblock %}
 {% block content %}
-
 <div class="content-wrapper">
   <section class="content">
-    {% if request %}
-
-    <!-- Content Header (Page header) -->
+    {% if invoices %}
       <section class="content-header">
         <h1>
           Records List
@@ -32,50 +48,42 @@
                   <thead>
                     <tr>
                       <th>No.</th>
+                      <th>Invoice</th>
                       <th>Incident Number</th>
-                      <th>S/N</th>
-                      <th>Location</th>
-                      <th>Tracking</th>
-                      <th>Date</th>
+                      <th>Total Cost</th>
+                      <th>Tech</th>
+                      <th>Status</th>
+                      <th>Print</th>
+                      <th>Process</th>
                     </tr>
                   </thead>
-
                   <tbody>
-                      {% for r in request %}
+                      {% for p in invoices %}
                       <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ r.sksid }}</td>
-                        <td>{{ r.sn }}</td>
-                        <td>{{ r.location_add1 }} 
-                        {% if r.location_add2 %}
-                        {{ r.location_add2 }}
-                        {% endif %} {{r.location_zip}}</td>
-                        <td>{% if not r.tracking %}
-                              <a href="/request/part/{{ r.pk }}">
-                                <div class="col-md-4">
-                            <span class="badge badge-success">Update</span>
-                                </div>
-                              </a>
+                        <td><a href="/warranty/account/invoice/{{p.pk}}/">
+                          {{ p.invoice }}</a></td>
+                        <td>{{ p.sksid }}</td>
+                        <td>${{ p.total_c }}</td>
+                        <td>{{ p.incident.techName}}
+                        <td>{% if p.status == 1 %}
+                            <span class="glyphicon glyphicon-green-dot"></span>
+                            {% elif p.status == 2 %}
+                            <span class="glyphicon glyphicon-red-dot"></span>
                             {% else %}
-                              <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{r.tracking}}" target="_blank">
-                                {{r.tracking}}
-                              </a>
+                            <span class="glyphicon glyphicon-yellow-dot"></span>
                             {% endif %}
                         </td>
-                        <td>{{ r.request_time }}</td>
+                        <td><a href="/render/pdf/{{ p.incident.pk }}/" target="_blank">
+                        Print</td>
+                        <td><a href="/request/invoice/process/{{ p.pk }}/">
+                          <div class="col-md-3">
+                            <span class="badge badge-success">Process</span>
+                          </div>
+                        </td>
                       </tr>
                       {% endfor %}
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>No.</th>
-                      <th>Incident Number</th>
-                      <th>S/N</th>
-                      <th>Location</th>
-                      <th>Tracking</th>
-                      <th>Date</th>
-                    </tr>
-                  </tfoot>
                 </table>
               </div>
               <!-- /.box-body -->
@@ -110,12 +118,11 @@
   $(function () {
     $('#assets_table').DataTable({
       "paging": true,       <!-- 允许分页 -->
-      "lengthChange": true, <!-- 允许改变每页显示的行数 -->
       "searching": true,    <!-- 允许内容搜索 -->
       "ordering": true,     <!-- 允许排序 -->
       "info": true,         <!-- 显示信息 -->
       "autoWidth": false,    <!-- 固定宽度 -->
-      "iDisplayLength": 40,
+      "iDisplayLength": 50,
       dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'

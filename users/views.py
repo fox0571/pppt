@@ -102,6 +102,8 @@ def get_new_records(request):
     request_list = (my_tasks.filter(pre_diagnosis_flag=True)
                     .filter(warranty=True)
                     .filter(scheDate=None)
+                    .filter(pre_diagnosis_pending=False)
+                    .filter(long_term_pending=False)
                     .exclude(finished=True)
                     .order_by('-callTime'))
     for r in request_list:

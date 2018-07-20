@@ -22,6 +22,7 @@ class Invoice(models.Model):
 	incident = models.ForeignKey(UnitBasicInfo, on_delete=models.CASCADE,null=True)
 	status = models.IntegerField(choices=STATUS,default=0)
 	dispute_note = models.TextField(null=True,blank=True)
+	processed = models.BooleanField(default=False)
 	def __str__(self):
 		return self.invoice+", "+self.sksid
 
