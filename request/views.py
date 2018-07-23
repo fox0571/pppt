@@ -1,5 +1,7 @@
 import datetime
 from django.http import HttpResponse
+from django.db.models import Q
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import UnitBasicInfo, PartRequest, Tag, FileSimpleModel
 from django.utils import timezone
@@ -718,12 +720,21 @@ def submita(request):
     result=Partsinv.objects.get(number=query)
     return render(request, 'request/availability.html', {'request':result})
 
-def showAllService(request):
-    request_list = UnitBasicInfo.objects.order_by('-callTime')
-    return render(request, 'request/allService.html', {'request':request_list})
 def showAllRequests(request):
-    request_list = UnitBasicInfo.objects.order_by('-callTime')
-    return render(request, 'request/all_records.html', {'request':request_list})
+    unit_list=UnitBasicInfo.objects.all().order_by('-callTime')
+    search_text=request.GET.get("search","")
+    if search_text:
+        unit_list=unit_list.filter(
+            Q(sksid__icontains=search_text)|
+            Q(businessName__icontains=search_text)|
+            Q(serialNumber__icontains=search_text)|
+            Q(techName__icontains=search_text)
+        )
+    paginator = Paginator(unit_list, 50)
+
+    page = request.GET.get('page')
+    unit = paginator.get_page(page)
+    return render(request, 'request/all_records.html', {'request':unit})
 
 def showPendingRequests(request):
     request_list = Request.objects.filter(requestStatue=False)

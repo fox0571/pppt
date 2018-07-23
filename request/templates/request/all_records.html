@@ -31,6 +31,10 @@
         Records List
         <small>All records</small>
       </h1>
+      <form class="form-inline md-form form-sm pull-right">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" name="search">
+      </form>
     </section>
     <section class="content">
       <div class="row">
@@ -83,22 +87,35 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <th>No.</th>
-                    <th>Ref</th>
-                    <th>Business</th>
-                    <th>Phone</th>
-                    <th>S/N</th>
-                    <th>Warranty</th>
-                    <th>Called</th>
-                    <th>Status</th>
-                    <th>Tech</th>
-                    <th>File</th>
-                    <th>Detail</th>
-                  </tr>
-                </tfoot>
               </table>
+
+            </div>
+            <div class="pagination pull-right">
+              <span class="step-links">
+                {% if request.has_other_pages %}
+                  <ul class="pagination">
+                    {% if request.has_previous %}
+                      <li><a href="?page={{ request.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in request.paginator.page_range %}
+                      {% if request.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                      {% else %}
+                      {% if i <= request.number|add:5 and i >= request.number|add:-5 %}
+                        <li><a href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                      {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                    {% if request.has_next %}
+                      <li><a href="?page={{ request.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                  </ul>
+                {% endif %}
+              </span>
             </div>
             <!-- /.box-body -->
           </div>
@@ -115,19 +132,4 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-
-<script>
-  $(function () {
-    $('#assets_table').DataTable({
-      "paging": true,       
-      "lengthChange": true, 
-      "searching": true,    
-      "ordering": true,     
-      "info": true,         
-      "autoWidth": false,    
-      "iDisplayLength": 50
-    });
-  });
-</script>
 {% endblock %}

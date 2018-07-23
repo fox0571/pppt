@@ -26,6 +26,10 @@
         Records List
         <small>All records</small>
       </h1>
+      <form class="form-inline md-form form-sm pull-right">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" name="search">
+      </form>
     </section>
     <section class="content">
       <div class="row">
@@ -46,7 +50,6 @@
                     <th>Invoice</th>
                   </tr>
                 </thead>
-
                 <tbody>
                     {% for r in unit %}
                     <tr>
@@ -72,20 +75,34 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <th>No.</th>
-                    <th>Ref</th>
-                    <th>Business</th>
-                    <th>S/N</th>
-                    <th>Warranty</th>
-                    <th>Called</th>
-                    <th>Statue</th>
-                    <th>Tech</th>
-                    <th>Detail</th>
-                  </tr>
-                </tfoot>
               </table>
+              <div class="pagination pull-right">
+                <span class="step-links">
+                  {% if unit.has_other_pages %}
+                    <ul class="pagination">
+                      {% if unit.has_previous %}
+                        <li><a href="?page={{ unit.previous_page_number }}">&laquo;</a></li>
+                      {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                      {% endif %}
+                      {% for i in unit.paginator.page_range %}
+                        {% if unit.number == i %}
+                          <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                        {% if i <= unit.number|add:5 and i >= unit.number|add:-5 %}
+                          <li><a href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                        {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                      {% if unit.has_next %}
+                        <li><a href="?page={{ unit.next_page_number }}">&raquo;</a></li>
+                      {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                      {% endif %}
+                    </ul>
+                  {% endif %}
+                </span>
+              </div>
             </div>
             <!-- /.box-body -->
           </div>
@@ -102,18 +119,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
 
-<script>
-  $(function () {
-    $('#assets_table').DataTable({
-      "paging": true,       <!-- 允许分页 -->
-      "lengthChange": true, <!-- 允许改变每页显示的行数 -->
-      "searching": true,    <!-- 允许内容搜索 -->
-      "ordering": true,     <!-- 允许排序 -->
-      "info": true,         <!-- 显示信息 -->
-      "autoWidth": false    <!-- 固定宽度 -->
-    });
-  });
-</script>
 {% endblock %}

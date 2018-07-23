@@ -1,4 +1,6 @@
 import datetime
+from django.db.models import Q
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from request.models import UnitBasicInfo
 from users.models import Users
@@ -54,7 +56,19 @@ def reg_month(month):
     else:
         return str(month)
 def ac_list(request):
-    unit=UnitBasicInfo.objects.all()
+    unit_list=UnitBasicInfo.objects.all()
+    search_text=request.GET.get("search","")
+    if search_text:
+        unit_list=unit_list.filter(
+            Q(sksid__icontains=search_text)|
+            Q(businessName__icontains=search_text)|
+            Q(serialNumber__icontains=search_text)|
+            Q(techName__icontains=search_text)
+        )
+    paginator = Paginator(unit_list, 50)
+
+    page = request.GET.get('page')
+    unit = paginator.get_page(page)
     return render(request, 'account/list.html',{'unit':unit})
 def invoice_dashboard(request):
     invoices=Invoice.objects.all()
