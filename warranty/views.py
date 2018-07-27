@@ -13,7 +13,6 @@ def show_all(request):
     all=UnitBasicInfo.objects.all()
     return render(request, 'request/warranty.html', {'requests':all})
 
-#show all unverified serial numbers
 def show_waiting(request):
     all=UnitBasicInfo.objects.filter(warranty=None)
     return render(request, 'request/warranty.html', {'requests':all})
@@ -74,11 +73,13 @@ def invoice_dashboard(request):
     invoices=Invoice.objects.all()
     new=invoices.filter(processed=False).count()
     finished=invoices.filter(processed=True).count()
+    dispute=invoices.filter(status=2).count()
     all=invoices.count()
     para = {
         'new':new,
         'finished':finished,
         'all':all,
+        'dispute':dispute,
     }
     return render(request, 'account/invoice_dashboard.html',para)
 def invoice_waiting(request):

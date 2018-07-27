@@ -1,5 +1,5 @@
 
-{% extends 'account/index.html' %}
+{% extends 'adm/index.html' %}
 {% load static %}
 {% block css %}
 
@@ -23,8 +23,6 @@
               </form>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">Invioce Copy</h3>
@@ -38,10 +36,144 @@
         </div>
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Service Details</h3>
+            <h3 class="box-title">Invioce Note</h3>
           </div>
           <div class="box-body">
-            <a href="/render/pdf/{{ invoice.incident.pk }}/" target="_blank">Click me</a>
+            {% if invoice.note %}
+              {{ invoice.note }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        
+        <div class="row">
+          <div class="col-md-4">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Basic Information</h3>
+              </div>
+              <div class="box-body">
+                <p class="text-light-blue">Incident Number:{{invoice.incident.sksid|upper }}</p>
+                <p class="text-light-blue">Business Name: {{invoice.incident.businessName|upper }}</p>
+                <p class="text-light-blue">Contact Name: {{invoice.incident.contactName|upper }}</p>
+                <p class="text-light-blue">Serial Number: {{invoice.incident.serialNumber|upper}}</p>
+                <p class="text-light-blue">Phone: {{invoice.incident.phone|upper}}</p>
+                <p class="text-light-blue">Email: {{invoice.incident.email|upper}}</p>
+                <p class="text-light-blue">Address: {{invoice.incident.location_add1|upper}} 
+                  {% if invoice.incident.location_add2 %}
+                  {{invoice.incident.location_add2|upper}} 
+                  {% endif %}
+                  {{invoice.incident.location_city|upper}}
+                  {{invoice.incident.location_state|upper}} {{invoice.incident.location_zip|upper}}</p>
+                <p class="text-light-blue">Issue: {{invoice.incident.issue|upper}}</p>
+                <p class="text-light-blue">Technical Support Questions: {{invoice.incident.tsq|upper|linebreaks}}</p>
+                <p class="text-light-blue">Received by {{invoice.incident.receiver}} @ {{invoice.incident.callTime}}</p>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Follow Up With Customer</h3>
+              </div>
+              <div class="box-body">
+                <p class="text-light-blue">{{invoice.incident.followup_customer|upper|linebreaks}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Pre-diagnosis</h3>
+              </div>
+              <div class="box-body">
+                <p class="text-light-blue">{{invoice.incident.pre_diagnosis|linebreaks}}</p>
+                <p>{{invoice.incident.timestamp_diagnosis}}</p>
+              </div>
+            </div>
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Tech Information</h3>
+              </div>
+              <div class="box-body">
+                <p class="text-light-blue">Tech: {{invoice.incident.techName}}</p>
+                <p class="text-light-blue">Phone: {{invoice.incident.techPhone}}</p>
+                <p class="text-light-blue">Email: {{invoice.incident.techEmail}}</p>
+                <p class="text-light-blue">Note: {{invoice.incident.techNote|linebreaks}}</p>
+              </div>
+            </div>
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Follow Up With Technician</h3>
+              </div>
+              <div class="box-body">
+                <p class="text-light-blue">{{invoice.incident.followup_tech|upper|linebreaks}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Parts Information</h3>
+              </div>
+              <div class="box-body">
+                {% if parts %}
+                  <table id="assets_table" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Number</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Tracking</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for p in parts %}
+                        <tr>
+                          <td>{{ p.request_time }}</td>
+                          <td>{{ p.number }}</td>
+                          <td>{{ p.name }}</td>
+                          <td>{{ p.qty }}</td>
+                          <td>{% if p.tracking %}
+                            <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{p.tracking}}" target="_blank">
+                            {{p.tracking}}
+                            </a>
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                  {% endif %}
+              </div>
+            </div>
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Warranty Information</h3>
+              </div>
+              <div class="box-body">
+                <p>Warranty: {{invoice.incident.warranty}}</p>
+                <P>Note: {{ invoice.incident.warrantyNote|upper|linebreaks}}</P>
+              </div>
+            </div>
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Files</h3>
+              </div>
+              <div class="box-body">
+                <div class="box-body">
+                {% if files %}
+                  {% for f in files %}
+                  <p>
+                    <a href={{ f.file_field.url }} target="_blank">{{forloop.counter}}</a>
+                  </p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

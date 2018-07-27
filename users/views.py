@@ -24,11 +24,12 @@ def get_all_dispatcher_records(request):
     code = request.session['user_code']
     my_tasks=""
     if code=="17":
-        my_tasks=UnitBasicInfo.objects.filter(
-            Q(location_state='TX') | 
-            Q(location_state='CA') |
-            Q(location_state='LA') |
-            Q(location_state='OK')).filter(inhouse=True)
+        # my_tasks=UnitBasicInfo.objects.filter(
+        #     Q(location_state='TX') | 
+        #     Q(location_state='CA') |
+        #     Q(location_state='LA') |
+        #     Q(location_state='OK')).filter(inhouse=True)
+        my_tasks=UnitBasicInfo.objects.filter(inhouse=True)
     elif code=="18":
         my_tasks=UnitBasicInfo.objects.filter(
             Q(location_state='MA') |
@@ -50,11 +51,12 @@ def get_all_scheduled_records(request):
     code = request.session['user_code']
     my_tasks=""
     if code=="17":
-        my_tasks=UnitBasicInfo.objects.filter(
-            Q(location_state='TX') | 
-            Q(location_state='CA') |
-            Q(location_state='LA') |
-            Q(location_state='OK')).filter(inhouse=True)
+        # my_tasks=UnitBasicInfo.objects.filter(
+        #     Q(location_state='TX') | 
+        #     Q(location_state='CA') |
+        #     Q(location_state='LA') |
+        #     Q(location_state='OK')).filter(inhouse=True)
+        my_tasks=UnitBasicInfo.objects.filter(inhouse=True)
     elif code=="18":
         my_tasks=UnitBasicInfo.objects.filter(
             Q(location_state='MA') |
@@ -78,11 +80,12 @@ def get_new_records(request):
     code = request.session['user_code']
     my_tasks=""
     if code=="17":
-        my_tasks=UnitBasicInfo.objects.filter(
-            Q(location_state='TX') | 
-            Q(location_state='CA') |
-            Q(location_state='LA') |
-            Q(location_state='OK')).filter(inhouse=True)
+        # my_tasks=UnitBasicInfo.objects.filter(
+        #     Q(location_state='TX') | 
+        #     Q(location_state='CA') |
+        #     Q(location_state='LA') |
+        #     Q(location_state='OK')).filter(inhouse=True)
+        my_tasks=UnitBasicInfo.objects.filter(inhouse=True)
     elif code=="18":
         my_tasks=UnitBasicInfo.objects.filter(
             Q(location_state='MA') |
@@ -98,7 +101,6 @@ def get_new_records(request):
     else:
         my_tasks=UnitBasicInfo.objects.filter(areaCode=code).filter(inhouse=False)
         print("-----")
-    print(my_tasks)
     request_list = (my_tasks.filter(pre_diagnosis_flag=True)
                     .filter(warranty=True)
                     .filter(scheDate=None)
@@ -156,11 +158,12 @@ def show_inhouse_page(request):
     code = request.session['user_code']
     tasks=""
     if code=="17":
-        tasks=UnitBasicInfo.objects.filter(
-            Q(location_state='TX') | 
-            Q(location_state='CA') |
-            Q(location_state='LA') |
-            Q(location_state='OK')).filter(inhouse=True)
+        # tasks=UnitBasicInfo.objects.filter(
+        #     Q(location_state='TX') | 
+        #     Q(location_state='CA') |
+        #     Q(location_state='LA') |
+        #     Q(location_state='OK')).filter(inhouse=True)
+        tasks=UnitBasicInfo.objects.filter(inhouse=True)
     elif code=="18":
         tasks=UnitBasicInfo.objects.filter(
             Q(location_state='MA') |

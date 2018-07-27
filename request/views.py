@@ -32,7 +32,9 @@ STATES = (
 )
 def invoice_approve(request,pk):
     invoice=get_object_or_404(Invoice,pk=pk)
-    print("-----")
+    parts=PartRequest.objects.filter(sksid=invoice.sksid)
+    files = invoice.incident.filesimplemodel_set.all()
+    form=""
     if request.method == "POST":
         form=ApproveForm(request.POST,instance=invoice)
         if form.is_valid():
@@ -41,7 +43,13 @@ def invoice_approve(request,pk):
             return redirect("/request/invoice/")
     else:
         form=ApproveForm(instance=invoice)
-    return render(request, 'adm/invoice_approve.html',{'form':form,'invoice':invoice})
+    para={
+        'form':form,
+        'invoice':invoice,
+        'parts':parts,
+        'files':files,
+    }
+    return render(request, 'adm/invoice_approve.html',para)
 def upload_file(request,pk):
     unit=get_object_or_404(UnitBasicInfo,pk=pk)
     message=""
@@ -728,6 +736,7 @@ def showAllRequests(request):
             Q(sksid__icontains=search_text)|
             Q(businessName__icontains=search_text)|
             Q(serialNumber__icontains=search_text)|
+            Q(phone__icontains=search_text)|
             Q(techName__icontains=search_text)
         )
     paginator = Paginator(unit_list, 50)
