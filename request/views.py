@@ -35,7 +35,14 @@ def invoice_approve(request,pk):
     parts=PartRequest.objects.filter(sksid=invoice.sksid)
     files = invoice.incident.filesimplemodel_set.all()
     form=""
+    tags = Tag.objects.all()
     if request.method == "POST":
+        select_tags = request.POST.getlist('tags')
+        if select_tags:
+            for t in select_tags:
+                tag=get_object_or_404(Tag,pk=t)
+                tag.model.add(invoice.incident)
+            return redirect("#/")
         form=ApproveForm(request.POST,instance=invoice)
         if form.is_valid():
             invoice=form.save(commit=False)
@@ -48,6 +55,7 @@ def invoice_approve(request,pk):
         'invoice':invoice,
         'parts':parts,
         'files':files,
+        'tags':tags,
     }
     return render(request, 'adm/invoice_approve.html',para)
 def upload_file(request,pk):
@@ -470,20 +478,20 @@ def invoice_list(request,method):
         }
         return render(request,'adm/invoice_list.html',para)
     return redirect('/request/invoice')
-def add_tag(request,pk):
-    unit = get_object_or_404(UnitBasicInfo, pk=pk)
-    all_tags = Tag.objects.all()
-    if request.method == "POST":
-        select_tags = request.POST.getlist('tags')
-        tag_form=TagForm(request.POST)
-        if tag_form.is_valid():
-            new_tag=tag_form.save()
-            new_tag.model.add(unit)
-        if select_tags:
-            for t in select_tags:
-                tag=get_object_or_404(Tag,pk=t)
-                tag.model.add(unit)
-    return redirect("#/")
+# def add_tag(request,pk):
+#     unit = get_object_or_404(UnitBasicInfo, pk=pk)
+#     all_tags = Tag.objects.all()
+#     if request.method == "POST":
+#         select_tags = request.POST.getlist('tags')
+#         tag_form=TagForm(request.POST)
+#         if tag_form.is_valid():
+#             new_tag=tag_form.save()
+#             new_tag.model.add(unit)
+#         if select_tags:
+#             for t in select_tags:
+#                 tag=get_object_or_404(Tag,pk=t)
+#                 tag.model.add(unit)
+#     return redirect("#/")
 def diagnosis(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     files = FileSimpleModel.objects.all().filter(incident=unit)
@@ -491,7 +499,6 @@ def diagnosis(request,pk):
     if request.method == "POST":
         form=DiagnosisForm(request.POST,instance=unit)
         select_tags = request.POST.getlist('tags')
-        print (select_tags)
         tag_form=TagForm(request.POST)
         if tag_form.is_valid():
             if tag_form.cleaned_data["name"]!="":
