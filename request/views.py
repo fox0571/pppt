@@ -36,8 +36,17 @@ def invoice_approve(request,pk):
     files = invoice.incident.filesimplemodel_set.all()
     form=""
     tags = Tag.objects.all()
+    tag_form=TagForm()
     if request.method == "POST":
         select_tags = request.POST.getlist('tags')
+        tag_form=TagForm(request.POST)
+        tag_name = request.POST.get('name','')
+        if tag_name:
+            new_tag=Tag()
+            new_tag.name=tag_name
+            new_tag.save()
+            new_tag.model.add(invoice.incident)
+            return redirect("#/")
         if select_tags:
             for t in select_tags:
                 tag=get_object_or_404(Tag,pk=t)
@@ -50,12 +59,14 @@ def invoice_approve(request,pk):
             return redirect("/request/invoice/")
     else:
         form=ApproveForm(instance=invoice)
+        
     para={
         'form':form,
         'invoice':invoice,
         'parts':parts,
         'files':files,
         'tags':tags,
+        'tag_form' :tag_form,
     }
     return render(request, 'adm/invoice_approve.html',para)
 def upload_file(request,pk):

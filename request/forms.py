@@ -129,7 +129,7 @@ class TagForm(ModelForm):
         model = Tag
         fields = ['name']
         widgets = {
-            'name':forms.TextInput(attrs={'class': 'form-control','placeholder': 'Create a tag!'})
+            'name':forms.TextInput(attrs={'class': 'form-control','placeholder': 'Create'})
         }
 
 class FileUploadForm(forms.Form):

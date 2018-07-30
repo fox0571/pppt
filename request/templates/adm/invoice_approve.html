@@ -184,6 +184,7 @@
                   </h3>
                 </div>
                 <div class="box-body">
+                  <div class="col-md-8">
                     <form class="form1" action="#/" method="post">
                       {% csrf_token %}
                       <select class="form-control select2" multiple="multiple" data-placeholder="Select tags" name="tags" id="tags" style="width: 100%;">
@@ -191,14 +192,14 @@
                         <option value="{{t.id}}">{{t}}</option>
                         {% endfor %}
                       </select>
-                      <button type="submit" class="btn btn-primary pull-right">update</button>
-
-                    </form>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      {{ tag_form.name }}
+                      </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        {{ tag_form.name }}
+                      </div>
                     </div>
-                  </div>
+                    <button type="submit" class="btn btn-primary pull-right">update</button>
+                  </form>
                 </div>
               </div>
             </div>
