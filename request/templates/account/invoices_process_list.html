@@ -53,8 +53,9 @@
                       <th>Total Cost</th>
                       <th>Tech</th>
                       <th>Status</th>
+                      <th>Voucher</th>
                       <th>Print</th>
-                      <th>Process</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -67,20 +68,16 @@
                         <td>${{ p.total_c }}</td>
                         <td>{{ p.incident.techName}}
                         <td>{% if p.status == 1 %}
-                            <span class="glyphicon glyphicon-green-dot"></span>
+                            <span class="glyphicon glyphicon-green-dot">Approved</span>
                             {% elif p.status == 2 %}
-                            <span class="glyphicon glyphicon-red-dot"></span>
+                            <span class="glyphicon glyphicon-red-dot">Disputed</span>
                             {% else %}
-                            <span class="glyphicon glyphicon-yellow-dot"></span>
+                            <span class="glyphicon glyphicon-yellow-dot">Waiting</span>
                             {% endif %}
                         </td>
+                        <td>{{p.voucher}}</td>
                         <td><a href="/render/pdf/{{ p.incident.pk }}/" target="_blank">
                         Print</td>
-                        <td><a href="/request/invoice/process/{{ p.pk }}/">
-                          <div class="col-md-3">
-                            <span class="badge badge-success">Process</span>
-                          </div>
-                        </td>
                       </tr>
                       {% endfor %}
                   </tbody>

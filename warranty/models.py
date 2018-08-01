@@ -23,6 +23,7 @@ class Invoice(models.Model):
 	status = models.IntegerField(choices=STATUS,default=0)
 	dispute_note = models.TextField(null=True,blank=True)
 	processed = models.BooleanField(default=False)
+	voucher = models.CharField(max_length=15,default='------')
 	def __str__(self):
 		return self.invoice+", "+self.sksid
 
