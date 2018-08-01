@@ -253,7 +253,12 @@ def show_new_part(request):
     return render(request, 'request/part_request_list.html', {'request':part})
 def show_part_detail(request,pk):
     part = get_object_or_404(PartRequest, pk=pk)
-    form=PartRequestUpdateForm()
+    form=PartRequestUpdateForm(instance=part)
+    if request.method == "POST":
+        form=PartRequestUpdateForm(request.POST,instance=part)
+        if form.is_valid():
+            part = form.save()
+            return redirect('/request/part/')
     return render(request, 'request/part_request_detail.html', {'part': part,'form':form})
 def update_part(request,pk):
     form=PartForm()
@@ -358,17 +363,17 @@ def update_part(request,pk):
             return redirect("#/")
         return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
     return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
-def update_part_request(request,pk):
-    if request.method == "POST":
-        form=PartRequestUpdateForm(request.POST)
-        if form.is_valid():
-            part = PartRequest.objects.get(pk=pk)
-            tracking=form.cleaned_data["tracking"]
-            note = form.cleaned_data["note"]
-            part.tracking=tracking
-            part.note=note
-            part.save()
-            return redirect('/request/part/')
+# def update_part_request(request,pk):
+#     if request.method == "POST":
+#         form=PartRequestUpdateForm(request.POST)
+#         if form.is_valid():
+#             part = PartRequest.objects.get(pk=pk)
+#             tracking=form.cleaned_data["tracking"]
+#             note = form.cleaned_data["note"]
+#             part.tracking=tracking
+#             part.note=note
+#             part.save()
+#             return redirect('/request/part/')
 def edit_basic(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     pre_sn=unit.serialNumber

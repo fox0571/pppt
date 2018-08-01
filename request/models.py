@@ -130,7 +130,7 @@ class PartRequest(models.Model):
         return self.sksid+','+self.number
 
     class Meta:
-        ordering = ('number',)
+        ordering = ('sksid',)
 
 class Tag(models.Model):
     name = models.CharField(max_length=70,blank=True)
