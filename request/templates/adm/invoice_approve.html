@@ -29,7 +29,6 @@
           </div>
           <div class="box-body">
             {% if invoice.file %}
-            <img src={{ invoice.file.url }}>
             <a href={{ invoice.file.url }} target="_blank">Click me</a>
             {% endif %}
           </div>
@@ -179,7 +178,9 @@
                 <div class="box-header with-border">
                   <h3 class="box-title">Tags:
                       {% for t in invoice.incident.tag_set.all %}
-                      <span class="badge badge-success">{{t}}</span>
+                      <span class="badge">{{t}}
+                        <span onclick=remove_tag() class="glyphicon glyphicon-remove"></span>
+                      </span>
                       {% endfor %}
                   </h3>
                 </div>
