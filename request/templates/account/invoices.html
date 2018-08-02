@@ -53,6 +53,7 @@
                       <th>Total Cost</th>
                       <th>Tech</th>
                       <th>Status</th>
+                      <th>Voucher</th>
                       <th>Print</th>
                     </tr>
                   </thead>
@@ -73,6 +74,7 @@
                             <span class="glyphicon glyphicon-yellow-dot"></span>
                             {% endif %}
                         </td>
+                        <td>{{ p.voucher }}</td>
                         <td><a href="/render/pdf/{{ p.incident.pk }}/" target="_blank">
                         Print</td>
                       </tr>

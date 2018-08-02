@@ -22,7 +22,7 @@ class ApproveForm(forms.ModelForm):
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Invoice
-        exclude = ['total_c','sksid','status','dispute_note','processed']
+        exclude = ['total_c','sksid','status','dispute_note','processed','voucher']
 
         labels = {
             "invoice": "Service Invoice Number",
