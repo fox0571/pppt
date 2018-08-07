@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 from taggit.managers import TaggableManager
+from units.models import Unit
 
 SHIPPING_METHOD = (
     ('NDA','NEXT DAY AIR'),
@@ -61,6 +62,7 @@ class UnitBasicInfo(models.Model):
     businessName=models.CharField(max_length=100)
     contactName=models.CharField(max_length=50)
     serialNumber=models.CharField(max_length=50)
+    model = models.ForeignKey(Unit, on_delete=models.CASCADE,null=True,blank=True)
     phone=models.CharField(max_length=15,null=True)
     email=models.EmailField(null=True,blank=True)
     business_hour=models.CharField(max_length=80,null=True,blank=True)
