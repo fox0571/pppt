@@ -3,7 +3,44 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static "bower_components/select2/dist/css/select2.min.css" %}">
-
+<style>
+.green-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #20F343;
+    border-radius: 50%;
+    display: inline-block;
+}
+.red-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #F21616;
+    border-radius: 50%;
+    display: inline-block;
+}
+.yellow-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    display: inline-block;
+}
+.glyphicon.glyphicon-green-dot:before {
+    color: #20F343;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-yellow-dot:before {
+    color: #FFD700;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-red-dot:before {
+    color: #F21616;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+</style>
 {% endblock %}
 {% block content %}
 
@@ -31,6 +68,38 @@
             {% if invoice.file %}
             <a href={{ invoice.file.url }} target="_blank">Click me</a>
             {% endif %}
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Invioce Records</h3>
+          </div>
+          <div class="box-body">
+            <table id="invoice" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Invoice</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in invoice.incident.invoice_set.all %}
+                  <tr>
+                    <td><a href={{ i.file.url }} target="_blank">{{ i.invoice }}</a></td>
+                    <td>$ {{ i.total_c }}</td>
+                    <td>{% if i.status == 1 %}
+                      <span class="glyphicon glyphicon-green-dot">Approved</span>
+                      {% elif i.status == 2 %}
+                      <span class="glyphicon glyphicon-red-dot">Disputed</span>
+                      {% else %}
+                      <span class="glyphicon glyphicon-yellow-dot">Waiting</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="box box-primary">

@@ -22,9 +22,11 @@ class Part(models.Model):
 
 class Unit(models.Model):
     model=models.CharField(max_length=30)
-    description_eng=models.CharField(max_length=90)
-    description_chn=models.CharField(max_length=100)
-    parts=models.ManyToManyField(Part)
+    name_eng=models.CharField(max_length=90,null=True)
+    name_chn=models.CharField(max_length=100,null=True)
+    dimension = models.CharField(max_length=100,null=True)
+    spec = models.CharField(max_length=100,null=True)
+    parts=models.ManyToManyField(Part,null=True)
     def __str__(self):
         return self.model
 
