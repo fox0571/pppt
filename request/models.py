@@ -136,6 +136,7 @@ class PartRequest(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=70,blank=True)
+    name_chn = models.CharField(max_length=100,blank=True,null=True)
     model = models.ManyToManyField(UnitBasicInfo)
     def __str__(self):
         return self.name
