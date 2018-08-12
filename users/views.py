@@ -8,7 +8,7 @@ from request.models import UnitBasicInfo, PartRequest
 # Create your views here.
 
 #show all unverified serial numbers
-OPERATOR_GROUP=["Anna","Brandon","Jackie","Randi","Christina"]
+OPERATOR_GROUP=["Anna","Brandon","Jackie","Randi","Christina","Amanda Gomez"]
 def show_detail_op(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     form = FirstForm(instance=unit)
