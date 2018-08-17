@@ -744,17 +744,12 @@ def available(request):
     form=CheckForm()
     return render(request, 'request/check.html',{'form': form})
 
-def submita(request):
-
-    form = CheckForm(request.POST)
-    query = request.POST.get('number','0')
-    result=Partsinv.objects.get(number=query)
-    return render(request, 'request/availability.html', {'request':result})
 
 def showAllRequests(request):
     unit_list=UnitBasicInfo.objects.all().order_by('-callTime')
     search_text=request.GET.get("search","")
     if search_text:
+        search_text=search_text.strip()
         unit_list=unit_list.filter(
             Q(sksid__icontains=search_text)|
             Q(businessName__icontains=search_text)|

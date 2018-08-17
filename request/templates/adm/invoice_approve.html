@@ -75,6 +75,7 @@
             <h3 class="box-title">Invioce Records</h3>
           </div>
           <div class="box-body">
+            {% if invoice.incident.invoice_set.all %}
             <table id="invoice" class="table table-bordered table-striped">
               <thead>
                 <tr>
@@ -86,7 +87,11 @@
               <tbody>
                 {% for i in invoice.incident.invoice_set.all %}
                   <tr>
-                    <td><a href={{ i.file.url }} target="_blank">{{ i.invoice }}</a></td>
+                    <td>
+                      {% if i.file %}
+                      <a href={{ i.file.url }} target="_blank">{{ i.invoice }}</a>
+                      {% endif %}
+                    </td>
                     <td>$ {{ i.total_c }}</td>
                     <td>{% if i.status == 1 %}
                       <span class="glyphicon glyphicon-green-dot">Approved</span>
@@ -100,6 +105,7 @@
                 {% endfor %}
               </tbody>
             </table>
+            {% endif %}
           </div>
         </div>
         <div class="box box-primary">
