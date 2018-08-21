@@ -88,7 +88,7 @@ class FirstForm(ModelForm):
     def clean_serialNumber(self):
         sn = self.cleaned_data['serialNumber']
         print("cus_validator")
-        if not re.match(r'^[a-zA-Z]{3,4}', sn):
+        if not re.match(r'^[a-zA-Z]{2,4}', sn):
             raise forms.ValidationError("Not a valid serial number")
         return sn
 class WarrantyForm(forms.Form):
