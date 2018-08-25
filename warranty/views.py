@@ -88,6 +88,9 @@ def invoice_waiting(request):
 def invoice_processed(request):
     invoices=Invoice.objects.all().filter(processed=True).order_by("-pk")
     return render(request, 'account/invoices.html',{'invoices':invoices})
+def invoice_disputed(request):
+    invoices=Invoice.objects.all().filter(status=2).order_by("-pk")
+    return render(request, 'account/invoices.html',{'invoices':invoices})
 def invoice_all(request):
     invoices=Invoice.objects.all().order_by("-pk")
     return render(request, 'account/invoices.html',{'invoices':invoices})

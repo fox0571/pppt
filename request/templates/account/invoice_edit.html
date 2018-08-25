@@ -53,6 +53,16 @@
             Click me</a>
           </div>
         </div>
+        {% if invoice.status == 2 %}
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Dispute Note</h3>
+          </div>
+          <div class="box-body">
+            {{ invoice.dispute_note| linebreaks }}
+          </div>
+        </div>
+        {% endif %}
         <button onclick=prom()>PROCESS</button>
       </div>
     </div>
@@ -69,11 +79,11 @@ function count() {
   document.getElementById("total").innerHTML = total.toFixed(2);
 }
 function prom() {
-        var voucher = prompt("Please enter the voucher number", "");
+        var voucher = confirm("You are going to delete this part request");
         if (voucher)
         {
           $.ajax({
-            url: '/api/invoice-process/{{ invoice.pk }}/',
+            url: '/api/invoice/{{ invoice.pk }}/',
             type : 'PATCH',
             data: {
               'voucher': voucher,

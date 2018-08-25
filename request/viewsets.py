@@ -1,7 +1,8 @@
 from rest_framework.decorators import detail_route, list_route
-from rest_framework import viewsets
-from .models import Tag, UnitBasicInfo
-from .serializers import TagSerializer
+from rest_framework import status, viewsets
+from .models import Tag, UnitBasicInfo, PartRequest
+from .serializers import TagSerializer, PartSerializer
+from rest_framework.response import Response
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -11,5 +12,9 @@ class TagViewSet(viewsets.ModelViewSet):
         case_id=request.data.get('case_id')
         case=UnitBasicInfo.objects.get(pk=case_id)
         tag=self.get_object()
-        tag.remove(case)
-        return Response(serializer.data)
+        tag.model.remove(case)
+        return Response(tag.id)
+
+class PartViewSet(viewsets.ModelViewSet):
+    queryset = PartRequest.objects.all()
+    serializer_class = PartSerializer   

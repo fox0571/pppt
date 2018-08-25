@@ -1,5 +1,89 @@
 {% extends 'request/index.html' %}
 {% load static %}
+{% block css %}
+<style>
+  [class^="u-icon"]
+{
+    display: inline-block;
+    color: #fff;
+    vertical-align: middle;
+}
+
+.u-icon-delete
+{
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+}
+/*给before伪类设置一个默认背景色 设置content*/
+.u-icon-delete:before
+{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #8e8e93;
+    content: ''; 
+}
+/*给after伪类   -webkit-transform: rotate(-45deg);旋转    background-color: #e1e2e4;设置X的一边的颜色*/
+.u-icon-delete:after
+{
+    position: absolute;
+    top: 19px;
+    left: 14px;
+    width: 12px;
+    height: 2px;
+    -webkit-transform: rotate(-45deg);
+    background-color: #e1e2e4;
+    content: '';
+}
+/* -webkit-transform: rotate(45deg); 运用的特别巧秒*/
+.u-icon-delete i
+{
+    position: absolute;
+    top: 19px;
+    left: 14px;
+    width: 12px;
+    height: 2px;
+    background-color: #e1e2e4;
+    -webkit-transform: rotate(45deg);
+}
+/*橙色背景中间一白色横杠的删除icon */
+.u-icon-del
+{
+    position: relative;
+    width: 17px;
+    height: 17px;
+    border: 1px solid #ff5d1d;
+    -webkit-border-radius: 17px;
+    border-radius: 17px;
+    -webkit-transition: 300ms ease-in-out;
+    transition: 300ms ease-in-out;
+    background-color: #ff5d1d;
+}
+
+.u-icon-del.on,.on .u-icon-del 
+{
+    -webkit-transform: rotateZ(90deg);
+}
+/*这里的background-color: #fff;和 content: "\20";实现白色横杠*/
+.u-icon-del::after
+{
+    position: absolute;
+    top: 7px;
+    left: 3px;
+    width: 10px;
+    height: 3px;
+    background-color: #fff;
+    content: "\20";
+}
+
+</style>
+{% endblock %}
 {% block content %}
 
 
@@ -42,7 +126,7 @@
                 <tbody>
                     {% for p in parts %}
                     <tr>
-                      <td>{{ forloop.counter }}</td>
+                      <td><span class="u-icon-del" value="{{p.id}}"></span></td>
                       <td>{{ p.request_time }}</td>
                       <td>{{ unit.sksid }}</td>
                       <td>{{ p.number }}</td>
@@ -57,17 +141,6 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <th>No.</th>
-                    <th>Date</th>
-                    <th>SKS</th>
-                    <th>Number</th>
-                    <th>Name</th>
-                    <th>QTY</th>
-                    <th>Tracking</th>
-                  </tr>
-                </tfoot>
               </table>
               {% endif %}
             </div>
@@ -209,6 +282,27 @@
   var selector = document.getElementById("phone");
   $(function () {
     $(selector).inputmask({"mask": "(999) 999-9999"});
+  });
+  $('.u-icon-del').click(function(){
+    var id=$(this).attr("value")
+    var url_add = '/api/part/' + id + '/'
+    var res = confirm("You are going to delete this part request")
+    if (res){
+      $.ajax({
+        url: url_add,
+        type : 'DELETE',
+        data: {
+          'id': id,
+        },
+        dataType: 'json',
+        statusCode: {
+          204: function() {
+            console.log("11111");
+            window.location.reload();
+          }
+        },
+      });
+    }
   });
 </script>
 {% endblock %}
