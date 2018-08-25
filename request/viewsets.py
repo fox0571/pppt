@@ -6,7 +6,7 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     
-    @detail_route(methods=['put'])
+    @detail_route(methods=['put','get'])
     def remove(self, request, *args, **kwargs):
         case_id=request.data.get('case_id')
         case=UnitBasicInfo.objects.get(pk=case_id)

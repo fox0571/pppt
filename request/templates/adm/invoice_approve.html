@@ -253,8 +253,8 @@
                 <div class="box-header with-border">
                   <h3 class="box-title">Tags:
                       {% for t in invoice.incident.tag_set.all %}
-                      <span class="badge">{{t}}
-                        <span onclick=remove_tag() class="glyphicon glyphicon-remove"></span>
+                      <span value="{{t.id}}" class="badge">{{t}}
+                        <span value="{{t.id}}" class="glyphicon glyphicon-remove"></span>
                       </span>
                       {% endfor %}
                   </h3>
@@ -291,6 +291,28 @@
 <script>
   $(function () {
     $('.select2').select2()
+  });
+  $('.badge').click(function(){
+    var tag_id=$(this).attr("value")
+    console.log(tag_id)
+    var case_id={{ invoice.incident.pk }}
+    var url_add = '/api/tag/' + tag_id + '/remove/'
+    console.log(case_id)
+    $.ajax({
+
+      url: url_add,
+      type : 'PUT',
+      data: {
+        'case_id': case_id,
+      },
+      dataType: 'json',
+      statusCode: {
+        200: function() {
+          alert( "Update successfully!" );
+          window.location.href = "#/";
+        }
+      },
+    });
   });
 </script>
 {% endblock %}
