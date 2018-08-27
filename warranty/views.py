@@ -101,6 +101,7 @@ def invoice_pro(request,pk):
     return redirect("/warranty/account/invoice/new/")
 def invoice_edit(request,pk):
     invoice=get_object_or_404(Invoice,pk=pk)
+    origin_tot=invoice.total_c
     if request.method == "POST":
         form=AccountForm(request.POST,request.FILES,instance=invoice)
         if form.is_valid():
@@ -109,6 +110,8 @@ def invoice_edit(request,pk):
                 +invoice.labor_c
                 +invoice.material_c)
             invoice.total_c=tot
+            if origin_tot!=tot:
+                invoice.status=0
             invoice.save()
             return redirect("/warranty/account/invoice/")
     else:
