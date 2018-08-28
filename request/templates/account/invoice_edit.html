@@ -79,7 +79,7 @@ function count() {
   document.getElementById("total").innerHTML = total.toFixed(2);
 }
 function prom() {
-        var voucher = confirm("You are going to delete this part request");
+        var voucher = prompt("Please enter the voucher number", "");
         if (voucher)
         {
           $.ajax({
