@@ -14,6 +14,7 @@ GROUPS = (
             (10,"Brandon"),
             (11,"Anna"),
             (12,"Jackie"),
+            (20,"Etnia"),
             (13,"Warranty check"),
             (0,"ADMIN"),
             (15,"Parts"),
