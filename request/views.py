@@ -397,6 +397,17 @@ def edit_basic(request,pk):
     else:
         form = FirstForm(instance=unit)
     return render(request, 'operator/basic_edit.html', {'form':form,'unit':unit,'pk':unit.pk})
+def edit_basic_dispatcher(request,pk):
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
+    if request.method == "POST":
+        form = FirstForm(request.POST, instance=unit)
+        if form.is_valid():
+            unit = form.save()
+            next_url="/user/dispatcher/new/"+pk+"/"
+            return redirect('next_url')
+    else:
+        form = FirstForm(instance=unit)
+    return render(request, 'dispatcher/basic_edit.html', {'form':form,'unit':unit,'pk':unit.pk})
 def update_basic(request):
     form=FirstForm()
     if request.method == "POST":

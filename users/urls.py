@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^dispatcher/new/(?P<pk>\d+)/$', vws.update_tech_info, name='tech'),
     url(r'^dispatcher/follow/(?P<pk>\d+)/$', views.show_follow_up, name='follow_up'),
     url(r'^operator/(?P<pk>\d+)/$', vws.edit_basic, name='edit_basic'),
+    url(r'^dispatcher/edit/(?P<pk>\d+)/$', vws.edit_basic_dispatcher, name='edit_basic'),
     url(r'^operator/all/$', views.get_all_records, name='all'),
     url(r'^operator/today/$', views.get_today_records, name='today'),
     url(r'^operator/oow/$', views.get_all_oow_records, name='oow'),

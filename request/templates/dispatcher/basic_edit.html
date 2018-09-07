@@ -1,0 +1,108 @@
+{% extends 'request/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <form action="/user/dispatcher/edit/{{ pk }}/" method="POST" class="post-form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Business Information</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <!--left left column--->
+                <div class="col-md-6">
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ form.businessName.errors }}
+                      <label for="{{ form.businessName_for_label }}">Name of Business:</label>{{ form.businessName }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.contactName.errors }}
+                      <label for="{{ form.contactName_for_label }}">Contact Name:</label>{{ form.contactName }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.phone.errors }}
+                      <label for="{{ form.phone_for_label }}">Phone Number:</label>{{ form.phone }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.email.errors }}
+                      <label for="{{ form.email_for_label }}">Email Address:</label>{{ form.email }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.business_hour.errors }}
+                      <label for="{{ form.business_hour_for_label }}">Business Hours:</label>{{ form.business_hour }}
+                    </div>
+                  </div>
+                </div>
+                <!--end left left column-->
+                <!--left right column--->
+                <div class="col-md-6">
+                  <div class="box-body">
+                    <div class="form-group">
+                      {{ form.location_add1.errors }}
+                      <label for="{{ form.location_add1.id_for_label }}">Street: </label>{{ form.location_add1 }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.location_add2.errors }}
+                      <label for="{{ form.location_add2.id_for_label }}">Address2: </label>{{ form.location_add2 }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.location_city.errors }}
+                      <label for="{{ form.location_city.id_for_label }}">City: </label>{{ form.location_city }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.location_state.errors }}
+                      <label for="{{ form.location_state.id_for_label }}">State: </label>{{ form.location_state }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.location_zip.errors }}
+                      <label for="{{ form.location_zip.id_for_label }}">Zipcode: </label>{{ form.location_zip }}
+                    </div>
+                  </div>
+                </div>
+                <!-- end left right column-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Unit Basic Information</h3>
+            </div>
+            <div class="box-body">
+              <div class="form-group">
+                {{ form.issue.errors }}
+                <label for="{{ form.issue.id_for_label }}">Issue Description:</label>{{ form.issue }}
+              </div>
+              <div class="checkbox">
+                <label>
+                  {{ form.double_check }}Double check before you update
+                </label>
+              </div>
+              <button type="submit" class="save btn btn-default">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/input-mask/jquery.inputmask.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.date.extensions.js" %}"></script>
+<script src="{% static "plugins/input-mask/jquery.inputmask.extensions.js" %}"></script>
+<script>
+  var selector = document.getElementById("phone");
+  $(function () {
+    $(selector).inputmask({"mask": "(999) 999-9999"});
+  });
+</script>
+{% endblock %}
