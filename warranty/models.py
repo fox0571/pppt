@@ -29,3 +29,22 @@ class Invoice(models.Model):
 
 	class Meta:
 		ordering = ('add_time',)
+
+class Sales(models.Model):
+	sn = models.CharField(max_length=50)
+	item_id = models.CharField(max_length=20)
+	branch_id = models.CharField(max_length=5)
+	customer_id = models.IntegerField()
+	bill2_name = models.CharField(max_length=100)
+	transaction = models.IntegerField()
+	date = models.DateTimeField()
+	ship2_contact = models.CharField(max_length=50, null=True, blank=True)
+	ship2_name = models.CharField(max_length=50)
+	ship2_address1 = models.CharField(max_length=50)
+	ship2_address2 = models.CharField(max_length=50, null=True, blank=True)
+	ship2_city = models.CharField(max_length=50)
+	ship2_state = models.CharField(max_length=50)
+	ship2_zip = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.sn
