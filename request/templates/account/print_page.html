@@ -159,7 +159,7 @@ p.thick {
             {% if invoices %}
               {% for p in invoices %}
                 {% if p.status == 1 %}
-                  <p>{{ p.invoice }}: APPROVED {{sign}}</p>
+                  <p>{{ p.invoice }}: APPROVED @ {{ p.approved_time }} {{sign}}</p>
                 {% endif %}
               {% endfor %}
             {% endif %}

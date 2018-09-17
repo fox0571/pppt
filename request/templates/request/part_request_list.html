@@ -34,6 +34,7 @@
                       <th>No.</th>
                       <th>Incident Number</th>
                       <th>S/N</th>
+                      <th>Part</th>
                       <th>Location</th>
                       <th>Tracking</th>
                       <th>Date</th>
@@ -46,6 +47,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ r.sksid }}</td>
                         <td>{{ r.sn }}</td>
+                        <td>{{ r.name }}</td>
                         <td>{{ r.location_add1 }} 
                         {% if r.location_add2 %}
                         {{ r.location_add2 }}
