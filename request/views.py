@@ -14,6 +14,7 @@ from warranty.models import Invoice, Sales
 from warranty.forms import ApproveForm
 from django.contrib import messages
 from warranty import views as wvw
+import random
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
 STATES = (
@@ -69,7 +70,7 @@ def invoice_approve(request,pk):
         'parts':parts,
         'files':files,
         'tags':tags,
-        'tag_form' :tag_form,
+        'tag_form':tag_form,
     }
     return render(request, 'adm/invoice_approve.html',para)
 def upload_file(request,pk):
@@ -426,14 +427,12 @@ def update_basic(request):
             new_unit.receiver=request.session['user_name']
             new_unit.save()
             ret=warranty_check(new_unit.serialNumber)
-            print(ret)
             if ret != -1:
                 start_date=ret.date
                 expired_date=start_date+datetime.timedelta(days=737)
                 today=datetime.datetime.now(timezone.utc)
                 status=False
                 delta=expired_date-today
-                print(delta)
                 if (delta.days>0):
                     status=True
                 if status:
@@ -451,12 +450,13 @@ def update_basic(request):
                     month=datetime.datetime.now().month
                     year=datetime.datetime.now().year
                     area=new_unit.location_state
-                    code = wvw.get_code(area)
+                    #code = wvw.get_code(area)
+                    code = random.randint(1,4)
                     new_unit.areaCode=code
                     if code != -1:
                         new_id=wvw.new_sksid(month,year,code)
                         new_unit.sksid=new_id
-                        print(new_id)
+                    new_unit.pre_diagnosis_flag=True
                     new_unit.save()
             if request.session['unit_type']=="HOT":
                 form=HotTechQuestionForm()
