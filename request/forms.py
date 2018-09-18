@@ -41,6 +41,12 @@ class HotTechQuestionForm(forms.Form):
     pilot_light = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     pilot_stay = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     burner_light = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    preferred_service = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+            ),
+            initial="NO"
+        )
     double_check = forms.BooleanField(required=True)
 class ColdTechQuestionForm(forms.Form):
     filter = forms.ChoiceField(choices=CHOICES_4,widget=forms.Select(attrs={'class': 'form-control'}))
@@ -54,6 +60,12 @@ class ColdTechQuestionForm(forms.Form):
     condFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     evapFan = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
     comp = forms.ChoiceField(choices=CHOICES_1,widget=forms.Select(attrs={'class': 'form-control'}))
+    preferred_service = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+            ),
+            initial="NO"
+        )
     double_check = forms.BooleanField(required=True)
 class InhouseForm(ModelForm):
     class Meta:

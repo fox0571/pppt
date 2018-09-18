@@ -1,7 +1,7 @@
 from rest_framework.decorators import detail_route, list_route
 from rest_framework import status, viewsets
 from .models import Tag, UnitBasicInfo, PartRequest
-from .serializers import TagSerializer, PartSerializer
+from .serializers import TagSerializer, PartSerializer, CaseSerializer
 from rest_framework.response import Response
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
@@ -17,4 +17,8 @@ class TagViewSet(viewsets.ModelViewSet):
 
 class PartViewSet(viewsets.ModelViewSet):
     queryset = PartRequest.objects.all()
-    serializer_class = PartSerializer   
+    serializer_class = PartSerializer
+
+class CaseViewSet(viewsets.ModelViewSet):
+    queryset = UnitBasicInfo.objects.all()
+    serializer_class = CaseSerializer   

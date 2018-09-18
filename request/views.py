@@ -437,15 +437,16 @@ def update_basic(request):
                     status=True
                 if status:
                     new_unit.warranty=True
-                    note=(ret.date.strftime("%Y-%m-%d")+"\n"
-                        +ret.branch_id+"\n"
-                        +ret.bill2_name+"\n"
+                    note=(ret.date.strftime("%Y-%m-%d")+", "
+                        +ret.branch_id+", "+str(ret.transaction)+"\n"
+                        +"BILLED TO: "+ret.bill2_name+"\n"
+                        +"SHIPPED TO: "+ret.ship2_name+"\n"
                         +ret.ship2_contact+"\n"
-                        +ret.ship2_name+"\n"
                         +ret.ship2_address1+"\n"
                         +ret.ship2_city+"\n"
                         +ret.ship2_state+"\n"
-                        +ret.ship2_zip+"\n")
+                        +ret.ship2_zip+"\n"
+                        )
                     new_unit.warrantyNote=note
                     month=datetime.datetime.now().month
                     year=datetime.datetime.now().year
@@ -755,9 +756,11 @@ def update_hot(request,pk):
             tsq1=form.cleaned_data["pilot_light"]
             tsq2=form.cleaned_data["pilot_stay"]
             tsq3=form.cleaned_data["burner_light"]
+            tsq4=form.cleaned_data["preferred_service"]
             tsq=("The pilot can be lighted on: "+tsq1+"\n"
                 +"The pilot can stay on: "+tsq2+"\n"
-                +"The burner can be turned on: "+tsq3
+                +"The burner can be turned on: "+tsq3+"\n"
+                +"Preferred service agent: "+tsq4+"\n"
                 )
             unit=UnitBasicInfo.objects.get(pk=pk)
             unit.tsq=tsq
@@ -782,10 +785,12 @@ def update_cold(request,pk):
             tsq9=form.cleaned_data["evapFan"]
             tsq10=form.cleaned_data["comp"]
             tsq11=form.cleaned_data["door"]
+            tsq12=form.cleaned_data["preferred_service"]
             tsq=("Filter Clean: "+tsq1+"\n"+"Display Temperature: "+str(tsq2)+"\n"+"Real Temperature: "+str(tsq3)+"\n"
                 +"Controller: "+tsq4+"\n"+"Snowflake Icon: "+tsq5+"\n"+"Fan Icon: "+tsq6+"\n"
                 +"Ice on Evap: "+tsq7+"\n"+"Cond Fan Running: "+tsq8+"\n"+"Evap Fan Running: "+tsq9+"\n"
-                +"Compressor running: "+tsq10+"\n"+"Door issue: "+tsq11+"\n")
+                +"Compressor running: "+tsq10+"\n"+"Door issue: "+tsq11+"\n"
+                +"Preferred service agent: "+tsq12+"\n")
             unit.tsq=tsq
             unit.save()
             return redirect('/user')
