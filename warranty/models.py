@@ -24,6 +24,7 @@ class Invoice(models.Model):
 	dispute_note = models.TextField(null=True,blank=True)
 	processed = models.BooleanField(default=False)
 	voucher = models.CharField(max_length=15,default='------')
+	approved_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
 	def __str__(self):
 		return self.invoice+", "+self.sksid
 

@@ -1,4 +1,5 @@
 import datetime
+from datetime import timezone
 from django.http import HttpResponse
 from django.db.models import Q
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -9,9 +10,10 @@ from .forms import FileUploadForm, InhouseForm, TagForm, FirstForm, DiagnosisFor
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
-from warranty.models import Invoice
+from warranty.models import Invoice, Sales
 from warranty.forms import ApproveForm
 from django.contrib import messages
+from warranty import views as wvw
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
 STATES = (
@@ -55,6 +57,7 @@ def invoice_approve(request,pk):
         form=ApproveForm(request.POST,instance=invoice)
         if form.is_valid():
             invoice=form.save(commit=False)
+            invoice.approved_time=datetime.datetime.now()
             invoice.save()
             return redirect("/request/invoice/")
     else:
@@ -161,9 +164,6 @@ class Pdf(View):
         inv=Invoice.objects.all().filter(sksid=unit.sksid)
         parts=PartRequest.objects.all().filter(sksid=unit.sksid)
         sign=unit.callTime.timestamp()*1000
-        for i in inv:
-            print (i.status,type(i.status))
-        print(sign)
         params = {
             'unit':unit,
             'invoices':inv,
@@ -408,6 +408,13 @@ def edit_basic_dispatcher(request,pk):
     else:
         form = FirstForm(instance=unit)
     return render(request, 'dispatcher/basic_edit.html', {'form':form,'unit':unit,'pk':unit.pk})
+def warranty_check(sn):
+    cleaned_sn=sn.replace("-","")
+    try:
+        unit = Sales.objects.get(sn=cleaned_sn)
+        return unit
+    except Sales.DoesNotExist:
+        return -1
 def update_basic(request):
     form=FirstForm()
     if request.method == "POST":
@@ -418,6 +425,39 @@ def update_basic(request):
             request.session["unit_type"]=unit_type
             new_unit.receiver=request.session['user_name']
             new_unit.save()
+            ret=warranty_check(new_unit.serialNumber)
+            print(ret)
+            if ret != -1:
+                start_date=ret.date
+                expired_date=start_date+datetime.timedelta(days=737)
+                today=datetime.datetime.now(timezone.utc)
+                status=False
+                delta=expired_date-today
+                print(delta)
+                if (delta.days>0):
+                    status=True
+                if status:
+                    new_unit.warranty=True
+                    note=(ret.date.strftime("%Y-%m-%d")+"\n"
+                        +ret.branch_id+"\n"
+                        +ret.bill2_name+"\n"
+                        +ret.ship2_contact+"\n"
+                        +ret.ship2_name+"\n"
+                        +ret.ship2_address1+"\n"
+                        +ret.ship2_city+"\n"
+                        +ret.ship2_state+"\n"
+                        +ret.ship2_zip+"\n")
+                    new_unit.warrantyNote=note
+                    month=datetime.datetime.now().month
+                    year=datetime.datetime.now().year
+                    area=new_unit.location_state
+                    code = wvw.get_code(area)
+                    new_unit.areaCode=code
+                    if code != -1:
+                        new_id=wvw.new_sksid(month,year,code)
+                        new_unit.sksid=new_id
+                        print(new_id)
+                    new_unit.save()
             if request.session['unit_type']=="HOT":
                 form=HotTechQuestionForm()
                 return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
