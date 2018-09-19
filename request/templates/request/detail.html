@@ -39,13 +39,13 @@
               </div>
               <div class="col-md-6">
                 <div class="update pull-right">
-                  <span class="badge">Update</span>
+                  <span class="badge" id="follow1" value="{{unit.id}}">Update</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="box-body">
-            <p class="text-light-blue">{{unit.followup_customer|upper|linebreaks}}</p>
+            <p class="text-light-blue" id="follow" value="{{unit.followup_customer}}">{{unit.followup_customer|upper|linebreaks}}</p>
           </div>
         </div>
       </div>
@@ -72,7 +72,16 @@
         </div>
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Follow Up With Technician</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <h3 class="box-title">Follow Up With Technician</h3>
+              </div>
+              <div class="col-md-6">
+                <div class="update pull-right">
+                  <span class="badge" id="follow2" value="{{unit.id}}">Update</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="box-body">
             <p class="text-light-blue">{{unit.followup_tech|upper|linebreaks}}</p>
@@ -164,20 +173,60 @@
       "autoWidth": false,    <!-- 固定宽度 -->
     });
   });
-  $('.badge11').click(function(){
+  $('#follow1').click(function(){
       var id=$(this).attr("value")
       var url_add = '/api/case/' + id + '/'
-      var res = confirm("You are going to delete this case")
+      var note="{{unit.followup_customer|escapejs}}"
+      console.log(note)
+      // $.ajax({
+      //     url: url_add,
+      //     type : 'GET',
+      //     data: {
+      //       'id': id,
+      //     },
+      //     dataType: 'json',
+      //     success: function (response) {
+      //       note=(response["followup_customer"]);
+      //     },
+      //   });
+      var res = prompt("","")
+      var d = new Date();
       if (res){
+        res = d.toUTCString()+"\n"+res
+        note=note+"\n"+res
         $.ajax({
           url: url_add,
-          type : 'DELETE',
+          type : 'PATCH',
           data: {
-            'id': id,
+            'followup_customer': note,
           },
           dataType: 'json',
           statusCode: {
-            204: function() {
+            200: function() {
+              window.location.reload();
+            }
+          },
+        });
+      }
+    });
+    $('#follow2').click(function(){
+      var id=$(this).attr("value")
+      var url_add = '/api/case/' + id + '/'
+      var note="{{unit.followup_tech|escapejs}}"
+      var res = prompt("","")
+      var d = new Date();
+      if (res){
+        res = d.toUTCString()+"\n"+res
+        note=note+"\n"+res
+        $.ajax({
+          url: url_add,
+          type : 'PATCH',
+          data: {
+            'followup_tech': note,
+          },
+          dataType: 'json',
+          statusCode: {
+            200: function() {
               window.location.reload();
             }
           },
