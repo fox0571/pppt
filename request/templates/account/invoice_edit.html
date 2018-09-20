@@ -63,7 +63,14 @@
           </div>
         </div>
         {% endif %}
-        <button onclick=prom()>PROCESS</button>
+        <div class="row">
+          <div class="col-md-6">
+            <button onclick=prom()>PROCESS</button>
+          </div>
+          <div class="col-md-6">
+            <button class="pull-right" onclick=prom1()>Need W-9</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -88,6 +95,7 @@ function prom() {
             data: {
               'voucher': voucher,
               'processed': "True",
+              'need_w9': "False",
             },
             dataType: 'json',
             statusCode: {
@@ -99,7 +107,25 @@ function prom() {
           });
         }
  }
-
+ function prom1() {
+        var voucher = confirm("This company needs W-9");
+        if (voucher)
+        {
+          $.ajax({
+            url: '/api/invoice/{{ invoice.pk }}/',
+            type : 'PATCH',
+            data: {
+              'need_w9': "True",
+            },
+            dataType: 'json',
+            statusCode: {
+              200: function() {
+                window.location.href = "/warranty/account/invoice/new/";
+              }
+            },
+          });
+        }
+ }
 
 </script>
 {% endblock %}
