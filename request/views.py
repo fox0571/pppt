@@ -385,6 +385,7 @@ def edit_basic(request,pk):
             if sn != pre_sn:
                 unit.warranty=None
             unit = form.save()
+            messages.add_message(request, messages.INFO, 'A new service call has been created.')
             unit_type=form.cleaned_data["type"]
             sn=form.cleaned_data["type"]
             request.session["unit_type"]=unit_type
@@ -459,6 +460,8 @@ def update_basic(request):
                         new_unit.sksid=new_id
                     new_unit.pre_diagnosis_flag=True
                     new_unit.save()
+                else:
+                    messages.add_message(request, messages.INFO, 'A new service call has been created.')
             if request.session['unit_type']=="HOT":
                 form=HotTechQuestionForm()
                 return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
