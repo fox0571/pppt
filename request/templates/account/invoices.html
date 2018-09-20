@@ -21,6 +21,11 @@
     content: "\25cf";
     font-size: 1.5em;
 }
+.glyphicon.glyphicon-purple-dot:before {
+    color: rgb(91, 5, 126);
+    content: "\25cf";
+    font-size: 1.5em;
+}
 </style>
 {% endblock %}
 {% block content %}
@@ -66,13 +71,18 @@
                         <td>{{ p.sksid }}</td>
                         <td>${{ p.total_c }}</td>
                         <td>{{ p.incident.techName}}
-                        <td>{% if p.status == 1 %}
+                        <td>
+                          {% if p.need_w9 %}
+                            <span class="glyphicon glyphicon-purple-dot"></span>
+                          {% else %}  
+                            {% if p.status == 1 %}
                             <span class="glyphicon glyphicon-green-dot"></span>
                             {% elif p.status == 2 %}
                             <span class="glyphicon glyphicon-red-dot"></span>
                             {% else %}
                             <span class="glyphicon glyphicon-yellow-dot"></span>
                             {% endif %}
+                          {% endif %}
                         </td>
                         <td>{{ p.voucher }}</td>
                         <td><a href="/render/pdf/{{ p.incident.pk }}/" target="_blank">

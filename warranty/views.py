@@ -72,7 +72,8 @@ def ac_list(request):
     return render(request, 'account/list.html',{'unit':unit})
 def invoice_dashboard(request):
     invoices=Invoice.objects.all()
-    new=invoices.filter(processed=False).count()
+    new=invoices.filter(processed=False).filter(need_w9=False).count()
+    w9=invoices.filter(need_w9=True).count()
     finished=invoices.filter(processed=True).count()
     dispute=invoices.filter(status=2).count()
     all=invoices.count()
@@ -81,16 +82,20 @@ def invoice_dashboard(request):
         'finished':finished,
         'all':all,
         'dispute':dispute,
+        'w9':w9,
     }
     return render(request, 'account/invoice_dashboard.html',para)
 def invoice_waiting(request):
-    invoices=Invoice.objects.all().filter(processed=False).order_by("-pk")
+    invoices=Invoice.objects.all().filter(processed=False).filter(need_w9=False).order_by("-pk")
     return render(request, 'account/invoices_process_list.html',{'invoices':invoices})
 def invoice_processed(request):
     invoices=Invoice.objects.all().filter(processed=True).order_by("-pk")
     return render(request, 'account/invoices.html',{'invoices':invoices})
 def invoice_disputed(request):
     invoices=Invoice.objects.all().filter(status=2).order_by("-pk")
+    return render(request, 'account/invoices.html',{'invoices':invoices})
+def invoice_w9(request):
+    invoices=Invoice.objects.all().filter(need_w9=True).order_by("-pk")
     return render(request, 'account/invoices.html',{'invoices':invoices})
 def invoice_all(request):
     invoices=Invoice.objects.all().order_by("-pk")

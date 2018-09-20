@@ -25,6 +25,7 @@ class Invoice(models.Model):
 	processed = models.BooleanField(default=False)
 	voucher = models.CharField(max_length=15,default='------')
 	approved_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+	need_w9 = models.BooleanField(default=False)
 	def __str__(self):
 		return self.invoice+", "+self.sksid
 

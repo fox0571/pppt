@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^account/invoice/processed/$', views.invoice_processed, name='invoice_processed'),
     url(r'^account/invoice/dispute/$', views.invoice_disputed, name='invoice_disputed'),
     url(r'^account/invoice/all/$', views.invoice_all, name='invoice_all'),
+    url(r'^account/invoice/w9/$', views.invoice_w9, name='invoice_w9'),
     url(r'^account/invoice/(?P<pk>\d+)/$', views.invoice_edit, name='invoice_edit'),
     ]
