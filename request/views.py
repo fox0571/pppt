@@ -427,6 +427,7 @@ def update_basic(request):
             request.session["unit_type"]=unit_type
             new_unit.receiver=request.session['user_name']
             new_unit.save()
+            messages.add_message(request, messages.INFO, 'A new service call has been created.')
             ret=warranty_check(new_unit.serialNumber)
             if ret != -1:
                 start_date=ret.date
@@ -460,8 +461,6 @@ def update_basic(request):
                         new_unit.sksid=new_id
                     new_unit.pre_diagnosis_flag=True
                     new_unit.save()
-                else:
-                    messages.add_message(request, messages.INFO, 'A new service call has been created.')
             if request.session['unit_type']=="HOT":
                 form=HotTechQuestionForm()
                 return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
