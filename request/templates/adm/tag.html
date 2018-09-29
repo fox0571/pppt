@@ -26,18 +26,25 @@
 {% block content %}
 <div class="content-wrapper">
   <section class="content">
-    {% if invoices %}
+    {% if tags %}
       <section class="content-header">
-        <h1>
-          Records List
-        </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-          <li class="active">Records List</li>
-        </ol>
+        <div class="box-body">
+          <div class="col-md-8">
+            <form class="form1" action="#/" method="post">
+            {% csrf_token %}
+            <select class="form-control select2" data-placeholder="Select tags" name="tags" id="tags" style="width: 100%;">
+              {% for t in tags %}
+                <option value="{{t.id}}">{{t}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        <button type="submit" class="btn btn-primary pull-right">update</button>
+        </form>
+        </div>
+    {% endif %}
       </section>
-
       <!-- Main content -->
+    {% if units %}
       <section class="content">
         <div class="row">
           <div class="col-xs-12">
@@ -48,41 +55,16 @@
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Invoice</th>
-                      <th>Incident Number</th>
-                      <th>Total Cost</th>
-                      <th>Travel Cost</th>
-                      <th>Labor Cost</th>
-                      <th>Material Cost</th>
-                      <th>Travel Hour</th>
-                      <th>Labor Hour</th>
-                      <th>Status</th>
-                      <th>Print</th>
+                      <th>S/N</th>
+                      <th>State</th>
                     </tr>
                   </thead>
                   <tbody>
-                      {% for p in invoices %}
+                      {% for p in units %}
                       <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td><a href="/request/invoice/approve/{{p.pk}}/">
-                          {{ p.invoice }}</a></td>
-                        <td>{{ p.sksid }}</td>
-                        <td>${{ p.total_c }}</td>
-                        <td>${{ p.travel_c }}</td>
-                        <td>${{ p.labor_c }}</td>
-                        <td>${{ p.material_c }}</td>
-                        <td>{{ p.travel_t }}</td>
-                        <td>{{ p.labor_t }}</td>
-                        <td>{% if p.status == 1 %}
-                            <span class="glyphicon glyphicon-green-dot"></span>
-                            {% elif p.status == 2 %}
-                            <span class="glyphicon glyphicon-red-dot"></span>
-                            {% else %}
-                            <span class="glyphicon glyphicon-yellow-dot"></span>
-                            {% endif %}
-                      </td>
-                        <td><a href="/render/pdf/{{ p.incident.pk }}/" target="_blank">
-                        Print</td>
+                        <td>{{ p.serialNumber }}</a></td>
+                        <td>{{ p.location_state }}</td>
                       </tr>
                       {% endfor %}
                   </tbody>

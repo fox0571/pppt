@@ -453,8 +453,8 @@ def update_basic(request):
                     month=datetime.datetime.now().month
                     year=datetime.datetime.now().year
                     area=new_unit.location_state
-                    #code = wvw.get_code(area)
-                    code = random.randint(1,4)
+                    code = wvw.get_code()
+                    #code = random.randint(1,4)
                     new_unit.areaCode=code
                     if code != -1:
                         new_id=wvw.new_sksid(month,year,code)
@@ -819,7 +819,7 @@ def showAllRequests(request):
 
     page = request.GET.get('page')
     unit = paginator.get_page(page)
-    return render(request, 'request/all_records.html', {'request':unit})
+    return render(request, 'request/all_records.html', {'request':unit,'q':search_text})
 
 def showPendingRequests(request):
     request_list = Request.objects.filter(requestStatue=False)

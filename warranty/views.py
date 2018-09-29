@@ -22,34 +22,17 @@ def show_detail(request,pk):
     warranty = get_object_or_404(UnitBasicInfo, pk=pk)
     form=WarrantyForm()
     return render(request, 'request/warranty_detail.html', {'unit': warranty,'form':form})
-
-def get_code(area):
-    #(1,"Jane"),(2,"Yesi"),(3,"Chloe"),(4,"Christina"),(5,"Daniela"),(6,"Samantha")
-    LIST_6=['CA','AZ','NV','UT','ID','CO']
-    LIST_4=['WA','OR','MT','WY','NM','ND','SD','NE','KS','MN','IA','AR']
-    LIST_2=['TX','OK','LA','MS']
-    LIST_1=['GA','FL']
-    LIST_3=['WI','MO','IL','MI','IN','OH','KY','TN','AL']
-    LIST_5=['ME','VT','NH','MA','CT','RI','NY','PA','NJ','DE','MD','DC','WV','VA','NC','SC']
-    for st in LIST_1:
-        if st==area:
-            return 1
-    for st in LIST_2:
-        if st==area:
-            return 2
-    for st in LIST_3:
-        if st==area:
-            return 3
-    for st in LIST_4:
-        if st==area:
-            return 4
-    for st in LIST_5:
-        if st==area:
-            return 5
-    for st in LIST_6:
-        if st==area:
-            return 6
-    return (-1)
+def get_active_dispatchers():
+    all_dispatchers=Users.objects.filter(group="dispatcher")
+    active_list=[]
+    for d in all_dispatchers:
+        if d.active and int(d.code)<5:
+            active_list.append(d.code)
+    return active_list
+def get_code():
+    active_list=get_active_dispatchers()
+    p=random.randint(0,len(active_list)-1)
+    return (active_list[p])
 def reg_month(month):
     if month<10:
         return "0"+str(month)
@@ -171,8 +154,8 @@ def update_warranty(request,pk):
             month=datetime.datetime.now().month
             year=datetime.datetime.now().year
             area=unit.location_state
-            #code = get_code(area)
-            code = random.randint(1,4)
+            code = get_code()
+            #code = random.randint(1,4)
             unit.warranty=warranty
             unit.warrantyNote=note
             unit.areaCode=code

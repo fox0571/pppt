@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UnitBasicInfo, PartRequest, Tag,FileSimpleModel, Tech
+from .models import UnitBasicInfo, PartRequest, Tag, FileSimpleModel, Tech
 
 # Register your models here.
 
@@ -59,10 +59,57 @@ def export_csv(modeladmin, request, queryset):
         ])
     return response
     export_csv.short_description = u"Export CSV"
+
+def export_tags(modeladmin, request, queryset):
+    from xlsxwriter.workbook import Workbook
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = "attachment; filename='ATOSA维修报表.xlsx'"
+
+    wb = Workbook(response, {'in_memory': True})
+    ws = wb.add_worksheet('Tag')
+
+    
+    col_num=0
+    ws.write(0,col_num,"Tag")
+    ws.write(1,col_num,"故障名称")
+    ws.write(2,col_num,"总计")
+    col_num+=1
+    for t in queryset:
+        ws.write(0,col_num,t.name)
+        ws.write(1,col_num,t.name_chn)
+        all_sn=t.model.all()
+        ws.write(2,col_num,all_sn.count())
+        col_num+=3
+    col_num=1
+    
+    for t in queryset:
+        all_sn=t.model.all()
+        row_num=3
+        ws.write(row_num,col_num,"S/N")
+        ws.write(row_num,col_num+1,"SKSID")
+        ws.write(row_num,col_num+2,"COST")
+        row_num+=1
+        for x in all_sn:
+            ws.write(row_num,col_num,x.serialNumber)
+            ws.write(row_num,col_num+1,x.sksid)
+            all_invoice=x.invoice_set.all()
+            total_cost=0.0
+            for i in all_invoice:
+                total_cost=total_cost+float(i.total_c)
+            ws.write(row_num,col_num+2,total_cost)
+            row_num+=1
+        col_num+=3
+    wb.close()
+    return response
 class UnitAdmin(admin.ModelAdmin):
-    actions = [export_csv,export_service_record]
+    actions = [export_csv,]
+class TagAdmin(admin.ModelAdmin):
+    actions = [export_tags]
 admin.site.register(UnitBasicInfo,UnitAdmin)
 admin.site.register(PartRequest)
-admin.site.register(Tag)
+admin.site.register(Tag,TagAdmin)
 admin.site.register(FileSimpleModel)
 admin.site.register(Tech)

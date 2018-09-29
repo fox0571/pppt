@@ -62,7 +62,7 @@
         </div>
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Invioce Copy</h3>
+            <h3 class="box-title">Invoice Copy</h3>
           </div>
           <div class="box-body">
             {% if invoice.file %}
@@ -72,7 +72,7 @@
         </div>
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Invioce Records</h3>
+            <h3 class="box-title">Invoice Records</h3>
           </div>
           <div class="box-body">
             {% if invoice.incident.invoice_set.all %}
@@ -110,7 +110,7 @@
         </div>
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Invioce Note</h3>
+            <h3 class="box-title">Invoice Note</h3>
           </div>
           <div class="box-body">
             {% if invoice.note %}
@@ -269,13 +269,13 @@
                         {% endfor %}
                       </select>
                       </div>
-                    <div class="col-md-8">
-                      <div class="form-group">
-                        {{ tag_form.name }}
+                      <div class="col-md-8">
+                        <div class="form-group">
+                          {{ tag_form.name }}
+                        </div>
                       </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary pull-right">update</button>
-                  </form>
+                      <button type="submit" class="btn btn-primary pull-right">update</button>
+                    </form>
                 </div>
               </div>
             </div>
@@ -302,8 +302,10 @@
 
       url: url_add,
       type : 'PUT',
+      crossDomain: true,
       data: {
         'case_id': case_id,
+        'csrfmiddlewaretoken': '{{ csrf_token }}',
       },
       dataType: 'json',
       statusCode: {

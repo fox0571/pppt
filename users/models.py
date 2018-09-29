@@ -19,6 +19,6 @@ class Users(models.Model):
     current_tasks = models.IntegerField(default=0)
     total_tasks=models.IntegerField(default=0)
     group=models.CharField(max_length=15,choices=GROUPS,default="operator")
-
+    active=models.BooleanField(default=True)
     def __str__(self):
         return self.name

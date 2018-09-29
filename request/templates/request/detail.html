@@ -200,8 +200,10 @@
         $.ajax({
           url: url_add,
           type : 'PATCH',
+          crossDomain: true,
           data: {
             'followup_customer': note,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
           },
           dataType: 'json',
           statusCode: {
@@ -224,8 +226,10 @@
         $.ajax({
           url: url_add,
           type : 'PATCH',
+          crossDomain: true,
           data: {
             'followup_tech': note,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
           },
           dataType: 'json',
           statusCode: {
