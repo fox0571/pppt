@@ -22,7 +22,7 @@ from request import views as vws
 from warranty import views as wa_vws
 urlpatterns = [
     url(r'^dispatcher/part/$', views.get_all_part_records, name='dispatcher_part'),
-    url(r'^login/$', views.login, name='login'),
+    url(r'^login/$', views.user_login, name='login'),
     url(r'^$',views.show_page, name='show'),
     url(r'^parts/$',views.show_page, name='show'),
     url(r'^dispatcher/new/(?P<pk>\d+)/$', vws.update_tech_info, name='tech'),

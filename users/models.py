@@ -20,5 +20,10 @@ class Users(models.Model):
     total_tasks=models.IntegerField(default=0)
     group=models.CharField(max_length=15,choices=GROUPS,default="operator")
     active=models.BooleanField(default=True)
+
+    class Meta:
+        permissions = (
+            ("change_user_status", "Can change the status of dispatchers"),
+        )
     def __str__(self):
         return self.name

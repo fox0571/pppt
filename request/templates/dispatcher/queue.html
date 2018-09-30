@@ -1,0 +1,87 @@
+{% extends 'dispatcher/index.html' %} 
+{% load static %} 
+{% block css %}
+<style>
+  center {
+    font-size: 12px;
+    color: red;
+    font-weight: bold;
+  }
+  select {
+    font-size: 12px;
+    color: green;
+  }
+</style>
+{% endblock%} 
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <form action="#/" method="POST" class="post-form">
+      {% csrf_token %}
+        <table border="0" width="400">
+          <tr>
+            <td>
+              <CENTER>Active Dispatcher List</CENTER>
+            </td>
+            <td> </td>
+            <td>
+              <CENTER>Inactive Dispatcher List</CENTER>
+            </td>
+          </tr>
+          <tr>
+            <td width="40%">
+              <select multiple name="left" id="left" size="8" style='width:200;' ondblclick="moveOption(document.getElementById('left'), document.getElementById('right'))">
+                {% for t in ad %}
+                  <option value="{{t.id}}">{{t.name}}</option>
+                {% endfor %}
+  
+              </select>
+            </td>
+            <td width="20%" align="center">
+              <input type="button" value=" >> " onclick="moveOption(document.getElementById('left'),document.getElementById('right'))">
+              <br>
+              <br>
+              <input type="button" value=" << " onclick="moveOption(document.getElementById('right'), document.getElementById('left'))">
+            </td>
+            <td width="40%">
+              <select multiple name="right" id="right" size="8" style='width:200;' ondblclick="moveOption(document.getElementById('right'), document.getElementById('left'))">
+                {% for t in iad %}
+                  <option value="{{t.id}}">{{t.name}}</option>
+                {% endfor %}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <CENTER>
+                <INPUT TYPE="submit" value="UPDATE" >
+              </CENTER>
+            </td>
+          </tr>
+        </table>
+      </form>
+  </section>
+</div>
+{% endblock %} 
+{% block script %}
+<script>
+  function moveOption(obj1, obj2) {
+    for (var i = obj1.options.length - 1; i >= 0; i--) {
+      if (obj1.options[i].selected) {
+        var opt = new Option(obj1.options[i].text, obj1.options[i].value);
+        opt.selected = true;
+        obj2.options.add(opt);
+        obj1.remove(i);
+      }
+    }
+  }
+  // function update() {
+  //   llist=document.getElementById('left')
+  //   rlist=document.getElementById('right')
+  //   for (var i = llist.options.length - 1; i >= 0; i--) {
+      
+  //   }
+  // }
+</script> 
+{% endblock %}

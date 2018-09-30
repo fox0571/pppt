@@ -22,14 +22,16 @@ from request import views as vws
 from .routers import router
 
 urlpatterns = [
-    url(r'^$',views.login),
-    url(r'^logout/$',views.logout),
+    url(r'^$',views.user_login),
+    url(r'^logout/$',views.user_logout),
     url(r'^data/$',vws.analysis),
     url(r'^data/1/$',vws.analysis_service_daily),
     url(r'^data/2/$',vws.analysis_model_based),
     url(r'^data/3/$',vws.analysis_type_based),
     url(r'^data/5/$',vws.analysis_part_based),
     url(r'^upload/(?P<pk>\d+)/$',vws.upload_file),
+    url(r'^queue/$',views.manage_queue),
+    #url(r'^queue/edit/$',views.manage_queue),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('user/',include('users.urls')),

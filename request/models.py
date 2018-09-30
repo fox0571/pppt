@@ -133,6 +133,9 @@ class PartRequest(models.Model):
 
     class Meta:
         ordering = ('sksid',)
+        permissions = (
+            ("change_part_status", "Can change the status of part request"),
+        )
 
 class Tag(models.Model):
     name = models.CharField(max_length=70,blank=True)

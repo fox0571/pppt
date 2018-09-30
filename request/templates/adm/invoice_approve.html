@@ -202,7 +202,6 @@
                         <th>Tracking</th>
                       </tr>
                     </thead>
-
                     <tbody>
                         {% for p in parts %}
                         <tr>
@@ -299,7 +298,6 @@
     var url_add = '/api/tag/' + tag_id + '/remove/'
     console.log(case_id)
     $.ajax({
-
       url: url_add,
       type : 'PUT',
       crossDomain: true,

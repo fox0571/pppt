@@ -5,10 +5,37 @@ from .forms import LoginForm, DispatchForm, ChangePassword
 from request.forms import PartForm, FirstForm
 from .models import Users
 from request.models import UnitBasicInfo, PartRequest
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth import authenticate, login, logout
+
 # Create your views here.
 
 #show all unverified serial numbers
 OPERATOR_GROUP=["Anna","Brandon","Jackie","Randi","Christina","Amanda Gomez","Etnia"]
+
+@login_required(login_url='/user/login/')
+@permission_required('users.change_user_status',raise_exception=True)
+def manage_queue(request):
+    dispatchers=Users.objects.filter(group='dispatcher')
+    active_dispatchers=dispatchers.filter(active=True)
+    inactive_dispatchers=dispatchers.filter(active=False)
+    if request.method == "POST":
+        activedispatchers=request.POST.getlist('left')
+        inactivedispatchers=request.POST.getlist('right')
+        if activedispatchers:
+            for d in activedispatchers:
+                dispatcher=get_object_or_404(Users,pk=d)
+                dispatcher.active=True
+                dispatcher.save()
+        if inactivedispatchers:
+            for d in inactivedispatchers:
+                dispatcher=get_object_or_404(Users,pk=d)
+                dispatcher.active=False
+                dispatcher.save()
+        dispatchers=Users.objects.filter(group='dispatcher')
+        active_dispatchers=dispatchers.filter(active=True)
+        inactive_dispatchers=dispatchers.filter(active=False)        
+    return render(request, 'dispatcher/queue.html',{'ad':active_dispatchers,'iad':inactive_dispatchers})
 def show_detail_op(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     form = FirstForm(instance=unit)
@@ -210,10 +237,10 @@ def show_admin_page(request):
         'c2':c2
     }
     return render(request, 'adm/dashboard.html', para)
-
+@login_required(login_url='/user/login/')
 def show_page(request):
-    if not request.session.get('is_login', None):
-        return redirect("/user/login/")
+    # if not request.session.get('is_login', None):
+    #     return redirect("/user/login/")
     group = request.session['user_group']
     code = request.session['user_code']
     if group=="dispatcher":
@@ -235,7 +262,7 @@ def show_page(request):
     if group=="account":
         return redirect('/warranty/account/')
     return render(request, 'dispatcher/dashboard.html',{'new':a,'sche':b,'fin':c})
-def login(request):
+def user_login(request):
     message=""
     if request.session.get('is_login',None):
         return redirect('/user/')
@@ -246,24 +273,37 @@ def login(request):
             password = login_form.cleaned_data['password']
             try:
                 user = Users.objects.get(code=code)
-                if user.password == password:
+                username=user.name
+                u = authenticate(request, username=username, password=password)
+                # if user.password == password:
+                #     request.session['is_login'] = True
+                #     request.session['user_code'] = user.code
+                #     request.session['user_name'] = user.name
+                #     group=user.group
+                #     request.session['user_group'] = group
+                #     return redirect('/user/')
+                # else:
+                #     message = "Wrong password!"
+                print(username,password)
+                print(u)
+                if u is not None:
+                    login(request, u)
                     request.session['is_login'] = True
                     request.session['user_code'] = user.code
                     request.session['user_name'] = user.name
                     group=user.group
                     request.session['user_group'] = group
                     return redirect('/user/')
-                else:
-                    message = "Wrong password!"
             except:
                 message = "No such a user!"
     form=LoginForm()
     return render(request, 'request/login.html',{'form':form,'message':message})
 
-def logout(request):
-    if not request.session.get('is_login', None):
-        return redirect("/user/login/")
-    request.session.flush()
+def user_logout(request):
+    logout(request)
+    # if not request.session.get('is_login', None):
+    #     return redirect("/user/login/")
+    # request.session.flush()
     # del request.session['is_login']
     # del request.session['user_id']
     # del request.session['user_name']

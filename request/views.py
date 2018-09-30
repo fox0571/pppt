@@ -15,6 +15,7 @@ from warranty.forms import ApproveForm
 from django.contrib import messages
 from warranty import views as wvw
 import random
+from django.contrib.auth.decorators import login_required, permission_required
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
 STATES = (
@@ -33,6 +34,7 @@ STATES = (
     ("TX", "Texas"),("UT", "Utah"),("VT", "Vermont"),("VI", "Virgin Islands"),("VA", "Virginia"),
     ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
 )
+#@permission_required(request.change_part_status)
 def invoice_approve(request,pk):
     invoice=get_object_or_404(Invoice,pk=pk)
     parts=PartRequest.objects.filter(sksid=invoice.sksid)
