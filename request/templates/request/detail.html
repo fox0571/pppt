@@ -164,59 +164,43 @@
 
 {% block script %}
 <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-
 <script>
   $(function () {
     $('#assets_table').DataTable({
-      "paging": false,       <!-- 允许分页 -->
-      "lengthChange": true, <!-- 允许改变每页显示的行数 -->
-      "searching": false,    <!-- 允许内容搜索 -->
-      "ordering": true,     <!-- 允许排序 -->
-      "info": false,         <!-- 显示信息 -->
-      "autoWidth": false,    <!-- 固定宽度 -->
+      "paging": false,       
+      "lengthChange": true, 
+      "searching": false,    
+      "ordering": true,     
+      "info": false,         
+      "autoWidth": false,    
     });
   });
-  // using jQuery
-function getCookie(name) {
+  function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
         }
+      }
     }
     return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
+  }
+  var csrftoken = getCookie('csrftoken');
   function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
   }
-  //var csrftoken = Cookies.get('csrftoken');
   $('#follow1').click(function(){
       var id=$(this).attr("value")
       var url_add = '/api/case/' + id + '/'
       var note="{{unit.followup_customer|escapejs}}"
-      console.log(note)
-      // $.ajax({
-      //     url: url_add,
-      //     type : 'GET',
-      //     data: {
-      //       'id': id,
-      //     },
-      //     dataType: 'json',
-      //     success: function (response) {
-      //       note=(response["followup_customer"]);
-      //     },
-      //   });
       var res = prompt("","")
       var d = new Date();
-      
       if (res){
         res = d.toUTCString()+"\n"+res
         note=note+"\n"+res
