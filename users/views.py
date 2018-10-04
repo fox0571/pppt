@@ -288,6 +288,7 @@ def user_login(request):
                 print(u)
                 if u is not None:
                     login(request, u)
+                    request.session.set_expiry(604800)
                     request.session['is_login'] = True
                     request.session['user_code'] = user.code
                     request.session['user_name'] = user.name
