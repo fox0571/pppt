@@ -16,6 +16,13 @@ from django.contrib import messages
 from warranty import views as wvw
 import random
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from notifications.signals import notify
+from request.models import UnitBasicInfo
+from users.models import Users
+from django.contrib.auth.models import User
+
 OPERATOR_GROUP=["Anna","Bradon","Jackie","Randi"]
 
 STATES = (
@@ -377,6 +384,22 @@ def update_part(request,pk):
 #             part.note=note
 #             part.save()
 #             return redirect('/request/part/')
+
+@receiver(post_save, sender=UnitBasicInfo)
+def send_message(sender, **kwargs):
+    print(kwargs)
+    case=kwargs['instance']
+    user = User.objects.get(pk=1)
+    verb =  u'[%s] has an update' % case.sksid
+    code = case.areaCode
+    name = Users.objects.get(code=code)
+    recipient = User.objects.get(username=name)
+    message = {}
+    message['recipient'] = recipient            
+    message['verb'] = verb
+    notify.send(user, **message)
+
+
 def edit_basic(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     pre_sn=unit.serialNumber

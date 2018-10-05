@@ -20,6 +20,7 @@ from django.views.generic.base import TemplateView
 from users import views
 from request import views as vws
 from .routers import router
+import notifications.urls
 
 urlpatterns = [
     url(r'^$',views.user_login),
@@ -31,6 +32,7 @@ urlpatterns = [
     url(r'^data/5/$',vws.analysis_part_based),
     url(r'^upload/(?P<pk>\d+)/$',vws.upload_file),
     url(r'^queue/$',views.manage_queue),
+    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
     #url(r'^queue/edit/$',views.manage_queue),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
