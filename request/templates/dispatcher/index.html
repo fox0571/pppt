@@ -9,18 +9,43 @@
 </li>
 {% endblock %}
 {% block notification %}
-<ul class="nav navbar-nav">
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <span class="glyphicon glyphicon-envelope">
-        </span> 
-    </a> 
-    <ul class="dropdown-menu"> 
-    </ul> 
-  </li> 
-</ul>
-
+<!-- <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      Dropdown
+      <span class="caret"></span>
+    </button>
+    <ul id="locality-dropdown" class="dropdown" aria-labelledby="dropdownMenu1">
+      <li><a href="#">Action</a></li>
+      <li><a href="#">Another action</a></li>
+      <li><a href="#">Something else here</a></li>
+      <li role="separator" class="divider"></li>
+      <li><a href="#">Separated link</a></li>
+    </ul>
+  </div> -->
+  <select id="locality-dropdown" name="locality">
+    <span class="glyphicon glyphicon-envelope">
+    </span>
+    <option selected value="unread">Unread Messages</option>
+  </select>
+<!-- 
+<ul class="dropdown">
+  <span class="glyphicon glyphicon-envelope">
+  </span> 
+</ul> -->
 {% endblock %}
 {% block script %}
-
+<script>
+    let dropdown = $('#locality-dropdown');
+    const url = "/inbox/notifications/api/unread_list/";
+  
+    // Populate dropdown with list of provinces
+    $.getJSON(url, function (data) {
+      unread_count=data.unread_count
+      unread_list=data.unread_list
+      $.each(unread_list, function (key, entry) {
+        
+        dropdown.append($('<option></option>').attr('value', entry.id).text(entry.verb));
+      })
+    });
+  </script>
 {% endblock %}
