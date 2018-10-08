@@ -389,10 +389,10 @@ def update_part(request,pk):
 def send_message(sender, **kwargs):
     print(kwargs)
     case=kwargs['instance']
-    user = User.objects.get(pk=1)
-    verb =  u'[%s] has an update' % case.sksid
     code = case.areaCode
     name = Users.objects.get(code=code)
+    user = User.objects.get(username=name)
+    verb =  u'[%s] has an update' % case.sksid
     recipient = User.objects.get(username=name)
     message = {}
     message['recipient'] = recipient            
