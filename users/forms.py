@@ -1,6 +1,7 @@
 from django import forms
 
 GROUPS = (
+            (99,"-------"),
             (1,"Jane"),
             (2,"Chloe"),
             (3,"Daniela"),
@@ -8,7 +9,7 @@ GROUPS = (
             (5,"Samantha"),
             (6,"Katrina"),
             (7,"Amanda Gillock"),
-            (8,"Diagnosis"),
+            # (8,"Diagnosis"),
             (19,"Amanda Gomez"),
             (9,"Randi"),
             (10,"Brandon"),
@@ -17,12 +18,14 @@ GROUPS = (
             (20,"Etnia"),
             (21,"Semaj"),
             (22,"Brandon.W"),
+            (23,"Charo"),
+            (24,"Jessica"),
             (13,"Warranty check"),
             (0,"ADMIN"),
             (15,"Parts"),
             (16,"Account"),
             (17,"In-house Dispatcher 1"),
-            (18,"In-house Dispatcher 2"),
+            
 )
 
 STATES = (

@@ -110,7 +110,7 @@ class UnitBasicInfo(models.Model):
         ordering = ('sksid',)
 
 class PartRequest(models.Model):
-    sn=models.CharField(max_length=40,null=True,blank=True)
+    sn=models.CharField(max_length=70,null=True,blank=True)
     sksid=models.CharField(max_length=30)
     contact=models.CharField(max_length=100)
     number=models.CharField(max_length=30)

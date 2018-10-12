@@ -9,43 +9,46 @@
 </li>
 {% endblock %}
 {% block notification %}
-<!-- <div class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      Dropdown
-      <span class="caret"></span>
-    </button>
-    <ul id="locality-dropdown" class="dropdown" aria-labelledby="dropdownMenu1">
-      <li><a href="#">Action</a></li>
-      <li><a href="#">Another action</a></li>
-      <li><a href="#">Something else here</a></li>
-      <li role="separator" class="divider"></li>
-      <li><a href="#">Separated link</a></li>
+
+<li class="dropdown messages-menu" >
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <i class="fa fa-envelope-o"></i>
+    <span id="myspan" class="label label-success"></span>
+  </a>
+  <ul id="dynamic-list" class="dropdown-menu"></ul>
+</li>
+<!-- 
+<div class="navbar-custom-menu pull-left">
+    <ul class="nav navbar-nav">
+      <li class="dropdown user user-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-envelope">
+          </span>
+        </a>
+        <ul id="dynamic-list1" class="dp-menu" aria-labelledby="dropdownMenu1">
+        </ul>
+      </li>
     </ul>
   </div> -->
-  <select id="locality-dropdown" name="locality">
-    <span class="glyphicon glyphicon-envelope">
-    </span>
-    <option selected value="unread">Unread Messages</option>
-  </select>
-<!-- 
-<ul class="dropdown">
-  <span class="glyphicon glyphicon-envelope">
-  </span> 
-</ul> -->
 {% endblock %}
 {% block script %}
 <script>
-    let dropdown = $('#locality-dropdown');
+    var ul = document.getElementById("dynamic-list");
+    var notification = document.getElementById("myspan");
     const url = "/inbox/notifications/api/unread_list/";
-  
-    // Populate dropdown with list of provinces
     $.getJSON(url, function (data) {
       unread_count=data.unread_count
       unread_list=data.unread_list
+      notification.innerHTML=unread_count
       $.each(unread_list, function (key, entry) {
+        var li = document.createElement("li");
+        li.setAttribute('id',entry.id);
+        li.setAttribute('value',entry.id);
+        li.appendChild(document.createTextNode(entry.verb));
+        ul.appendChild(li);
         
-        dropdown.append($('<option></option>').attr('value', entry.id).text(entry.verb));
       })
     });
+    
   </script>
 {% endblock %}

@@ -397,6 +397,7 @@ def send_message(sender, **kwargs):
     message = {}
     message['recipient'] = recipient            
     message['verb'] = verb
+    message['incident'] = case.pk
     notify.send(user, **message)
 
 
