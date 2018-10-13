@@ -1,12 +1,13 @@
 from rest_framework.decorators import detail_route, list_route
 from rest_framework import status, viewsets
 from .models import Tag, UnitBasicInfo, PartRequest
-from .serializers import TagSerializer, PartSerializer, CaseSerializer
+from notifications.model import Notification
+from .serializers import TagSerializer, PartSerializer, CaseSerializer, NotificationSerializer
 from rest_framework.response import Response
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    
+
     @detail_route(methods=['put','get'])
     def remove(self, request, *args, **kwargs):
         case_id=request.data.get('case_id')
@@ -22,3 +23,7 @@ class PartViewSet(viewsets.ModelViewSet):
 class CaseViewSet(viewsets.ModelViewSet):
     queryset = UnitBasicInfo.objects.all()
     serializer_class = CaseSerializer   
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
