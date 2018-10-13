@@ -42,9 +42,15 @@
       notification.innerHTML=unread_count
       $.each(unread_list, function (key, entry) {
         var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.textContent = entry.verb;
         li.setAttribute('id',entry.id);
         li.setAttribute('value',entry.id);
-        li.appendChild(document.createTextNode(entry.verb));
+        var case1=entry.data;
+        var case_id=case1["incident"];
+        var url="/request/"+case_id+"/";
+        a.setAttribute('href',url);
+        li.appendChild(a);
         ul.appendChild(li);
         
       })
