@@ -1,5 +1,6 @@
 import datetime
 from datetime import timezone
+from notifications.models import Notification
 from django.http import HttpResponse
 from django.db.models import Q
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -41,7 +42,28 @@ STATES = (
     ("TX", "Texas"),("UT", "Utah"),("VT", "Vermont"),("VI", "Virgin Islands"),("VA", "Virginia"),
     ("WA", "Washington"),("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming"),
 )
-#@permission_required(request.change_part_status)
+
+# mark as read for a specific notification
+def notifications_read(func):
+    def wrapper(request, *args, **kwargs):
+        print(request.get_full_path())
+        notify_key = 'notification'
+        if notify_key in request.GET:
+            try:
+                # get notification
+                notify_id = int(request.GET[notify_key])
+                notify = Notification.objects.get(id=notify_id)
+
+                # mark as read
+                notify.unread = False
+                notify.save()
+            except ValueError:
+                pass
+            except Notification.DoesNotExist:
+                pass
+        return func(request, *args, **kwargs)
+    return wrapper
+
 def invoice_approve(request,pk):
     invoice=get_object_or_404(Invoice,pk=pk)
     parts=PartRequest.objects.filter(sksid=invoice.sksid)
@@ -72,7 +94,7 @@ def invoice_approve(request,pk):
             return redirect("/request/invoice/")
     else:
         form=ApproveForm(instance=invoice)
-        
+
     para={
         'form':form,
         'invoice':invoice,
@@ -236,6 +258,8 @@ def update_follow_customer(request,pk):
             unit.finished=False
         unit.save()
     return render(request, 'dispatcher/followup.html', {'unit': unit})
+
+@notifications_read
 def show_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     id=unit.sksid
@@ -395,7 +419,7 @@ def send_message(sender, **kwargs):
     verb =  u'[%s] has an update' % case.sksid
     recipient = User.objects.get(username=name)
     message = {}
-    message['recipient'] = recipient            
+    message['recipient'] = recipient
     message['verb'] = verb
     message['incident'] = case.pk
     notify.send(user, **message)
@@ -846,6 +870,7 @@ def showAllRequests(request):
     page = request.GET.get('page')
     unit = paginator.get_page(page)
     return render(request, 'request/all_records.html', {'request':unit,'q':search_text})
+
 
 def showPendingRequests(request):
     request_list = Request.objects.filter(requestStatue=False)

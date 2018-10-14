@@ -34,7 +34,7 @@ def manage_queue(request):
                 dispatcher.save()
         dispatchers=Users.objects.filter(group='dispatcher')
         active_dispatchers=dispatchers.filter(active=True)
-        inactive_dispatchers=dispatchers.filter(active=False)        
+        inactive_dispatchers=dispatchers.filter(active=False)
     return render(request, 'dispatcher/queue.html',{'ad':active_dispatchers,'iad':inactive_dispatchers})
 def show_detail_op(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
@@ -52,7 +52,7 @@ def get_all_dispatcher_records(request):
     my_tasks=""
     if code=="17":
         # my_tasks=UnitBasicInfo.objects.filter(
-        #     Q(location_state='TX') | 
+        #     Q(location_state='TX') |
         #     Q(location_state='CA') |
         #     Q(location_state='LA') |
         #     Q(location_state='OK')).filter(inhouse=True)
@@ -79,7 +79,7 @@ def get_all_scheduled_records(request):
     my_tasks=""
     if code=="17":
         # my_tasks=UnitBasicInfo.objects.filter(
-        #     Q(location_state='TX') | 
+        #     Q(location_state='TX') |
         #     Q(location_state='CA') |
         #     Q(location_state='LA') |
         #     Q(location_state='OK')).filter(inhouse=True)
@@ -108,7 +108,7 @@ def get_new_records(request):
     my_tasks=""
     if code=="17":
         # my_tasks=UnitBasicInfo.objects.filter(
-        #     Q(location_state='TX') | 
+        #     Q(location_state='TX') |
         #     Q(location_state='CA') |
         #     Q(location_state='LA') |
         #     Q(location_state='OK')).filter(inhouse=True)
@@ -186,7 +186,7 @@ def show_inhouse_page(request):
     tasks=""
     if code=="17":
         # tasks=UnitBasicInfo.objects.filter(
-        #     Q(location_state='TX') | 
+        #     Q(location_state='TX') |
         #     Q(location_state='CA') |
         #     Q(location_state='LA') |
         #     Q(location_state='OK')).filter(inhouse=True)
@@ -284,8 +284,6 @@ def user_login(request):
                 #     return redirect('/user/')
                 # else:
                 #     message = "Wrong password!"
-                print(username,password)
-                print(u)
                 if u is not None:
                     login(request, u)
                     request.session.set_expiry(604800)
