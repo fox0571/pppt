@@ -1,6 +1,6 @@
 from rest_framework import routers
 from warranty.viewsets import InvoiceViewSet, InvoiceProcessViewSet
-from request.viewsets import TagViewSet, PartViewSet, CaseViewSet
+from request.viewsets import TagViewSet, PartViewSet, CaseViewSet, NotificationViewSet
 
 router = routers.DefaultRouter()
 router.register(r'invoice', InvoiceViewSet)

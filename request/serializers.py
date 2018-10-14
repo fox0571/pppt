@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Tag, PartRequest, UnitBasicInfo
-from notifications.model import Notification
+from notifications.models import Notification
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
@@ -19,5 +19,5 @@ class CaseSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = ('pk')
+        fields = ['unread']
         depth = 0

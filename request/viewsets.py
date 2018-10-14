@@ -1,7 +1,7 @@
 from rest_framework.decorators import detail_route, list_route
 from rest_framework import status, viewsets
 from .models import Tag, UnitBasicInfo, PartRequest
-from notifications.model import Notification
+from notifications.models import Notification
 from .serializers import TagSerializer, PartSerializer, CaseSerializer, NotificationSerializer
 from rest_framework.response import Response
 class TagViewSet(viewsets.ModelViewSet):
