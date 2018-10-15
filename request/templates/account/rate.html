@@ -116,6 +116,11 @@
             <form class='form' action="/warranty/account/{{ unit.pk }}/" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               {{ form.as_p }}
+              <div class="checkbox">
+                <label>
+                  <input name="inhouse" type="checkbox"> This record is for in-house technician
+                </label>
+              </div>
               <p>
               <button onclick="count()" type="button" class="btn btn-success btn-sm">Count</button>
               Total Service Call Cost: $
@@ -124,6 +129,7 @@
 
               <button type="submit" class="btn btn-primary pull-left">update</button>
               <a href="/render/pdf/{{unit.pk}}/" target="_blank">Print</a>
+            </form>
           </div>
         </div>
       </div>

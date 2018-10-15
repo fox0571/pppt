@@ -6,6 +6,7 @@ STATUS = (
     (0,'Waiting'),
     (1,'Approved'),
     (2,'Disputed'),
+    (3,'In-house'),
 )
 class Invoice(models.Model):
 	invoice = models.CharField(max_length=20,null=True)

@@ -64,10 +64,13 @@
         </div>
         {% endif %}
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <button onclick=prom()>PROCESS</button>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
+            <button class="bt" onclick=prom2()>For in-house tech</button>
+          </div>
+          <div class="col-md-4">
             <button class="pull-right" onclick=prom1()>Need W-9</button>
           </div>
         </div>
@@ -135,31 +138,54 @@ function prom() {
         }
  }
  function prom1() {
-        var voucher = confirm("This company needs W-9");
-        if (voucher)
-        {
-          $.ajaxSetup({
-          beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-              xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
+    var voucher = confirm("This company needs W-9");
+    if (voucher){
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
           }
-        });
-          $.ajax({
-            url: '/api/invoice/{{ invoice.pk }}/',
-            type : 'PATCH',
-            data: {
-              'need_w9': "True",
-            },
-            dataType: 'json',
-            statusCode: {
-              200: function() {
-                window.location.href = "/warranty/account/invoice/new/";
-              }
-            },
-          });
         }
+      });
+      $.ajax({
+        url: '/api/invoice/{{ invoice.pk }}/',
+        type : 'PATCH',
+        data: {
+          'need_w9': "True",
+        },
+        dataType: 'json',
+        statusCode: {
+          200: function() {
+            window.location.href = "/warranty/account/invoice/new/";
+          }
+        },
+      });
+    }
  }
-
+ function prom2() {
+    var voucher = confirm("This record is for in-house technician");
+    if (voucher){
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        }
+      });
+      $.ajax({
+        url: '/api/invoice/{{ invoice.pk }}/',
+        type : 'PATCH',
+        data: {
+          'status': "3",
+        },
+        dataType: 'json',
+        statusCode: {
+          200: function() {
+            window.location.href = "/warranty/account/invoice/new/";
+          }
+        },
+      });
+    }
+}
 </script>
 {% endblock %}
