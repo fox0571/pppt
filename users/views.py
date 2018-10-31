@@ -41,7 +41,7 @@ def show_detail_op(request,pk):
     form = FirstForm(instance=unit)
     return render(request, 'operator/basic.html', {'form':form})
 def show_waiting(request):
-    all=UnitBasicInfo.objects.filter(warranty=None)
+    all=UnitBasicInfo.objects.filter(warranty=None).exclude(tsq=None)
     return render(request, 'request/warranty.html', {'requests':all})
 def get_all_records(request):
     name=request.session['user_name']

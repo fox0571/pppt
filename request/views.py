@@ -213,6 +213,33 @@ class Pdf_work_order(View):
 def get_order(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     return render(request, 'dispatcher/order.html', {'unit':unit})
+def tag_case_edit(request,pk):
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
+    files = unit.filesimplemodel_set.all()
+    tags = Tag.objects.all()
+    tag_form=TagForm()
+    if request.method == "POST":
+        select_tags = request.POST.getlist('tags')
+        tag_form=TagForm(request.POST)
+        tag_name = request.POST.get('name','')
+        if tag_name:
+            new_tag=Tag()
+            new_tag.name=tag_name
+            new_tag.save()
+            new_tag.model.add(unit)
+            return redirect("#/")
+        if select_tags:
+            for t in select_tags:
+                tag=get_object_or_404(Tag,pk=t)
+                tag.model.add(unit)
+            return redirect("#/")
+    para={
+        'unit':unit,
+        'tags':tags,
+        'tag_form':tag_form,
+        'files':files,
+    }
+    return render(request, 'adm/tag_edit.html', para)
 def update_statue(request,pk):
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     if request.method == "POST":

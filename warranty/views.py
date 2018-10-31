@@ -15,7 +15,7 @@ def show_all(request):
     return render(request, 'request/warranty.html', {'requests':all})
 
 def show_waiting(request):
-    all=UnitBasicInfo.objects.filter(warranty=None)
+    all=UnitBasicInfo.objects.filter(warranty=None).exclude(tsq=None)
     return render(request, 'request/warranty.html', {'requests':all})
 
 def show_detail(request,pk):

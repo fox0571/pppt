@@ -1,0 +1,134 @@
+{% extends 'adm/index.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+<style>
+.glyphicon.glyphicon-green-dot:before {
+    color: #20F343;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-yellow-dot:before {
+    color: #FFD700;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-red-dot:before {
+    color: #F21616;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    {% if request %}
+    <section class="content-header">
+      <h1>
+        Records List
+        <small>All records</small>
+      </h1>
+      <!-- <form class="form-inline md-form form-sm pull-right">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" name="search">
+      </form> -->
+    </section>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-body">
+              <table id="assets_table" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Ref</th>
+                    <th>Business</th>
+                    <th>S/N</th>
+                    <th>Warranty</th>
+                    <th>Status</th>
+                    <th>Tech</th>
+                    <th>Invoice</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                    {% for r in request %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td><a href="/request/tag/{{ r.pk }}">{{ r.sksid }}</a></td>
+                      <td>{{ r.businessName }}</td>
+                      <td>{{ r.serialNumber|upper }}</td>
+                      <td>{% if r.warranty == True %}
+                            <span class="glyphicon glyphicon-green-dot"></span>
+                            {% elif r.warranty == False %}
+                            <span class="glyphicon glyphicon-red-dot"></span>
+                            {% else %}
+                            <span class="glyphicon glyphicon-yellow-dot"></span>
+                            {% endif %}
+                      </td>
+                      <td>{% if r.finished %}
+                            <span class="glyphicon glyphicon-green-dot"></span>
+                            {% else %}
+                            <span class="glyphicon glyphicon-red-dot"></span>
+                            {% endif %}
+                      </td>
+                      <td>{{ r.techName }}</td>
+                      <td>
+                        {% if r.invoice_set.all %}
+                          {% for t in r.invoice_set.all %}
+                            <a href="/request/invoice/approve/{{t.pk}}/">{{t.invoice}}, </a>
+                          {% endfor %}
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+            <div class="pagination pull-right">
+              <span class="step-links">
+                {% if request.has_other_pages %}
+                  <ul class="pagination">
+                    {% if request.has_previous %}
+                      <li><a href="?page={{ request.previous_page_number }}{% if q %}&search={{ q }}{% endif %}">&laquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in request.paginator.page_range %}
+                      {% if request.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                      {% else %}
+                      {% if i <= request.number|add:5 and i >= request.number|add:-5 %}
+                        <li><a href="?page={{forloop.counter}}{% if q %}&search={{ q }}{% endif %}">{{forloop.counter}}</a></li>
+                      {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                    {% if request.has_next %}
+                      <li><a href="?page={{ request.next_page_number }}{% if q %}&search={{ q }}{% endif %}">&raquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                  </ul>
+                {% endif %}
+              </span>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    {% else %}
+    <p>No records.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

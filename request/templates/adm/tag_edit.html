@@ -1,0 +1,264 @@
+
+{% extends 'adm/index.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static "bower_components/select2/dist/css/select2.min.css" %}">
+<style>
+.green-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #20F343;
+    border-radius: 50%;
+    display: inline-block;
+}
+.red-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #F21616;
+    border-radius: 50%;
+    display: inline-block;
+}
+.yellow-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    display: inline-block;
+}
+.glyphicon.glyphicon-green-dot:before {
+    color: #20F343;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-yellow-dot:before {
+    color: #FFD700;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-red-dot:before {
+    color: #F21616;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+        <div class="col-md-4">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+            <h3 class="box-title">Basic Information</h3>
+            </div>
+            <div class="box-body">
+            <p class="text-light-blue">Incident Number:{{unit.sksid|upper }}</p>
+            <p class="text-light-blue">Business Name: {{unit.businessName|upper }}</p>
+            <p class="text-light-blue">Contact Name: {{unit.contactName|upper }}</p>
+            <p class="text-light-blue">Serial Number: {{unit.serialNumber|upper}}</p>
+            <p class="text-light-blue">Phone: {{unit.phone|upper}}</p>
+            <p class="text-light-blue">Email: {{unit.email|upper}}</p>
+            <p class="text-light-blue">Address: {{unit.location_add1|upper}}
+                {% if unit.location_add2 %}
+                {{unit.location_add2|upper}}
+                {% endif %}
+                {{unit.location_city|upper}}
+                {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
+            <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
+            <p class="text-light-blue">Technical Support Questions: {{unit.tsq|upper|linebreaks}}</p>
+            <p class="text-light-blue">Received by {{unit.receiver}} @ {{unit.callTime}}</p>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+            <h3 class="box-title">Follow Up With Customer</h3>
+            </div>
+            <div class="box-body">
+            <p class="text-light-blue">{{unit.followup_customer|upper|linebreaks}}</p>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+            <h3 class="box-title">Pre-diagnosis</h3>
+            </div>
+            <div class="box-body">
+            <p class="text-light-blue">{{unit.pre_diagnosis|linebreaks}}</p>
+            <p>{{unit.timestamp_diagnosis}}</p>
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+            <h3 class="box-title">Tech Information</h3>
+            </div>
+            <div class="box-body">
+            <p class="text-light-blue">Tech: {{unit.techName}}</p>
+            <p class="text-light-blue">Phone: {{unit.techPhone}}</p>
+            <p class="text-light-blue">Email: {{unit.techEmail}}</p>
+            <p class="text-light-blue">Note: {{unit.techNote|linebreaks}}</p>
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+            <h3 class="box-title">Follow Up With Technician</h3>
+            </div>
+            <div class="box-body">
+            <p class="text-light-blue">{{unit.followup_tech|upper|linebreaks}}</p>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+            <h3 class="box-title">Parts Information</h3>
+            </div>
+            <div class="box-body">
+            {% if parts %}
+                <table id="assets_table" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    <th>Date</th>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Tracking</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in parts %}
+                    <tr>
+                        <td>{{ p.request_time }}</td>
+                        <td>{{ p.number }}</td>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.qty }}</td>
+                        <td>{% if p.tracking %}
+                        <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{p.tracking}}" target="_blank">
+                        {{p.tracking}}
+                        </a>
+                        {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+            <h3 class="box-title">Warranty Information</h3>
+            </div>
+            <div class="box-body">
+            <p>Warranty: {{unit.warranty}}</p>
+            <P>Note: {{ unit.warrantyNote|upper|linebreaks}}</P>
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+            <h3 class="box-title">Files</h3>
+            </div>
+            <div class="box-body">
+            <div class="box-body">
+            {% if files %}
+                {% for f in files %}
+                <p>
+                <a href={{ f.file_field.url }} target="_blank">{{forloop.counter}}</a>
+                </p>
+                {% endfor %}
+            {% endif %}
+            </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Tags:
+                    {% for t in unit.tag_set.all %}
+                    <span value="{{t.id}}" class="badge">{{t}}
+                    <span value="{{t.id}}" class="glyphicon glyphicon-remove"></span>
+                    </span>
+                    {% endfor %}
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="col-md-8">
+                <form class="form1" action="#/" method="post">
+                    {% csrf_token %}
+                    <select class="form-control select2" multiple="multiple" data-placeholder="Select tags" name="tags" id="tags" style="width: 100%;">
+                    {% for t in tags %}
+                    <option value="{{t.id}}">{{t}}</option>
+                    {% endfor %}
+                    </select>
+                    </div>
+                    <div class="col-md-8">
+                    <div class="form-group">
+                        {{ tag_form.name }}
+                    </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">update</button>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block script %}
+<script src="{% static "bower_components/select2/dist/js/select2.full.min.js" %}"></script>
+<script>
+  $(function () {
+    $('.select2').select2()
+  });
+  // using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $('.badge').click(function(){
+    var tag_id=$(this).attr("value")
+    var case_id={{ unit.pk }}
+    var url_add = '/api/tag/' + tag_id + '/remove/'
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+    $.ajax({
+      url: url_add,
+      type : 'PUT',
+      data: {
+        'case_id': case_id,
+      },
+      dataType: 'json',
+      statusCode: {
+        200: function() {
+          window.location.reload();
+        }
+      },
+    });
+  });
+</script>
+{% endblock %}

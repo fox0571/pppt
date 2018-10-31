@@ -9,7 +9,7 @@ GROUPS = (
             (5,"Samantha"),
             (6,"Katrina"),
             (7,"Amanda Gillock"),
-            # (8,"Diagnosis"),
+            (8,"Diagnosis"),
             (19,"Amanda Gomez"),
             (9,"Randi"),
             (10,"Brandon"),

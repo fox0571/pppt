@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^tech/follow/(?P<pk>\d+)/',views.update_follow_tech,name='tech_follow'),
     url(r'^customer/follow/(?P<pk>\d+)/',views.update_follow_customer,name='customer_follow'),
     url(r'^tech/(?P<pk>\d+)/$', views.update_tech_info, name='update_tech'),
+    url(r'^tag/(?P<pk>\d+)/$', views.tag_case_edit, name='update_tag'),
     url(r'^statue/(?P<pk>\d+)/$', views.update_statue, name='update_statue'),
     url(r'^tq/$', views.show_tech_question_page, name='tech'),
     url(r'^(?P<pk>\d+)/$', views.show_detail,name='detail'),

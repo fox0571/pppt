@@ -3,6 +3,7 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static "bower_components/select2/dist/css/select2.min.css" %}">
+
 {% endblock %}
 {% block content %}
 
@@ -106,6 +107,18 @@
                 <button type="submit" class="btn btn-primary pull-right">update</button>
               </div>
             </div>
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">TEST</h3>
+              </div>
+              <template>
+                <div>
+                  <b-form-select v-model="selected" :options="options" class="mb-3" />
+                  <b-form-select v-model="selected" :options="options" class="mb-3" size="sm" />
+                  <div>Selected: <strong>{{ selected }}</strong></div>
+                </div>
+              </template>
+            </div>
           </div>
       </form>
     </div>
@@ -114,9 +127,33 @@
 {% endblock %}
 {% block script %}
 <script src="{% static "bower_components/select2/dist/js/select2.full.min.js" %}"></script>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  export default {
+    data () {
+      return {
+        selected: null,
+        options: [
+          { value: null, text: 'Please select an option' },
+          { value: 'a', text: 'This is First option' },
+          { value: 'b', text: 'Selected Option' },
+          { value: {'C': '3PO'}, text: 'This is an option with object value' },
+          { value: 'd', text: 'This one is disabled', disabled: true }
+        ]
+      }
+    }
+  }
+</script>
 <script>
   $(function () {
     $('.select2').select2()
   });
 </script>
 {% endblock %}
+
+
+<ul>
+  {% for profile in profiles %}
+  <li>{{ profile.name }}</li>
+  {% endfor %}
+</ul>
