@@ -149,9 +149,9 @@ def new_sksid(m,y,code):
     return id
 def update_warranty(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
+    files = unit.filesimplemodel_set.all()
     if request.method == "POST":
         form=WarrantyForm(request.POST,instance=unit)
-        print (unit)
         if form.is_valid():
             warranty=form.cleaned_data["warranty"]
             note=form.cleaned_data["warrantyNote"]
@@ -170,6 +170,6 @@ def update_warranty(request,pk):
             unit.pre_diagnosis_flag=True
             unit.save()
             return redirect('/warranty/')
-        return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form})
+        return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form,'files':files})
     form=WarrantyForm(instance=unit)
-    return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form})
+    return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form,'files':files})

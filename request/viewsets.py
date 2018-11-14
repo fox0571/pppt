@@ -1,5 +1,5 @@
 from rest_framework.decorators import detail_route, list_route
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, filters
 from .models import Tag, UnitBasicInfo, PartRequest
 from notifications.models import Notification
 from .serializers import TagSerializer, PartSerializer, CaseSerializer, NotificationSerializer
@@ -10,6 +10,8 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     renderer_classes = (JSONRenderer, TemplateHTMLRenderer)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'name_chn')
 
     @detail_route(methods=['put','get'])
     def remove(self, request, *args, **kwargs):
@@ -36,6 +38,18 @@ class TagViewSet(viewsets.ModelViewSet):
 class PartViewSet(viewsets.ModelViewSet):
     queryset = PartRequest.objects.all()
     serializer_class = PartSerializer
+
+    @list_route()
+    def po(self,request):
+        po=PartRequest.objects.filter(part_type=1)
+        serializer = PartSerializer(po, many=True)
+        return Response(serializer.data)
+    
+    @list_route()
+    def warranty(self,request):
+        warranty=PartRequest.objects.filter(part_type=2)
+        serializer = PartSerializer(warranty, many=True)
+        return Response(serializer.data)
 
 class CaseViewSet(viewsets.ModelViewSet):
     queryset = UnitBasicInfo.objects.all()

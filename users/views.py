@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
 #show all unverified serial numbers
-OPERATOR_GROUP=["Brandon","Randi","Amanda Gomez","Etnia","Semaj"]
+OPERATOR_GROUP=["Randi","Brandon.W","Mike","Jackie"]
 
 @login_required(login_url='/user/login/')
 @permission_required('users.change_user_status',raise_exception=True)
@@ -226,7 +226,7 @@ def show_admin_page(request):
             callTime__gte=start).count()
         final_data.append(count)
         c1=c1+count
-    for code in [1,2,3,4,5]:
+    for code in [1,2,3,4]:
         count = Users.objects.get(code=code).current_tasks
         final_data2.append(count)
         c2=c2+count

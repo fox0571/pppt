@@ -1,0 +1,82 @@
+
+{% extends 'part/index.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+<style>
+.glyphicon.glyphicon-green-dot:before {
+    color: #20F343;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-yellow-dot:before {
+    color: #FFD700;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+.glyphicon.glyphicon-red-dot:before {
+    color: #F21616;
+    content: "\25cf";
+    font-size: 1.5em;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    {% if request %}
+    <section class="content-header">
+      <h1>
+        Records List
+        <p><a href="http://192.168.5.130/request/po/"><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-plus" aria-hidden="true">NEW</span></button></a></p>
+      </h1>
+    </section>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-body">
+              <table id="assets_table" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>P.O. Number</th>
+                    <th>Contact/Business Name</th>
+                    <th>Request Time</th>
+                    <th>Tracking</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% else %}
+    <p>No records.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script>
+$(document).ready(function() {
+    $('#assets_table').DataTable( {
+          "serverSide": true,
+          "pageLength": 50,
+          "ajax": {
+              "url": "http://192.168.5.130/api/part/po/?format=datatables",
+          },
+          "columns": [
+              { "data": "sksid" },
+              { "data": "contact" },
+              { "data": "request_time" },
+              { "data": "tracking" },
+          ],
+    } );
+} );
+</script>
+{% endblock %}

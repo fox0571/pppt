@@ -19,6 +19,8 @@ urlpatterns = [
     url(r'^tag/(?P<pk>\d+)/$', views.tag_case_edit, name='update_tag'),
     url(r'^statue/(?P<pk>\d+)/$', views.update_statue, name='update_statue'),
     url(r'^tq/$', views.show_tech_question_page, name='tech'),
+    url(r'^po/$', views.update_po_request, name='po'),
+    url(r'^po/list/$', views.po_list, name='po_list'),
     url(r'^(?P<pk>\d+)/$', views.show_detail,name='detail'),
     url(r'^(?P<pk>\d+)/part/$', views.update_part, name='part'),
     url(r'^(?P<pk>\d+)/order/$', views.get_order, name='order'),
@@ -41,9 +43,11 @@ urlpatterns = [
     url(r'^diag/long/$', views.get_long_pending, name='long'),
     url(r'^part/all/$', views.show_part_list, name='part_list'),
     url(r'^part/new/$', views.show_new_part, name='n_part'),
+    url(r'^part/po/$', views.po_request_list, name='n_po'),
     url(r'^invoice/$', views.invoice_dashboard, name='invoice'),
     url(r'^invoice/(?P<method>\d+)/$', views.invoice_list, name='invoice_list'),
     url(r'^invoice/approve/(?P<pk>\d+)/$', views.invoice_approve, name='invoice_approve'),
     url(r'^invoice/process/(?P<pk>\d+)/$', wvs.invoice_pro, name='invoice_process'),
+    url(r'^inventory/$', views.inventory, name='inventory'),
 
 ]

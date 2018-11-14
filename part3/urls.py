@@ -24,6 +24,7 @@ import notifications.urls
 
 urlpatterns = [
     url(r'^$',views.user_login),
+    #url(r'^part/center/$', TemplateView.as_view(template_name="index.html")),
     url(r'^logout/$',views.user_logout),
     url(r'^data/$',vws.analysis),
     url(r'^data/1/$',vws.analysis_service_daily),

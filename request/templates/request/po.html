@@ -1,4 +1,4 @@
-{% extends 'request/index.html' %}
+{% extends 'part/index.html' %}
 {% load static %}
 {% block css %}
 <style>
@@ -8,7 +8,6 @@
     color: #fff;
     vertical-align: middle;
 }
-
 .u-icon-delete
 {
     position: absolute;
@@ -41,7 +40,6 @@
     background-color: #e1e2e4;
     content: '';
 }
-/* -webkit-transform: rotate(45deg); 运用的特别巧秒*/
 .u-icon-delete i
 {
     position: absolute;
@@ -52,7 +50,6 @@
     background-color: #e1e2e4;
     -webkit-transform: rotate(45deg);
 }
-/*橙色背景中间一白色横杠的删除icon */
 .u-icon-del
 {
     position: relative;
@@ -70,7 +67,6 @@
 {
     -webkit-transform: rotateZ(90deg);
 }
-/*这里的background-color: #fff;和 content: "\20";实现白色横杠*/
 .u-icon-del::after
 {
     position: absolute;
@@ -81,70 +77,14 @@
     background-color: #fff;
     content: "\20";
 }
-
 </style>
 {% endblock %}
 {% block content %}
-
-
 <div class="content-wrapper">
   <section class="content">
     <form action="#/" method="POST" class="post-form">
         {% csrf_token %}
         <div class="col-md-6">
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Pre-diagnosis</h3>
-            </div>
-            <div class="box-body">
-              <p>S/N: {{ unit.serialNumber }}</p>
-              <p>Business Name: {{unit.businessName}}</p>
-              <p>Incident Number: {{unit.sksid}}</p>
-              <p>{{ unit.pre_diagnosis }}</p>
-            </div>
-          </div>
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Previous records</h3>
-            </div>
-            <div class="box-body">
-              {% if parts %}
-              <p>Ship to: {{ add }}</p>
-              <table id="assets_table" class="table table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Date</th>
-                    <th>SKS</th>
-                    <th>Number</th>
-                    <th>Name</th>
-                    <th>QTY</th>
-                    <th>Tracking</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                    {% for p in parts %}
-                    <tr>
-                      <td><span class="u-icon-del" value="{{p.id}}"></span></td>
-                      <td>{{ p.request_time }}</td>
-                      <td>{{ unit.sksid }}</td>
-                      <td>{{ p.number }}</td>
-                      <td>{{ p.name }}</td>
-                      <td>{{ p.qty }}</td>
-                      <td>{% if p.tracking %}
-                        <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{p.tracking}}" target="_blank">
-                        {{p.tracking}}
-                        </a>
-                        {% endif %}
-                      </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-              {% endif %}
-            </div>
-          </div>
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Parts Infomtion</h3>
@@ -207,24 +147,19 @@
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Shipping Infomtion</h3>
-              <div class="checkbox">
-                <label>
-                  {{ form.to_customer }}Check here if this package is shipped to the customer,
-                  and you can leave the shipping form blank.
-                </label>
-                <label>
-                  {{ form.to_tech }}Check here if this package is shipped to the tech,
-                  and you can leave the shipping form blank.
-                </label>
-              </div>
             </div>
-
             <div class="row">
               <div class="box-body">
+                    <div class="col-md-6">
+                            <div class="form-group">
+                              {{ form.po.errors }}
+                              <label for="{{ form.contact.id_for_label }}">PO number:</label>{{ form.po }}
+                            </div>
+                          </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     {{ form.contact.errors }}
-                    <label for="{{ form.contact.id_for_label }}">Contact:</label>{{ form.contact }}
+                    <label for="{{ form.contact.id_for_label }}">Contact/Business:</label>{{ form.contact }}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -268,10 +203,7 @@
           </div>
         </div>
         <div>
-        <p><a href="/user/dispatcher/new/{{ unit.pk }}/"> Go to Tech Page</a></p>
-        <p><a href="/user/dispatcher/follow/{{ unit.pk }}/"> Go to Follow up</a></p>
-        <button type="submit" class="btn btn-primary pull-right">update</button>
-
+            <button type="submit" class="btn btn-primary pull-right">update</button>
         </div>
     </form>
   </section>
@@ -325,6 +257,7 @@
         dataType: 'json',
         statusCode: {
           204: function() {
+            console.log("11111");
             window.location.reload();
           }
         },

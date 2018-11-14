@@ -20,7 +20,7 @@ GROUPS = (
             (9,"Dispatcher2"),(10,"Dispatcher3"),(11,"Dispatcher4"),(12,"Dispatcher5"),
             (13,"Dispatcher6"),(14,"Warranty"),(15,"Admin")
 )
-STATES = (
+STATES = (("-","-"),
     ("AL","Alabama"),("AK","Alaska"),("AS","American Samoa"),("AZ","Arizona"),
     ("AR","Arkansas"),("CA","California"),("CO","Colorado"),("CT","Connecticut"),
     ("DE","Delaware"),("DC","District Of Columbia"),("FM", "Federated States Of Micronesia"),
@@ -132,6 +132,26 @@ class PartForm(forms.Form):
     phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}),required=False)
     to_customer=forms.BooleanField(required=False)
     to_tech=forms.BooleanField(required=False)
+
+class PartPOForm(forms.Form):
+    number1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
+    name1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
+    qty1=forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
+    number2=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    name2=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    qty2=forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    number3=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    name3=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    qty3=forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    po=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
+    contact=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
+    address1=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
+    address2=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
+    city=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
+    state=forms.ChoiceField(choices=STATES,widget=forms.Select(attrs={'class': 'form-control'}),required=True)
+    zip=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
+    phone=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','id': 'phone'}),required=True)
+    
 
 class PartRequestUpdateForm(ModelForm):
     class Meta:

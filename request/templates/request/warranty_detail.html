@@ -5,7 +5,6 @@
 
 <div class="content-wrapper">
   <section class="content">
-
     <form class='form' action="update/" method="post">
       	{% csrf_token %}
        		<div class="box-body">
@@ -28,10 +27,27 @@
               				{{ form }}
               				<button type="submit" class="btn btn-primary pull-right">update</button>
               			</div>
-              		</div>
+					  </div>
+					  <div class="box box-primary">
+							<div class="box-header with-border">
+							  <h3 class="box-title">Files</h3>
+							</div>
+							<div class="box-body">
+							  <div class="box-body">
+								{% if files %}
+								  {% for f in files %}
+								  <p>
+									<a href={{ f.file_field.url }} target="_blank">{{forloop.counter}}</a>
+								  </p>
+								  {% endfor %}
+								{% endif %}
+							  </div>
+							</div>
+						  </div>
               	</div>
 			</div>
-    </form>
+	</form>
+	
   </section>
 </div>
 {% endblock %}

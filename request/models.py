@@ -28,6 +28,10 @@ CHOICES_8=(
     (False, 'To 3rd party tech company'),
     (True, 'To in-house tech dispatcher'),
 )
+CHOICES_0=(
+    (1, 'PO'),
+    (2, 'WARRANTY'),
+)
 class Address(models.Model):
     contact=models.CharField(max_length=50)
     address1=models.CharField(max_length=200)
@@ -90,7 +94,7 @@ class UnitBasicInfo(models.Model):
     areaCode=models.IntegerField(default=0)
     sksid=models.CharField(max_length=20,null=True,blank=True)
     finished=models.BooleanField(default=False)
-    pre_diagnosis=models.TextField(null=True)
+    pre_diagnosis=models.TextField(null=True,blank=True)
     pre_diagnosis_flag=models.BooleanField(blank=True,default=False)
     timestamp_diagnosis=models.DateTimeField(blank=True,null=True)
     pre_diagnosis_pending=models.BooleanField(default=False,blank=True)
@@ -128,6 +132,9 @@ class PartRequest(models.Model):
     location_state=models.CharField(max_length=30)
     location_zip=models.CharField(max_length=20)
     pre_diagnosis=models.TextField(null=True,blank=True)
+    part_type=models.IntegerField(choices=CHOICES_0,default=2,blank=True)
+    case = models.ForeignKey(UnitBasicInfo, on_delete=models.CASCADE,null=True)
+    
     def __str__(self):
         return self.sksid+','+self.number
 

@@ -1,9 +1,10 @@
 
-{% extends 'request/index.html' %}
+{% extends 'part/index.html' %}
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
 {% endblock %}
+
 {% block content %}
 
 <div class="content-wrapper">
@@ -32,7 +33,7 @@
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Incident Number</th>
+                      <th>Reference</th>
                       <th>S/N</th>
                       <th>Part</th>
                       <th>Location</th>
@@ -68,16 +69,6 @@
                       </tr>
                       {% endfor %}
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>No.</th>
-                      <th>Incident Number</th>
-                      <th>S/N</th>
-                      <th>Location</th>
-                      <th>Tracking</th>
-                      <th>Date</th>
-                    </tr>
-                  </tfoot>
                 </table>
               </div>
               <!-- /.box-body -->

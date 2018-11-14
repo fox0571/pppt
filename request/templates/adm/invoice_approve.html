@@ -237,14 +237,14 @@
               </div>
               <div class="box-body">
                 <div class="box-body">
-                {% if files %}
-                  {% for f in files %}
-                  <p>
-                    <a href={{ f.file_field.url }} target="_blank">{{forloop.counter}}</a>
-                  </p>
-                  {% endfor %}
-                {% endif %}
-              </div>
+                  {% if files %}
+                    {% for f in files %}
+                    <p>
+                      <a href={{ f.file_field.url }} target="_blank">{{forloop.counter}}</a>
+                    </p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="box">

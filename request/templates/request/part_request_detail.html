@@ -1,6 +1,13 @@
-
 {% extends 'request/index.html' %}
 {% load static %}
+{% block css %}
+<style>
+  .checked:after{
+    content: '✓';
+    color:green;
+ }
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="content-wrapper">
@@ -14,17 +21,21 @@
               <h3 class="box-title">Basic Information</h3>
             </div>
             <div class="box-body">
+              <p class="text-light-blue">Business Name: {{part.case.businessName|upper }}</p>
               <p class="text-light-blue">S/N: {{part.sn|upper }}</p>
-              <p class="text-light-blue">Incident Number: {{part.sksid|upper }}</p>
+              <p class="text-light-blue">Incident Number:<a href="http://192.168.5.130/request/{{part.case.id}}/" target="_blank"> {{part.case.sksid|upper }}</a></p>
               <p class="text-light-blue">Contact: {{part.contact|upper }}</p>
               <p class="text-light-blue">Address: {{part.location_add1|upper}}
                 {% if part.location_add2 %}
               {{part.location_add2|upper}} 
               {% endif %}, {{part.location_city|upper}}
                 {{part.location_state|upper}} {{part.location_zip|upper}}</p>
-              <p class="text-light-blue">Part Number: {{part.number|upper}}</p>
+              <p class="text-light-blue">Part Number: 
+                  <input id="number" name="number" class="number" value={{part.number|upper}}>
+              </p>
               <p class="text-light-blue">Description: {{part.name|upper}}</p>
-              <p class="text-light-blue">Quantity: {{part.qty}}</p>
+              <p id="qty" class="text-light-blue" value={{part.id}}>Quantity: {{part.qty}}</p>
+              <button type="button" id="verify" class="btn btn-sm btn-success pull-right" onclick="update_inventory()">Verified</button>
             </div>
             <!-- /.box-body -->
           </div>
@@ -59,4 +70,96 @@
 {% block script %}
 <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
+<script>
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = jQuery.trim(cookies[i]);
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+  // these HTTP methods do not require CSRF protection
+  return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+function update_inventory(){
+  var number=document.getElementById("number");
+  var btn_verified=document.getElementById("verify");
+  var qq={{part.id}};
+  var qty = {{part.qty|safe}};
+  var url="http://192.168.5.130/api/parts/"+number.value+"/";
+  var url2="http://192.168.5.130/api/part/"+qq+"/";
+  var inv=0;
+  $("#number").parent().addClass('checked');
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
+  var approved=false;
+  $.ajax({
+    url: url2,
+    type : 'GET',
+    dataType: 'json',
+    statusCode: {
+      200: function(data) {
+        approved=data.approved;
+        if (!approved) {
+          $.ajax({
+            url: url,
+            type : 'GET',
+            dataType: 'json',
+            statusCode: {
+              200: function(data) {
+                inv=data.inventory-qty;
+                console.log(inv);
+                $.ajax({
+                  url: url,
+                  type : 'PATCH',
+                  data: {
+                    'inventory': inv,
+                  },
+                  dataType: 'json',
+                  statusCode: {
+                    200: function() {
+                      console.log(data.inventory);
+                    }
+                  },
+                });
+                $.ajax({
+                  url: url2,
+                  type : 'PATCH',
+                  data: {
+                    'number': number.value,
+                    'approved': true,
+                  },
+                  dataType: 'json',
+                  statusCode: {
+                    200: function() {
+                    }
+                  },
+                });
+              }
+            },
+          });
+        }
+      }
+    },
+  });
+  
+  number.disabled=true;
+  btn_verified.disabled=true;
+}
+</script>
 {% endblock %}

@@ -7,7 +7,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import UnitBasicInfo, PartRequest, Tag, FileSimpleModel
 from django.utils import timezone
-from .forms import FileUploadForm, InhouseForm, TagForm, FirstForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm,PartForm,PartRequestUpdateForm
+from .forms import FileUploadForm, InhouseForm, TagForm, FirstForm, DiagnosisForm, HotTechQuestionForm, ColdTechQuestionForm,PartForm,PartRequestUpdateForm,PartPOForm
 from users.forms import DispatchForm
 from django.views.generic import View
 from .render import Render
@@ -299,18 +299,23 @@ def show_detail(request,pk):
     }
     return render(request,'request/detail.html',para)
 def part_dashboard(request):
-    new=PartRequest.objects.all().filter(tracking=None).count()
+    new=PartRequest.objects.filter(tracking=None).filter(part_type=2).count()
+    po=PartRequest.objects.filter(tracking=None).filter(part_type=1).count()
     all=PartRequest.objects.all().count()
     para={
         "new":new,
         "all":all,
+        "po":po,
     }
     return render(request, 'part/dashboard.html',para)
 def show_part_list(request):
     part = PartRequest.objects.all()
     return render(request, 'part/list.html', {'request':part})
+def po_request_list(request):
+    part = PartRequest.objects.filter(part_type=1).filter(tracking=None).order_by('location_add1')
+    return render(request, 'request/part_request_list.html', {'request':part})
 def show_new_part(request):
-    part = PartRequest.objects.all().filter(tracking=None).order_by('location_add1')
+    part = PartRequest.objects.all().filter(part_type=2).filter(tracking=None).order_by('location_add1')
     return render(request, 'request/part_request_list.html', {'request':part})
 def show_part_detail(request,pk):
     part = get_object_or_404(PartRequest, pk=pk)
@@ -321,6 +326,11 @@ def show_part_detail(request,pk):
             part = form.save()
             return redirect('/request/part/')
     return render(request, 'request/part_request_detail.html', {'part': part,'form':form})
+
+def po_list(request):
+    return render(request, 'request/po_list.html')
+def inventory(request):
+    return render(request, 'part/inventory.html')
 def update_part(request,pk):
     form=PartForm()
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
@@ -376,6 +386,7 @@ def update_part(request,pk):
             new_part_request.location_zip=zip
             new_part_request.code=unit.areaCode
             new_part_request.sn=unit.serialNumber
+            new_part_request.case=unit
             n1=form.cleaned_data["number1"]
             m1=form.cleaned_data["name1"]
             q1=form.cleaned_data["qty1"]
@@ -404,6 +415,7 @@ def update_part(request,pk):
                 new_part_request.code=unit.areaCode
                 new_part_request.pre_diagnosis=unit.pre_diagnosis
                 new_part_request.sn=unit.serialNumber
+                new_part_request.case=unit
                 new_part_request.save()
             if n3!="" and q3!="" and m3!="":
                 new_part_request=PartRequest()
@@ -420,21 +432,79 @@ def update_part(request,pk):
                 new_part_request.code=unit.areaCode
                 new_part_request.pre_diagnosis=unit.pre_diagnosis
                 new_part_request.sn=unit.serialNumber
+                new_part_request.case=unit
                 new_part_request.save()
             return redirect("#/")
         return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
     return render(request, 'request/part_request.html',{'form': form,'parts':parts,'unit':unit,'add':add})
-# def update_part_request(request,pk):
-#     if request.method == "POST":
-#         form=PartRequestUpdateForm(request.POST)
-#         if form.is_valid():
-#             part = PartRequest.objects.get(pk=pk)
-#             tracking=form.cleaned_data["tracking"]
-#             note = form.cleaned_data["note"]
-#             part.tracking=tracking
-#             part.note=note
-#             part.save()
-#             return redirect('/request/part/')
+def update_po_request(request):
+    form=PartPOForm()
+    if request.method == "POST":
+        form = PartPOForm(request.POST)
+        if form.is_valid():
+            new_part_request=PartRequest()
+            new_part_request.sksid=form.cleaned_data["po"]
+            contact=form.cleaned_data["contact"]
+            add1=form.cleaned_data["address1"]
+            add2=form.cleaned_data["address2"]
+            city=form.cleaned_data["city"]
+            state=form.cleaned_data["state"]
+            zip=form.cleaned_data["zip"]
+            new_part_request.contact=contact
+            new_part_request.location_add1=add1
+            new_part_request.location_add2=add2
+            new_part_request.location_city=city
+            new_part_request.location_state=state
+            new_part_request.location_zip=zip
+            new_part_request.code=99
+            new_part_request.part_type=1
+            n1=form.cleaned_data["number1"]
+            m1=form.cleaned_data["name1"]
+            q1=form.cleaned_data["qty1"]
+            new_part_request.number=n1
+            new_part_request.name=m1
+            new_part_request.qty=int(q1)
+            new_part_request.save()
+            n2=form.cleaned_data["number2"]
+            m2=form.cleaned_data["name2"]
+            q2=form.cleaned_data["qty2"]
+            n3=form.cleaned_data["number3"]
+            m3=form.cleaned_data["name3"]
+            q3=form.cleaned_data["qty3"]
+            if n2!="" and q2!="" and m2!="":
+                new_part_request=PartRequest()
+                new_part_request.sksid=form.cleaned_data["po"]
+                new_part_request.contact=contact
+                new_part_request.location_add1=add1
+                new_part_request.location_add2=add2
+                new_part_request.location_city=city
+                new_part_request.location_state=state
+                new_part_request.location_zip=zip
+                new_part_request.number=n2
+                new_part_request.name=m2
+                new_part_request.qty=int(q2)
+                new_part_request.code=99
+                new_part_request.part_type=1
+                new_part_request.save()
+            if n3!="" and q3!="" and m3!="":
+                new_part_request=PartRequest()
+                new_part_request.sksid=form.cleaned_data["po"]
+                new_part_request.contact=contact
+                new_part_request.location_add1=add1
+                new_part_request.location_add2=add2
+                new_part_request.location_city=city
+                new_part_request.location_state=state
+                new_part_request.location_zip=zip
+                new_part_request.number=n3
+                new_part_request.name=m3
+                new_part_request.qty=int(q3)
+                new_part_request.code=99
+                new_part_request.part_type=1
+                new_part_request.save()
+            return redirect("list/")
+        return render(request, 'request/po.html',{'form': form})
+    return render(request, 'request/po.html',{'form': form})
+
 
 @receiver(post_save, sender=UnitBasicInfo)
 def send_message(sender, **kwargs):
@@ -472,6 +542,9 @@ def edit_basic(request,pk):
             elif request.session['unit_type']=="COLD":
                 form=ColdTechQuestionForm()
                 return render(request, 'request/tech_question_cold.html', {'form':form,'unit':unit})
+            elif request.session['unit_type']=="OTHER":
+                unit.tsq="This unit does not need support questions"
+                unit.save()
             return redirect('/user/operator/')
     else:
         form = FirstForm(instance=unit)
