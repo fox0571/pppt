@@ -139,7 +139,7 @@ class PartRequest(models.Model):
         return self.sksid+','+self.number
 
     class Meta:
-        ordering = ('sksid',)
+        ordering = ('number',)
         permissions = (
             ("change_part_status", "Can change the status of part request"),
         )

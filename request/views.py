@@ -317,6 +317,8 @@ def po_request_list(request):
 def show_new_part(request):
     part = PartRequest.objects.all().filter(part_type=2).filter(tracking=None).order_by('location_add1')
     return render(request, 'request/part_request_list.html', {'request':part})
+
+@login_required(login_url='/user/login/')
 def show_part_detail(request,pk):
     part = get_object_or_404(PartRequest, pk=pk)
     form=PartRequestUpdateForm(instance=part)
@@ -567,6 +569,8 @@ def warranty_check(sn):
         return unit
     except Sales.DoesNotExist:
         return -1
+
+@login_required(login_url='/user/login/')
 def update_basic(request):
     form=FirstForm()
     if request.method == "POST":
@@ -617,6 +621,9 @@ def update_basic(request):
             elif request.session['unit_type']=="COLD":
                 form=ColdTechQuestionForm()
                 return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
+            elif request.session['unit_type']=="OTHER":
+                new_unit.tsq="This unit does not need support questions"
+                new_unit.save()
             return redirect('/user/operator/')
         return render(request, 'operator/basic.html',{'form': form})
     return render(request, 'operator/basic.html',{'form': form})

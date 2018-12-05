@@ -86,7 +86,7 @@ REST_FRAMEWORK = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['appfront/dist'],
+        'DIRS': ['pppt/appfront/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

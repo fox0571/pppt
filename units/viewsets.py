@@ -7,6 +7,23 @@ from rest_framework import pagination
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from rest_framework import pagination
+from rest_framework.permissions import BasePermission, IsAuthenticated, DjangoModelPermissionsOrAnonReadOnly
+
+SAFE_METHODS=["GET","HEAD","OPTIONS"]
+
+class ReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.method in SAFE_METHODS
+
+class PartPermission(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in ["POST", "PUT", "DELETE"]:
+            if request.user.username == "Parts":
+                return True
+            else:
+                return False
+        else:
+            return False
 
 class CustomPagination(pagination.PageNumberPagination):
     page_size = 10
@@ -41,23 +58,28 @@ class PartsViewSet(viewsets.ModelViewSet):
     search_fields = ('number', 'name_eng')
     ordering_fields = ('number', 'name_eng')
     ordering = ('-number',)
+
+    permission_classes = (ReadOnly,)
     #pagination_class = CustomPagination
-    lookup_field = 'number'
+    #lookup_field = 'number'
 
     @list_route()
-    def unlinked(self,request):
-        po=Part.objects.filter(unit=None).order_by('-number')
-        page = self.paginate_queryset(po)
-        if page is not None:
-            serializer = PartsSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+    def all(self,request):
+        po=Part.objects.all().order_by('-number')
         serializer = PartsSerializer(po, many=True)
         return Response(serializer.data)
 
 class UnitViewSet(viewsets.ModelViewSet):
     queryset = Unit.objects.all()
-    serializer_class = UnitSerializer  
-    pagination_class = None
+    serializer_class = UnitSerializer
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter)
+    search_fields = ('model', 'name_eng')  
+
+    @list_route()
+    def all(self,request):
+        po=Unit.objects.all()
+        serializer = UnitSerializer(po, many=True)
+        return Response(serializer.data)
     #template_name='request/all_records.html' 
 
 

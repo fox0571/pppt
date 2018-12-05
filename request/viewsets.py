@@ -38,12 +38,15 @@ class TagViewSet(viewsets.ModelViewSet):
 class PartViewSet(viewsets.ModelViewSet):
     queryset = PartRequest.objects.all()
     serializer_class = PartSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('number', 'name')
 
     @list_route()
     def po(self,request):
         po=PartRequest.objects.filter(part_type=1)
         serializer = PartSerializer(po, many=True)
         return Response(serializer.data)
+
     
     @list_route()
     def warranty(self,request):

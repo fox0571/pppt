@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class Part(models.Model):
     number=models.CharField(max_length=30)
     name_eng=models.CharField(max_length=90)
