@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Unit, Part
+from .models import Unit, Part, PO2China
 # Register your models here.
 def export_service_record(modeladmin, request, queryset):
     import csv
@@ -38,4 +38,5 @@ class UnitAdmin(admin.ModelAdmin):
     actions = [export_service_record]
 admin.site.register(Unit,UnitAdmin)
 admin.site.register(Part)
+admin.site.register(PO2China)
 

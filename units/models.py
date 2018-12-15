@@ -49,7 +49,7 @@ class Unit(models.Model):
         ordering = ('model',)
 
 class PO2China(models.Model):
-    parts = models.ManyToManyField(Part,null=True,blank=True)
+    parts = models.OneToOneField(Part,on_delete=models.CASCADE,null=True,blank=True)
 
     # 0 - created
     # 1 - ordered
@@ -64,4 +64,4 @@ class PO2China(models.Model):
     received_time = models.DateTimeField(null=True,blank=True)
 
     def __str__(self):
-        return self.number+self.name_eng
+        return self.branch

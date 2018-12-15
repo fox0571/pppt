@@ -1,7 +1,7 @@
 from rest_framework.decorators import detail_route, list_route
 from rest_framework import status, viewsets, filters
-from .models import Part, Unit
-from .serializers import UnitSerializer, PartsSerializer
+from .models import Part, Unit, PO2China
+from .serializers import UnitSerializer, PartsSerializer, POSerializer, POEditSerializer
 from rest_framework.response import Response
 from rest_framework import pagination
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
@@ -59,7 +59,7 @@ class PartsViewSet(viewsets.ModelViewSet):
     ordering_fields = ('number', 'name_eng')
     ordering = ('-number',)
 
-    permission_classes = (ReadOnly,)
+    #permission_classes = (ReadOnly,)
     #pagination_class = CustomPagination
     #lookup_field = 'number'
 
@@ -82,4 +82,44 @@ class UnitViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
     #template_name='request/all_records.html' 
 
+class POViewSet(viewsets.ModelViewSet):
+    queryset = PO2China.objects.all()
+    serializer_class = POEditSerializer
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter)
+
+    @list_route()
+    def new(self,request):
+        po=PO2China.objects.filter(status=0)
+        serializer = POSerializer(po,many=True)
+        return Response(serializer.data)
+
+    @list_route()
+    def ordered(self,request):
+        po=PO2China.objects.filter(status=1)
+        serializer = POSerializer(po,many=True)
+        return Response(serializer.data)
+
+    @list_route()
+    def shipped(self,request):
+        po=PO2China.objects.filter(status=2)
+        serializer = POSerializer(po,many=True)
+        return Response(serializer.data)
+
+    @list_route()
+    def received(self,request):
+        po=PO2China.objects.filter(status=3)
+        serializer = POSerializer(po,many=True)
+        return Response(serializer.data)
+
+    @list_route()
+    def all(self,request):
+        po=PO2China.objects.all()
+
+        page = self.paginate_queryset(po)
+        if page is not None:
+            serializer = POSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = POSerializer(po,many=True)
+        return Response(serializer.data)
 

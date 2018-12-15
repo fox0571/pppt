@@ -2,6 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from taggit.managers import TaggableManager
 from units.models import Unit
+from django.contrib.auth.models import User
 
 SHIPPING_METHOD = (
     ('NDA','NEXT DAY AIR'),
@@ -91,6 +92,7 @@ class UnitBasicInfo(models.Model):
     techNote=models.TextField(null=True,blank=True)
     callTime=models.DateTimeField(auto_now_add=True)
     receiver=models.CharField(max_length=50)
+    dispatcher = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
     areaCode=models.IntegerField(default=0)
     sksid=models.CharField(max_length=20,null=True,blank=True)
     finished=models.BooleanField(default=False)
