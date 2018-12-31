@@ -7,6 +7,7 @@ from .models import Users
 from request.models import UnitBasicInfo, PartRequest
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User, Group
 
 # Create your views here.
 
@@ -16,6 +17,13 @@ OPERATOR_GROUP=["Randi","Brandon.W","Mike","Jackie"]
 @login_required(login_url='/user/login/')
 @permission_required('users.change_user_status',raise_exception=True)
 def manage_queue(request):
+    
+    # for basic user model
+    # dispatchers=Group.objects.get(name="Dispatcher").user_set.all()
+    # active_dispatchers=dispatchers.filter(is_active=True)
+    # inactive_dispatchers=dispatchers.filter(is_active=False)
+
+    # for extra users model 
     dispatchers=Users.objects.filter(group='dispatcher')
     active_dispatchers=dispatchers.filter(active=True)
     inactive_dispatchers=dispatchers.filter(active=False)
@@ -41,21 +49,13 @@ def show_detail_op(request,pk):
     form = FirstForm(instance=unit)
     return render(request, 'operator/basic.html', {'form':form})
 def show_waiting(request):
-    all=UnitBasicInfo.objects.filter(warranty=None).exclude(tsq=None)
+    all=UnitBasicInfo.objects.filter(warranty=None)
     return render(request, 'request/warranty.html', {'requests':all})
-def get_all_records(request):
-    name=request.session['user_name']
-    request_list = UnitBasicInfo.objects.all().filter(receiver=name).order_by('-callTime')
-    return render(request, 'operator/list.html', {'request':request_list})
+
 def get_all_dispatcher_records(request):
     code = request.session['user_code']
     my_tasks=""
     if code=="17":
-        # my_tasks=UnitBasicInfo.objects.filter(
-        #     Q(location_state='TX') |
-        #     Q(location_state='CA') |
-        #     Q(location_state='LA') |
-        #     Q(location_state='OK')).filter(inhouse=True)
         my_tasks=UnitBasicInfo.objects.filter(inhouse=True)
     elif code=="18":
         my_tasks=UnitBasicInfo.objects.filter(
@@ -78,11 +78,6 @@ def get_all_scheduled_records(request):
     code = request.session['user_code']
     my_tasks=""
     if code=="17":
-        # my_tasks=UnitBasicInfo.objects.filter(
-        #     Q(location_state='TX') |
-        #     Q(location_state='CA') |
-        #     Q(location_state='LA') |
-        #     Q(location_state='OK')).filter(inhouse=True)
         my_tasks=UnitBasicInfo.objects.filter(inhouse=True)
     elif code=="18":
         my_tasks=UnitBasicInfo.objects.filter(
@@ -107,11 +102,7 @@ def get_new_records(request):
     code = request.session['user_code']
     my_tasks=""
     if code=="17":
-        # my_tasks=UnitBasicInfo.objects.filter(
-        #     Q(location_state='TX') |
-        #     Q(location_state='CA') |
-        #     Q(location_state='LA') |
-        #     Q(location_state='OK')).filter(inhouse=True)
+        
         my_tasks=UnitBasicInfo.objects.filter(inhouse=True)
     elif code=="18":
         my_tasks=UnitBasicInfo.objects.filter(
@@ -142,14 +133,22 @@ def get_all_part_records(request):
     code = request.session['user_code']
     request_list = PartRequest.objects.all().filter(code=code).order_by('-request_time')
     return render(request, 'dispatcher/part_list.html', {'request':request_list})
-def get_all_oow_records(request):
-    name=request.session['user_name']
-    request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).order_by('-callTime')
+
+def my_records(request):
+    my_cases=request.user.creater
+    para=request.GET.get('para')
+    # 0: today's cases
+    # 1: out of warranty cases
+    # 2: all records
+    request_list=[]
+    if para == '0':
+        request_list = my_cases.filter(callTime__gte=datetime.date.today()).order_by('-callTime')
+    elif para == '1':
+        request_list = my_cases.filter(warranty=False).order_by('-callTime')
+    elif para == '2':
+        request_list = my_cases.order_by('-callTime')
     return render(request, 'operator/list.html', {'request':request_list})
-def get_today_records(request):
-    name=request.session['user_name']
-    request_list = UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).order_by('-callTime')
-    return render(request, 'operator/list.html', {'request':request_list})
+
 def show_follow_up(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
     parts = PartRequest.objects.all().filter(sksid=unit.sksid)
@@ -162,9 +161,11 @@ def show_operator_page(request):
     if not request.session.get('is_login', None):
         return redirect("/user/login/")
     name=request.session['user_name']
-    a=UnitBasicInfo.objects.all().filter(receiver=name).filter(callTime__gte=datetime.date.today()).count()
-    b=UnitBasicInfo.objects.all().filter(receiver=name).filter(warranty=False).count()
-    c=UnitBasicInfo.objects.all().filter(receiver=name).count()
+    u=request.user
+    my_cases=u.creater
+    a=my_cases.filter(callTime__gte=datetime.date.today()).count()
+    b=my_cases.filter(warranty=False).count()
+    c=my_cases.count()
     return render(request, 'operator/dashboard.html',{'today':a,'oow':b,'all':c})
 def show_dispatcher_page(request):
     if not request.session.get('is_login', None):
@@ -185,11 +186,6 @@ def show_inhouse_page(request):
     code = request.session['user_code']
     tasks=""
     if code=="17":
-        # tasks=UnitBasicInfo.objects.filter(
-        #     Q(location_state='TX') |
-        #     Q(location_state='CA') |
-        #     Q(location_state='LA') |
-        #     Q(location_state='OK')).filter(inhouse=True)
         tasks=UnitBasicInfo.objects.filter(inhouse=True)
     elif code=="18":
         tasks=UnitBasicInfo.objects.filter(
@@ -221,11 +217,11 @@ def show_admin_page(request):
     delta= datetime.timedelta(today.weekday())
 
     start = today-delta
-    for user in OPERATOR_GROUP:
-        count = UnitBasicInfo.objects.filter(receiver=user).filter(
-            callTime__gte=start).count()
-        final_data.append(count)
-        c1=c1+count
+    # for user in OPERATOR_GROUP:
+    #     count = UnitBasicInfo.objects.filter(receiver=user).filter(
+    #         callTime__gte=start).count()
+    #     final_data.append(count)
+    #     c1=c1+count
     for code in [1,2,3,4]:
         count = Users.objects.get(code=code).current_tasks
         final_data2.append(count)
@@ -275,15 +271,6 @@ def user_login(request):
                 user = Users.objects.get(code=code)
                 username=user.name
                 u = authenticate(request, username=username, password=password)
-                # if user.password == password:
-                #     request.session['is_login'] = True
-                #     request.session['user_code'] = user.code
-                #     request.session['user_name'] = user.name
-                #     group=user.group
-                #     request.session['user_group'] = group
-                #     return redirect('/user/')
-                # else:
-                #     message = "Wrong password!"
                 if u is not None:
                     login(request, u)
                     request.session.set_expiry(604800)
@@ -300,12 +287,6 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    # if not request.session.get('is_login', None):
-    #     return redirect("/user/login/")
-    # request.session.flush()
-    # del request.session['is_login']
-    # del request.session['user_id']
-    # del request.session['user_name']
     return redirect("/user/login/")
 def change_password(request):
     form1=ChangePassword()

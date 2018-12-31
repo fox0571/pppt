@@ -35,7 +35,7 @@ CHOICES_0=(
 )
 class Address(models.Model):
     contact=models.CharField(max_length=50)
-    address1=models.CharField(max_length=200)
+    address1=models.CharField(max_length=190)
     address2=models.CharField(max_length=50,blank=True)
     city=models.CharField(max_length=50)
     state=models.CharField(max_length=30,choices=STATES)
@@ -48,7 +48,7 @@ class Tech(models.Model):
     contact=models.CharField(max_length=50)
     phone=models.CharField(max_length=15,null=True)
     email=models.EmailField(null=True,blank=True)
-    address1=models.CharField(max_length=200)
+    address1=models.CharField(max_length=190)
     address2=models.CharField(max_length=50,blank=True)
     city=models.CharField(max_length=50)
     state=models.CharField(max_length=30,choices=STATES)
@@ -71,13 +71,13 @@ class UnitBasicInfo(models.Model):
     phone=models.CharField(max_length=15,null=True)
     email=models.EmailField(null=True,blank=True)
     business_hour=models.CharField(max_length=80,null=True,blank=True)
-    location_add1=models.CharField(max_length=200)
-    location_add2=models.CharField(max_length=200,null=True,blank=True)
+    location_add1=models.CharField(max_length=190)
+    location_add2=models.CharField(max_length=190,null=True,blank=True)
     location_city=models.CharField(max_length=20)
     location_state=models.CharField(max_length=30)
     location_zip=models.CharField(max_length=20)
-    tech_add1=models.CharField(max_length=200,null=True,blank=True)
-    tech_add2=models.CharField(max_length=200,null=True,blank=True)
+    tech_add1=models.CharField(max_length=190,null=True,blank=True)
+    tech_add2=models.CharField(max_length=190,null=True,blank=True)
     tech_city=models.CharField(max_length=20,null=True,blank=True)
     tech_state=models.CharField(max_length=30,null=True,blank=True)
     tech_zip=models.CharField(max_length=20,null=True,blank=True)
@@ -91,8 +91,9 @@ class UnitBasicInfo(models.Model):
     scheDate=models.DateField(null=True,blank=True)
     techNote=models.TextField(null=True,blank=True)
     callTime=models.DateTimeField(auto_now_add=True)
-    receiver=models.CharField(max_length=50)
-    dispatcher = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    #receiver=models.CharField(max_length=50)
+    create_user = models.ForeignKey(User, related_name="creater",on_delete=models.CASCADE,null=True,blank=True)
+    dispatcher = models.ForeignKey(User, related_name="dispatcher",on_delete=models.CASCADE,null=True,blank=True)
     areaCode=models.IntegerField(default=0)
     sksid=models.CharField(max_length=20,null=True,blank=True)
     finished=models.BooleanField(default=False)
@@ -106,10 +107,10 @@ class UnitBasicInfo(models.Model):
     followup_tech=models.TextField(null=True,blank=True)
     followup_tech_time=models.DateTimeField(null=True,auto_now=True)
     inhouse = models.BooleanField(default=False,choices=CHOICES_8)
+    replacement = models.BooleanField(default=False)
+    prefer_reached = models.CharField(max_length=90,default="by phone")
 
     def __str__(self):
-        if self.sksid:
-            return self.sksid+", "+self.serialNumber
         return self.serialNumber
 
     class Meta:
@@ -128,8 +129,8 @@ class PartRequest(models.Model):
     tracking=models.CharField(max_length=50,null=True,blank=True)
     note = models.TextField(null=True,blank=True)
     approved=models.BooleanField(default=False)
-    location_add1=models.CharField(max_length=200)
-    location_add2=models.CharField(max_length=200,null=True,blank=True)
+    location_add1=models.CharField(max_length=190)
+    location_add2=models.CharField(max_length=190,null=True,blank=True)
     location_city=models.CharField(max_length=20)
     location_state=models.CharField(max_length=30)
     location_zip=models.CharField(max_length=20)

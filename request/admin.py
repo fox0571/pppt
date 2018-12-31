@@ -108,8 +108,17 @@ class UnitAdmin(admin.ModelAdmin):
     actions = [export_csv,]
 class TagAdmin(admin.ModelAdmin):
     actions = [export_tags]
-admin.site.register(UnitBasicInfo,UnitAdmin)
-admin.site.register(PartRequest)
+class UnitBasicInfoAdmin(admin.ModelAdmin):
+    list_display=('sksid','serialNumber','businessName')
+    search_fields = ('sksid','serialNumber','businessName')
+    actions = [export_csv,]
+
+class PartRequestAdmin(admin.ModelAdmin):
+    list_display=('case','number','name','qty','tracking')
+    list_editable = ('number','tracking')
+    search_fields = ('number','name','qty','sksid','tracking')
+admin.site.register(UnitBasicInfo,UnitBasicInfoAdmin)
+admin.site.register(PartRequest,PartRequestAdmin)
 admin.site.register(Tag,TagAdmin)
 admin.site.register(FileSimpleModel)
 admin.site.register(Tech)

@@ -56,7 +56,9 @@ class PartViewSet(viewsets.ModelViewSet):
 
 class CaseViewSet(viewsets.ModelViewSet):
     queryset = UnitBasicInfo.objects.all()
-    serializer_class = CaseSerializer  
+    serializer_class = CaseSerializer
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter)
+    search_fields = ('serialNumber',)
     #template_name='request/all_records.html' 
 
 class NotificationViewSet(viewsets.ModelViewSet):

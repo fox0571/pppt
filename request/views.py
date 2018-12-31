@@ -579,7 +579,8 @@ def update_basic(request):
             new_unit=form.save(commit=False)
             unit_type=form.cleaned_data["type"]
             request.session["unit_type"]=unit_type
-            new_unit.receiver=request.session['user_name']
+            #new_unit.receiver=request.session['user_name']
+            new_unit.create_user=request.user
             new_unit.save()
             messages.add_message(request, messages.INFO, 'A new service call has been created.')
             ret=warranty_check(new_unit.serialNumber)
@@ -659,11 +660,11 @@ def show_adminop(request):
     today = datetime.date.today()
     delta= datetime.timedelta(today.weekday())
     start = today-delta
-    print(start)
-    for user in OPERATOR_GROUP:
-        count = UnitBasicInfo.objects.filter(receiver=user).filter(
-            callTime__gte=start).count()
-        final_data.append(count)
+    #print(start)
+    # for user in OPERATOR_GROUP:
+    #     count = UnitBasicInfo.objects.filter(receiver=user).filter(
+    #         callTime__gte=start).count()
+    #     final_data.append(count)
     return render(request, 'request/operator_supervisor.html', {'new':new,'data':final_data})
 def invoice_dashboard(request):
     invoices=Invoice.objects.all()
@@ -866,46 +867,46 @@ def show_question(request,pk):
         return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
     else:
         redirect('/user')
-def show_tech_question_page(request):
-    if request.method == "POST":
-        form = BasicForm(request.POST)
-        if form.is_valid():
-            name_business=form.cleaned_data["businessName"]
-            name_contact=form.cleaned_data["contactName"]
-            serial=form.cleaned_data["serialNumber"]
-            phone=form.cleaned_data["phoneCustomer"]
-            email=form.cleaned_data["emailAddress"]
-            add1=form.cleaned_data["add1"]
-            add2=form.cleaned_data["add2"]
-            city=form.cleaned_data["city"]
-            state=form.cleaned_data["state"]
-            zip=form.cleaned_data["zip"]
-            issue=form.cleaned_data["issue"]
-            unit_type=form.cleaned_data["type"]
-            request.session["unit_type"]=unit_type
-            request.session["unit_sn"]=serial
-            new_unit=UnitBasicInfo()
-            new_unit.businessName=name_business
-            new_unit.contactName=name_contact
-            new_unit.serialNumber=serial
-            new_unit.phone=phone
-            new_unit.email=email
-            new_unit.location_add1=add1
-            new_unit.location_add2=add2
-            new_unit.location_city=city
-            new_unit.location_state=state
-            new_unit.location_zip=zip
-            new_unit.issue=issue
-            new_unit.receiver=request.session['user_name']
-            new_unit.save()
-            if request.session['unit_type']=="HOT":
-                form=HotTechQuestionForm()
-                return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
-            elif request.session['unit_type']=="COLD":
-                form=ColdTechQuestionForm()
-                return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
-            else:
-                redirect('/user')
+# def show_tech_question_page(request):
+#     if request.method == "POST":
+#         form = BasicForm(request.POST)
+#         if form.is_valid():
+#             name_business=form.cleaned_data["businessName"]
+#             name_contact=form.cleaned_data["contactName"]
+#             serial=form.cleaned_data["serialNumber"]
+#             phone=form.cleaned_data["phoneCustomer"]
+#             email=form.cleaned_data["emailAddress"]
+#             add1=form.cleaned_data["add1"]
+#             add2=form.cleaned_data["add2"]
+#             city=form.cleaned_data["city"]
+#             state=form.cleaned_data["state"]
+#             zip=form.cleaned_data["zip"]
+#             issue=form.cleaned_data["issue"]
+#             unit_type=form.cleaned_data["type"]
+#             request.session["unit_type"]=unit_type
+#             request.session["unit_sn"]=serial
+#             new_unit=UnitBasicInfo()
+#             new_unit.businessName=name_business
+#             new_unit.contactName=name_contact
+#             new_unit.serialNumber=serial
+#             new_unit.phone=phone
+#             new_unit.email=email
+#             new_unit.location_add1=add1
+#             new_unit.location_add2=add2
+#             new_unit.location_city=city
+#             new_unit.location_state=state
+#             new_unit.location_zip=zip
+#             new_unit.issue=issue
+#             new_unit.receiver=request.session['user_name']
+#             new_unit.save()
+#             if request.session['unit_type']=="HOT":
+#                 form=HotTechQuestionForm()
+#                 return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
+#             elif request.session['unit_type']=="COLD":
+#                 form=ColdTechQuestionForm()
+#                 return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
+#             else:
+#                 redirect('/user')
 def update_hot(request,pk):
     unit=UnitBasicInfo.objects.get(pk=pk)
     form=HotTechQuestionForm()

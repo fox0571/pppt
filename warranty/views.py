@@ -8,6 +8,7 @@ from django.utils import timezone
 from .forms import WarrantyForm, AccountForm
 from .models import Invoice
 import random
+from django.contrib.auth.models import User
 
 #show all serial numbers
 def show_all(request):
@@ -15,7 +16,7 @@ def show_all(request):
     return render(request, 'request/warranty.html', {'requests':all})
 
 def show_waiting(request):
-    all=UnitBasicInfo.objects.filter(warranty=None).exclude(tsq=None)
+    all=UnitBasicInfo.objects.filter(warranty=None)
     return render(request, 'request/warranty.html', {'requests':all})
 
 def show_detail(request,pk):
@@ -158,15 +159,20 @@ def update_warranty(request,pk):
             month=datetime.datetime.now().month
             year=datetime.datetime.now().year
             area=unit.location_state
-            code = get_code()
             #code = random.randint(1,4)
             unit.warranty=warranty
             unit.warrantyNote=note
-            unit.areaCode=code
-            #if under warranty:
-            if code != -1:
-                new_id=new_sksid(month,year,code)
-                unit.sksid=new_id
+            if unit.sksid == None:
+                code=get_code()
+                unit.areaCode=code
+                # dispatcher=User.objects.get(pk=(code+23))
+                # unit.dispatcher=dispatcher
+                #if under warranty:
+                if code != -1 :
+                    new_id=new_sksid(month,year,code)
+                    unit.sksid=new_id
+                    dispatcher=User.objects.get(pk=(str(int(code)+23)))
+                    unit.dispatcher=dispatcher
             unit.pre_diagnosis_flag=True
             unit.save()
             return redirect('/warranty/')

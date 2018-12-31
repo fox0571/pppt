@@ -29,9 +29,12 @@ urlpatterns = [
     url(r'^dispatcher/follow/(?P<pk>\d+)/$', views.show_follow_up, name='follow_up'),
     url(r'^operator/(?P<pk>\d+)/$', vws.edit_basic, name='edit_basic'),
     url(r'^dispatcher/edit/(?P<pk>\d+)/$', vws.edit_basic_dispatcher, name='edit_basic'),
-    url(r'^operator/all/$', views.get_all_records, name='all'),
-    url(r'^operator/today/$', views.get_today_records, name='today'),
-    url(r'^operator/oow/$', views.get_all_oow_records, name='oow'),
+    # url(r'^operator/all/$', views.get_all_records, name='all'),
+    # url(r'^operator/today/$', views.get_today_records, name='today'),
+    # url(r'^operator/oow/$', views.get_all_oow_records, name='oow'),
+    
+    url(r'^operator/records/$', views.my_records, name='my_records'),
+
     url(r'^dispatcher/new/$', views.get_new_records, name='dispatcher_new'),
     url(r'^dispatcher/scheduled/$', views.get_all_scheduled_records, name='dispatcher_scheduled'),
     url(r'^dispatcher/all/$', views.get_all_dispatcher_records, name='dispatcher_all'),

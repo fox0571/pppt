@@ -36,7 +36,12 @@ export_service_record.short_description = u"输出月度维修报表"
 
 class UnitAdmin(admin.ModelAdmin):
     actions = [export_service_record]
+
+class PartAdmin(admin.ModelAdmin):
+    list_display=('number','name_eng','name_chn','description','weight','after_market_code')
+    list_editable = ('after_market_code','weight','description')
+    search_fields = ('number','name_eng','name_chn')
 admin.site.register(Unit,UnitAdmin)
-admin.site.register(Part)
+admin.site.register(Part,PartAdmin)
 admin.site.register(PO2China)
 

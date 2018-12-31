@@ -30,7 +30,8 @@
               {{unit.location_state|upper}} {{unit.location_zip|upper}}</p>
             <p class="text-light-blue">Issue: {{unit.issue|upper}}</p>
             <p class="text-light-blue">Technical Support Questions: {{unit.tsq|upper|linebreaks}}</p>
-            <p class="text-light-blue">Received by {{unit.receiver}} @ {{unit.callTime}}</p>
+            <p class="text-light-blue">Received by {{unit.create_user}} @ {{unit.callTime}}</p>
+            <p class="text-light-blue">Dispatcher {{unit.dispatcher}} {{unit.dispatcher.email}}</p>
           </div>
           <!-- /.box-body -->
         </div>

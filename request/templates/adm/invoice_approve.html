@@ -142,7 +142,7 @@
                   {{invoice.incident.location_state|upper}} {{invoice.incident.location_zip|upper}}</p>
                 <p class="text-light-blue">Issue: {{invoice.incident.issue|upper}}</p>
                 <p class="text-light-blue">Technical Support Questions: {{invoice.incident.tsq|upper|linebreaks}}</p>
-                <p class="text-light-blue">Received by {{invoice.incident.receiver}} @ {{invoice.incident.callTime}}</p>
+                <p class="text-light-blue">Received by {{invoice.incident.create_user}} @ {{invoice.incident.callTime}}</p>
               </div>
               <!-- /.box-body -->
             </div>

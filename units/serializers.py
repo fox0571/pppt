@@ -16,13 +16,21 @@ class PartsSerializer(serializers.ModelSerializer):
             'url': {'lookup_field': 'number'}
         }
 
+class PartsDetailSerializer(serializers.ModelSerializer):
+    unit_set = UnitSerializer(many=True)
+    class Meta:
+        model = Part
+        fields = ('number', 'name_eng', 'unit_set')
+        
+
 class POSerializer(serializers.ModelSerializer):
-    parts = PartsSerializer()
+    part = PartsDetailSerializer()
     class Meta:
         model = PO2China
         fields = '__all__'
 
 class POEditSerializer(serializers.ModelSerializer):
+    #part = PartsSerializer()
     class Meta:
         model = PO2China
         fields = '__all__'

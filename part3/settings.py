@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-
+import codecs
+codecs.register(lambda name: codecs.lookup('utf8') if name == 'utf8mb4' else None)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -115,7 +116,9 @@ DATABASES = {
         'PORT': '',
         'OPTIONS': {
           'autocommit': True,
-	  'use_pure' : True,
+	      'use_pure' : True,
+          'charset' : 'utf8mb4',
+          'use_unicode' : True
         },
     }
 }

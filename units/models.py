@@ -14,6 +14,8 @@ BRANCHES=(
     ('Massachusetts', 'Westborough, MA'),
     ('Ohio', 'Groveport, OH'),
 )
+
+
 class Part(models.Model):
     number=models.CharField(max_length=30)
     name_eng=models.CharField(max_length=90)
@@ -28,6 +30,7 @@ class Part(models.Model):
     price_1 = models.DecimalField(max_digits=7,decimal_places=2,default=0.00)
     after_market_code=models.CharField(max_length=50,null=True,blank=True)
     weight=models.IntegerField(default=0)
+    #po=models.ForeignKey(PO2China,on_delete=models.CASCADE,related_name="part",null=True,blank=True)
 
     def __str__(self):
         return self.number+self.name_eng
@@ -49,7 +52,7 @@ class Unit(models.Model):
         ordering = ('model',)
 
 class PO2China(models.Model):
-    parts = models.OneToOneField(Part,on_delete=models.CASCADE,null=True,blank=True)
+    part = models.ForeignKey(Part,on_delete=models.CASCADE,null=True,blank=True)
 
     # 0 - created
     # 1 - ordered
@@ -65,3 +68,4 @@ class PO2China(models.Model):
 
     def __str__(self):
         return self.branch
+
