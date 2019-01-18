@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Unit, Part, PO2China
+from .actions import export_as_csv_action
 # Register your models here.
 def export_service_record(modeladmin, request, queryset):
     import csv
@@ -41,6 +42,7 @@ class PartAdmin(admin.ModelAdmin):
     list_display=('number','name_eng','name_chn','description','weight','after_market_code')
     list_editable = ('after_market_code','weight','description')
     search_fields = ('number','name_eng','name_chn')
+    actions = [export_as_csv_action("CSV Export", fields=['Part No','Item Name','Description'])]
 admin.site.register(Unit,UnitAdmin)
 admin.site.register(Part,PartAdmin)
 admin.site.register(PO2China)

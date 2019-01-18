@@ -111,7 +111,11 @@ class UnitBasicInfo(models.Model):
     prefer_reached = models.CharField(max_length=90,default="by phone")
 
     def __str__(self):
-        return self.serialNumber
+        #return self.serialNumber
+        if self.sksid:
+            return self.sksid+"-"+self.serialNumber
+        else:
+            return self.serialNumber
 
     class Meta:
         ordering = ('sksid',)

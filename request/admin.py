@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from .actions import export_as_csv_action
 from .models import UnitBasicInfo, PartRequest, Tag, FileSimpleModel, Tech
 
 # Register your models here.
@@ -107,11 +107,11 @@ def export_tags(modeladmin, request, queryset):
 class UnitAdmin(admin.ModelAdmin):
     actions = [export_csv,]
 class TagAdmin(admin.ModelAdmin):
-    actions = [export_tags]
+    actions = [export_tags,export_as_csv_action("CSV Export", fields=['SKS','Serial Number'])]
 class UnitBasicInfoAdmin(admin.ModelAdmin):
     list_display=('sksid','serialNumber','businessName')
     search_fields = ('sksid','serialNumber','businessName')
-    actions = [export_csv,]
+    actions = [export_csv]
 
 class PartRequestAdmin(admin.ModelAdmin):
     list_display=('case','number','name','qty','tracking')

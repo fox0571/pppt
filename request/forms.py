@@ -14,6 +14,7 @@ CHOICES_4 = (("Within 1 month","Within 1 month"),("Within 3 months","Within 3 mo
 CHOICES_6 = (("NONE","NONE"),("LEFT","LEFT"),("MIDDLE","MIDDLE"),("RIGHT","RIGHT"),("ALL","ALL"))
 CHOICES_7 = (("HOT","HOT"),("COLD","COLD"),("OTHER","OTHER"))
 CHOICES_WARRANTY = ((1,"Under Warranty"),(2,"Out of Warranty"))
+CONTACT_CHOICES = (('phone','Phone'),('text','Text'),('email','Email'))
 GROUPS = (
             (1,"Operator1"),(2,"Operator4"),(3,"Operator9"),(4,"Operator10"),
             (5,"Operator11"),(6,"Operator12"),(7,"Operator13"),(8,"Dispatcher1"),
@@ -76,6 +77,7 @@ class InhouseForm(ModelForm):
         }
 class FirstForm(ModelForm):
     type = forms.ChoiceField(choices=CHOICES_7,widget=forms.RadioSelect(attrs={'class': 'radio'}))
+    contact = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, required=False, choices=CONTACT_CHOICES)
     double_check = forms.BooleanField(required=True)
     class Meta:
         model = UnitBasicInfo
@@ -99,7 +101,7 @@ class FirstForm(ModelForm):
         }
     def clean_serialNumber(self):
         sn = self.cleaned_data['serialNumber']
-        print("cus_validator")
+        #print("cus_validator")
         if not re.match(r'^[a-zA-Z]{2,4}', sn):
             raise forms.ValidationError("Not a valid serial number")
         return sn

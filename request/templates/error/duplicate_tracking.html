@@ -1,0 +1,25 @@
+{% extends 'request/index.html' %}
+{% load static %}
+{% block css %}
+<style>
+  .checked:after{
+    content: '✓';
+    color:green;
+ }
+</style>
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <section class="content">
+
+    {{error_message|upper|linebreaks}}
+    
+  </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap4.min.js" %}"></script>
+
+{% endblock %}

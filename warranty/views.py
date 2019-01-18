@@ -27,7 +27,7 @@ def get_active_dispatchers():
     all_dispatchers=Users.objects.filter(group="dispatcher")
     active_list=[]
     for d in all_dispatchers:
-        if d.active and int(d.code)<5:
+        if d.active and int(d.code)<7:
             active_list.append(d.code)
     return active_list
 def get_code():
@@ -85,7 +85,21 @@ def invoice_w9(request):
     return render(request, 'account/invoices.html',{'invoices':invoices})
 def invoice_all(request):
     invoices=Invoice.objects.all().order_by("-pk")
-    return render(request, 'account/invoices.html',{'invoices':invoices})
+
+    search_text=request.GET.get("search","")
+    if search_text:
+        invoices=invoices.filter(
+            Q(sksid__icontains=search_text)|
+            Q(invoice__icontains=search_text)|
+            Q(voucher__icontains=search_text)
+            #Q(incident__icontains=search_text)
+        )
+    paginator = Paginator(invoices, 50)
+
+    page = request.GET.get('page')
+    invoice = paginator.get_page(page)
+
+    return render(request, 'account/invoices.html',{'invoices':invoice})
 def invoice_pro(request,pk):
     invoice=get_object_or_404(Invoice,pk=pk)
     invoice.processed=True

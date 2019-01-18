@@ -1,5 +1,5 @@
 import datetime
-from datetime import timezone
+from datetime import timezone,timedelta
 from notifications.models import Notification
 from django.http import HttpResponse
 from django.db.models import Q
@@ -322,6 +322,9 @@ def show_new_part(request):
 def show_part_detail(request,pk):
     part = get_object_or_404(PartRequest, pk=pk)
     form=PartRequestUpdateForm(instance=part)
+    if part.tracking:
+        error_message="ERROR! A tracking number has been assigned."
+        return render(request, 'error/duplicate_tracking.html', {'error_message': error_message})
     if request.method == "POST":
         form=PartRequestUpdateForm(request.POST,instance=part)
         if form.is_valid():
@@ -570,14 +573,40 @@ def warranty_check(sn):
     except Sales.DoesNotExist:
         return -1
 
+def has_record(serial_number):
+    result=UnitBasicInfo.objects.filter(serialNumber=serial_number).order_by('-callTime')
+    if result:
+        calledDate=result[0].callTime
+        delta=timedelta(days=61)
+        today=timezone.now()
+        if calledDate+delta>today:
+            return result[0].sksid
+    return False
+
 @login_required(login_url='/user/login/')
 def update_basic(request):
     form=FirstForm()
     if request.method == "POST":
         form = FirstForm(request.POST)
         if form.is_valid():
+            sn=form.cleaned_data["serialNumber"]
+            t=has_record(sn)
+            if t:
+                error_message="ERROR!\n"+"There is a case with the same serial number created within 2 months\n"
+                error_message=error_message+"Check this reference number\n"+t+"\n"
+                return render(request, 'error/duplicate_tracking.html', {'error_message': error_message})
             new_unit=form.save(commit=False)
             unit_type=form.cleaned_data["type"]
+            contact=form.cleaned_data["contact"]
+            if contact:
+                contact_list=['phone','text','email']
+                st=""
+                for c in contact_list:
+                    if c in contact:
+                        st=st+"  "+c
+                new_unit.prefer_reached=st
+            else:
+                new_unit.prefer_reached="phone"
             request.session["unit_type"]=unit_type
             #new_unit.receiver=request.session['user_name']
             new_unit.create_user=request.user
