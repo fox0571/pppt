@@ -98,7 +98,9 @@
           <div class="box-header with-border">
             <h3 class="box-title">Parts Information</h3>
           </div>
-          <div class="box-body">
+          
+          <!-- using sksid in request -->
+          <!-- <div class="box-body">
             {% if parts %}
               <table id="assets_table" class="table table-bordered table-striped">
                 <thead>
@@ -130,7 +132,43 @@
                     {% endfor %}
                 </tbody>
               </table>
-              {% endif %}
+            {% endif %}
+          </div> -->
+
+          <!-- Using foreign key to show the part request -->
+          <div class="box-body">
+            {% if unit.partrequest_set.all %}
+            <table id="assets_table" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Date</th>
+                  <th>Number</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Tracking</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                  {% for p in unit.partrequest_set.all %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ p.request_time|date:"m/d/Y" }}</td>
+                    <td>{{ p.number }}</td>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.qty }}</td>
+                    <td>{% if p.tracking %}
+                      <a href="https://wwwapps.ups.com/WebTracking/track?loc=en_US&track.x=Track&trackNums={{p.tracking}}" target="_blank">
+                      {{p.tracking}}
+                      </a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
           </div>
         </div>
         <div class="box box-primary">
@@ -155,7 +193,7 @@
               </p>
               {% endfor %}
             {% endif %}
-          </div>
+            </div>
           </div>
         </div>
       </div>

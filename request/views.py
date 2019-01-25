@@ -289,12 +289,12 @@ def update_follow_customer(request,pk):
 @notifications_read
 def show_detail(request,pk):
     unit = get_object_or_404(UnitBasicInfo, pk=pk)
-    id=unit.sksid
-    parts = PartRequest.objects.all().filter(sksid=id)
+    # id=unit.sksid
+    # parts = PartRequest.objects.all().filter(sksid=id)
     files = FileSimpleModel.objects.all().filter(incident=unit)
     para={
         'unit':unit,
-        'parts':parts,
+        # 'parts':parts,
         'files':files,
     }
     return render(request,'request/detail.html',para)
@@ -312,10 +312,10 @@ def show_part_list(request):
     part = PartRequest.objects.all()
     return render(request, 'part/list.html', {'request':part})
 def po_request_list(request):
-    part = PartRequest.objects.filter(part_type=1).filter(tracking=None).order_by('location_add1')
+    part = PartRequest.objects.filter(part_type=1).filter(tracking=None).exclude(case=None).order_by('location_add1')
     return render(request, 'request/part_request_list.html', {'request':part})
 def show_new_part(request):
-    part = PartRequest.objects.all().filter(part_type=2).filter(tracking=None).order_by('location_add1')
+    part = PartRequest.objects.all().filter(part_type=2).filter(tracking=None).exclude(case=None).order_by('location_add1')
     return render(request, 'request/part_request_list.html', {'request':part})
 
 @login_required(login_url='/user/login/')

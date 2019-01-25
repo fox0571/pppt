@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^account/invoice/all/$', views.invoice_all, name='invoice_all'),
     url(r'^account/invoice/w9/$', views.invoice_w9, name='invoice_w9'),
     url(r'^account/invoice/(?P<pk>\d+)/$', views.invoice_edit, name='invoice_edit'),
+    url(r'^account/invoice/getcsv/$', views.export_all_invoices_as_csv, name='export_csv'),
     ]

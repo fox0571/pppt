@@ -9,6 +9,8 @@ from .forms import WarrantyForm, AccountForm
 from .models import Invoice
 import random
 from django.contrib.auth.models import User
+import unicodecsv
+from django.http import HttpResponse
 
 #show all serial numbers
 def show_all(request):
@@ -193,3 +195,36 @@ def update_warranty(request,pk):
         return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form,'files':files})
     form=WarrantyForm(instance=unit)
     return render(request, 'request/warranty_detail.html', {'unit': unit,'form':form,'files':files})
+
+def export_all_invoices_as_csv(request):
+    fields=["Invoice","Ref","Total Cost","Tech","Status","Voucher"]
+    opts = Invoice._meta
+    if not fields:
+        field_names = [field.name for field in opts.fields]
+    else:
+        field_names = fields
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=%s.csv' % str(opts).replace('.', '_')
+
+    writer = unicodecsv.writer(response, encoding='utf-8')
+
+    queryset=Invoice.objects.all()
+    writer.writerow(field_names)
+    for obj in queryset:
+        row=[]
+        row.append(obj.invoice)
+        row.append(obj.incident.sksid)
+        row.append(obj.total_c)
+        row.append(obj.incident.techName)
+        if obj.need_w9:
+            row.append("NEED W-9")
+        elif obj.status==1:
+            row.append("APPROVED")
+        elif obj.status==2:
+            row.append("DISPUTED")
+        else:
+            row.append("WAITING")
+        row.append(obj.voucher)
+        writer.writerow(row)
+    return response
