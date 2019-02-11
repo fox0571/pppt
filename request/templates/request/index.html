@@ -130,13 +130,61 @@
             <i class="fa fa-book"></i> <span>New Service</span>
           </a>
         </li>
+        {% if perms.users.change_user_status %}
+        <li>
+          <a href="/queue/">
+            <i class="fa fa-book"></i><span>Queue</span>
+          </a>
+        </li>
+        {% endif %}
+        
         {% block left_nav %}
         {% endblock %}
+        {% if perms.warranty.process_invoice %}
+        <li>
+          <a href="/warranty/account/invoice">
+            <i class="fa fa-book"></i> <span>Invoices Process</span>
+          </a>
+        </li>
+        {% endif %}
+        {% if perms.warranty.approve_invoice %}
+        <li>
+          <a href="/request/invoice">
+            <i class="fa fa-book"></i> <span>Invoices Approval</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if perms.request.change_tag %}
+        <li>
+          <a href="/admin">
+            <i class="fa fa-book"></i> <span>Tag Stats</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="/api/tag/tagged_cases/">
+            <i class="fa fa-book"></i> <span>Tag Edit</span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-book"></i> <span>Data Analysis</span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/data/">By Location</a></li>
+            <li><a href="/data/1">By Date</a></li>
+            <li><a href="/data/2">By Model</a></li>
+            <li><a href="/data/3">By Type</a></li>
+            <li><a href="/data/5">By Issue</a></li>
+          </ul>
+        </li>
+        {% endif %}
         <li>
           <a href="http://192.168.5.167/#/units" target="_blank">
               <i class="fa fa-book"></i> <span>Parts</span>
           </a>
-      </li>
+        </li>
         <li>
           <a href="/request/all">
             <i class="fa fa-book"></i> <span>All Records</span>

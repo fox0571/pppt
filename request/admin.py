@@ -107,6 +107,7 @@ def export_tags(modeladmin, request, queryset):
 class UnitAdmin(admin.ModelAdmin):
     actions = [export_csv,]
 class TagAdmin(admin.ModelAdmin):
+    list_display=('name','name_chn')
     actions = [export_tags,export_as_csv_action("CSV Export", fields=['SKS','Serial Number'])]
 class UnitBasicInfoAdmin(admin.ModelAdmin):
     list_display=('sksid','serialNumber','businessName')

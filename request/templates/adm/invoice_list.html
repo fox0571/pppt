@@ -31,10 +31,10 @@
         <h1>
           Records List
         </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-          <li class="active">Records List</li>
-        </ol>
+        <form class="form-inline md-form form-sm pull-right">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" name="search">
+          </form>
       </section>
 
       <!-- Main content -->
@@ -88,6 +88,33 @@
                   </tbody>
                 </table>
               </div>
+              <div class="pagination pull-right">
+                  <span class="step-links">
+                    {% if invoices.has_other_pages %}
+                      <ul class="pagination">
+                        {% if invoices.has_previous %}
+                          <li><a href="?page={{ invoice.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                          <li class="disabled"><span>&laquo;</span></li>
+                        {% endif %}
+                        {% for i in invoices.paginator.page_range %}
+                          {% if invoices.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                          {% else %}
+                          {% if i <= invoices.number|add:5 and i >= invoices.number|add:-5 %}
+                            <li><a href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                          {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                        {% if invoices.has_next %}
+                          <li><a href="?page={{ invoice.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                          <li class="disabled"><span>&raquo;</span></li>
+                        {% endif %}
+                      </ul>
+                    {% endif %}
+                  </span>
+              </div>
               <!-- /.box-body -->
             </div>
             <!-- /.box -->
@@ -105,29 +132,5 @@
 {% endblock %}
 
 {% block script %}
-<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
-  <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-  <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-  <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-<script>
-  $(function () {
-    $('#assets_table').DataTable({
-      "paging": true,       <!-- 允许分页 -->
-      "searching": true,    <!-- 允许内容搜索 -->
-      "ordering": true,     <!-- 允许排序 -->
-      "info": true,         <!-- 显示信息 -->
-      "autoWidth": false,    <!-- 固定宽度 -->
-      "iDisplayLength": 50,
-      dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-    });
-  });
-</script>
+
 {% endblock %}

@@ -1,0 +1,127 @@
+
+{% extends 'account/index.html' %}
+{% load static %}
+
+{% block css %}
+<style type="text/css">
+h1{
+  text-align: center;
+  font-size: 60px;
+}
+p{
+  text-align: center;
+}
+</style>
+{% endblock %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        My Dashboard
+      </h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title"> Smart kitchen service</h3>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-lg-3 col-xs-6">
+              <div class="small-box bg-yellow">
+                <div class="inner">
+                  <h1>{{ new }}</h1>
+                  <p>Waiting For Approval</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="/warranty/account/invoices/?type=0" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            
+            <div class="col-lg-3 col-xs-6">
+              <div class="small-box bg-red">
+                <div class="inner">
+                  <h1>{{ dispute }}</h1>
+                  <p>Disputed</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="/warranty/account/invoices/?type=2" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-secondary">
+                    <div class="inner">
+                    <h1>{{ inhouse }}</h1>
+                    <p>Records for in-house tech</p>
+                    </div>
+                    <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/warranty/account/invoices/?type=4" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Accounting</h3>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                    <h1>{{ approved }}</h1>
+                    <p>Waiting for Payment</p>
+                    </div>
+                    <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/warranty/account/invoices/?type=1" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-purple">
+                    <div class="inner">
+                    <h1>{{ w9 }}</h1>
+                    <p>Need W-9</p>
+                    </div>
+                    <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/warranty/account/invoices/?type=3" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-xs-6">
+              <div class="small-box bg-blue">
+                <div class="inner">
+                  <h1>{{ all }}</h1>
+                  <p>All</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="/warranty/account/invoice/all/" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+{% endblock %}

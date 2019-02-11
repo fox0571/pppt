@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^queue/$',views.manage_queue),
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
     #url(r'^queue/edit/$',views.manage_queue),
+    path('logintest/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('user/',include('users.urls')),

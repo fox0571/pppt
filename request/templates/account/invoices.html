@@ -38,16 +38,12 @@
           <button type="button" class="btn btn-link"><a href="/warranty/account/invoice/getcsv/">GET ALL INVOICES</a></button>
         </h1>
         
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-          <li class="active">Records List</li>
-          
-        </ol>
-      </section>
-      <form class="form-inline md-form form-sm pull-right">
+        <form class="form-inline md-form form-sm pull-right">
           <i class="fa fa-search" aria-hidden="true"></i>
           <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" name="search">
         </form>
+      </section>
+      
       <!-- Main content -->
       <section class="content">
         <div class="row">
@@ -66,6 +62,7 @@
                       <th>Status</th>
                       <th>Voucher</th>
                       <th>Print</th>
+                      <th>Created Time</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -93,29 +90,31 @@
                         <td>{{ p.voucher }}</td>
                         <td><a href="/render/pdf/{{ p.incident.pk }}/" target="_blank">
                         Print</td>
+                        <td>{{ p.add_time }}</td>
                       </tr>
                       {% endfor %}
                   </tbody>
                 </table>
+              </div>
                 <div class="pagination pull-right">
                     <span class="step-links">
-                      {% if invoice.has_other_pages %}
+                      {% if invoices.has_other_pages %}
                         <ul class="pagination">
-                          {% if invoice.has_previous %}
+                          {% if invoices.has_previous %}
                             <li><a href="?page={{ invoice.previous_page_number }}">&laquo;</a></li>
                           {% else %}
                             <li class="disabled"><span>&laquo;</span></li>
                           {% endif %}
-                          {% for i in invoice.paginator.page_range %}
-                            {% if invoice.number == i %}
+                          {% for i in invoices.paginator.page_range %}
+                            {% if invoices.number == i %}
                               <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                             {% else %}
-                            {% if i <= invoice.number|add:5 and i >= invoice.number|add:-5 %}
+                            {% if i <= invoices.number|add:5 and i >= invoices.number|add:-5 %}
                               <li><a href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
                             {% endif %}
                             {% endif %}
                           {% endfor %}
-                          {% if invoice.has_next %}
+                          {% if invoices.has_next %}
                             <li><a href="?page={{ invoice.next_page_number }}">&raquo;</a></li>
                           {% else %}
                             <li class="disabled"><span>&raquo;</span></li>
@@ -124,7 +123,6 @@
                       {% endif %}
                     </span>
                 </div>
-              </div>
               <!-- /.box-body -->
             </div>
             <!-- /.box -->

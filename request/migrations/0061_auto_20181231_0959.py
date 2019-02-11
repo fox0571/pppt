@@ -10,9 +10,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='unitbasicinfo',
-            name='prefer_reached',
-            field=models.CharField(default='by phone', max_length=90),
-        ),
+        # migrations.AlterField(
+        #     model_name='unitbasicinfo',
+        #     name='prefer_reached',
+        #     field=models.CharField(default='by phone', max_length=90),
+        # ),
     ]

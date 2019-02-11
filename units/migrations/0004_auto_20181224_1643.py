@@ -11,19 +11,19 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='PO2China',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.IntegerField(default=0)),
-                ('qty', models.IntegerField(default=10)),
-                ('branch', models.CharField(choices=[('Brea', 'HQ, Brea, CA'), ('Hayward', 'Hayward, CA'), ('Dallas', 'Dallas, TX'), ('Houston', 'Houston, TX'), ('Washington', 'Kent, WA'), ('Colorado', 'Aurora, CO'), ('Florida', 'Tampa, FL'), ('Illinois', 'Homer Glen, IL'), ('Georgia', 'Doraville, GA'), ('New Jersey', 'Fairfield, NJ'), ('Massachusetts', 'Westborough, MA'), ('Ohio', 'Groveport, OH')], max_length=50)),
-                ('created_time', models.DateTimeField(auto_now_add=True)),
-                ('ordered_time', models.DateTimeField(blank=True, null=True)),
-                ('shipped_time', models.DateTimeField(blank=True, null=True)),
-                ('received_time', models.DateTimeField(blank=True, null=True)),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='PO2China',
+        #     fields=[
+        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        #         ('status', models.IntegerField(default=0)),
+        #         ('qty', models.IntegerField(default=10)),
+        #         ('branch', models.CharField(choices=[('Brea', 'HQ, Brea, CA'), ('Hayward', 'Hayward, CA'), ('Dallas', 'Dallas, TX'), ('Houston', 'Houston, TX'), ('Washington', 'Kent, WA'), ('Colorado', 'Aurora, CO'), ('Florida', 'Tampa, FL'), ('Illinois', 'Homer Glen, IL'), ('Georgia', 'Doraville, GA'), ('New Jersey', 'Fairfield, NJ'), ('Massachusetts', 'Westborough, MA'), ('Ohio', 'Groveport, OH')], max_length=50)),
+        #         ('created_time', models.DateTimeField(auto_now_add=True)),
+        #         ('ordered_time', models.DateTimeField(blank=True, null=True)),
+        #         ('shipped_time', models.DateTimeField(blank=True, null=True)),
+        #         ('received_time', models.DateTimeField(blank=True, null=True)),
+        #     ],
+        # ),
         migrations.AlterField(
             model_name='unit',
             name='dimension',
@@ -44,9 +44,9 @@ class Migration(migrations.Migration):
             name='spec',
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
-        migrations.AddField(
-            model_name='po2china',
-            name='part',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='units.Part'),
-        ),
+        # migrations.AddField(
+        #     model_name='po2china',
+        #     name='part',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='units.Part'),
+        # ),
     ]

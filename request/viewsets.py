@@ -23,7 +23,7 @@ class TagViewSet(viewsets.ModelViewSet):
     
     @list_route()
     def tagged_cases(self,request):
-        tagged=UnitBasicInfo.objects.filter(tag=None)
+        tagged=UnitBasicInfo.objects.filter(tag=None).order_by("pk")
         paginator = Paginator(tagged, 100)
         page = request.GET.get('page')
         unit = paginator.get_page(page)

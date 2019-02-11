@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 from taggit.managers import TaggableManager
-from units.models import Unit
+from units.models import Unit, Part
 from django.contrib.auth.models import User
 
 SHIPPING_METHOD = (
@@ -122,7 +122,7 @@ class UnitBasicInfo(models.Model):
 
 class PartRequest(models.Model):
     sn=models.CharField(max_length=70,null=True,blank=True)
-    sksid=models.CharField(max_length=30)
+    sksid=models.CharField(max_length=30,null=True)
     contact=models.CharField(max_length=100)
     number=models.CharField(max_length=30)
     name=models.CharField(max_length=70)
@@ -141,6 +141,8 @@ class PartRequest(models.Model):
     pre_diagnosis=models.TextField(null=True,blank=True)
     part_type=models.IntegerField(choices=CHOICES_0,default=2,blank=True)
     case = models.ForeignKey(UnitBasicInfo, on_delete=models.CASCADE,null=True)
+    part = models.ForeignKey(Part, on_delete=models.CASCADE,null=True)
+    created_by = models.ForeignKey(User, related_name="part_creater",on_delete=models.CASCADE,null=True,blank=True)
     
     def __str__(self):
         return self.sksid+','+self.number

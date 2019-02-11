@@ -90,6 +90,7 @@ def invoice_approve(request,pk):
         if form.is_valid():
             invoice=form.save(commit=False)
             invoice.approved_time=datetime.datetime.now()
+            invoice.approved_by = request.user
             invoice.save()
             return redirect("/request/invoice/")
     else:
@@ -123,10 +124,10 @@ def upload_file(request,pk):
 def analysis_service_daily(request):
     date=[]
     service=[]
-    u=UnitBasicInfo.objects.dates('callTime','day')
-    for i in u:
-        date.append(i.strftime('%Y-%m-%d'))
-        service.append(UnitBasicInfo.objects.filter(callTime__contains=i).count())
+    # u=UnitBasicInfo.objects.dates('callTime','day')
+    # for i in u:
+    #     date.append(i.strftime('%Y-%m-%d'))
+    #     service.append(UnitBasicInfo.objects.filter(callTime__contains=i).count())
     para={
         'date':date,
         'service':service,
@@ -299,7 +300,7 @@ def show_detail(request,pk):
     }
     return render(request,'request/detail.html',para)
 def part_dashboard(request):
-    new=PartRequest.objects.filter(tracking=None).filter(part_type=2).count()
+    new=PartRequest.objects.filter(tracking=None).filter(part_type=2).exclude(case=None).count()
     po=PartRequest.objects.filter(tracking=None).filter(part_type=1).count()
     all=PartRequest.objects.all().count()
     para={
@@ -336,11 +337,119 @@ def po_list(request):
     return render(request, 'request/po_list.html')
 def inventory(request):
     return render(request, 'part/inventory.html')
+
+def update_part_std(request,pk):
+    form=PartForm()
+    unit=get_object_or_404(UnitBasicInfo, pk=pk)
+    sksid=unit.sksid
+    parts=unit.partrequest_set.all()
+    add=""
+    if parts.count()!=0:
+        p=parts[0]
+        add2=""
+        if p.location_add2:
+            add2=p.location_add2
+        add=p.location_add1+" "+add2+', '+p.location_city+" "+p.location_state
+    if request.method == "POST":
+        form = PartForm(request.POST)
+        if form.is_valid():
+            new_part_request=PartRequest()
+            new_part_request.sksid=sksid
+            contact=""
+            add1=""
+            add2=""
+            city=""
+            state=""
+            zip=""
+            new_part_request.pre_diagnosis=unit.pre_diagnosis
+            if request.POST.get('to_customer', False):
+                contact=unit.contactName
+                add1=unit.location_add1
+                if unit.location_add2:
+                    add2=unit.location_add2
+                city=unit.location_city
+                state=unit.location_state
+                zip=unit.location_zip
+            elif request.POST.get('to_tech', False):
+                contact=unit.techName
+                add1=unit.tech_add1
+                if unit.tech_add2:
+                    add2=unit.tech_add2
+                city=unit.tech_city
+                state=unit.tech_state
+                zip=unit.tech_zip
+            else:
+                contact=form.cleaned_data["contact"]
+                add1=form.cleaned_data["address1"]
+                add2=form.cleaned_data["address2"]
+                city=form.cleaned_data["city"]
+                state=form.cleaned_data["state"]
+                zip=form.cleaned_data["zip"]
+            new_part_request.contact=contact
+            new_part_request.location_add1=add1
+            new_part_request.location_add2=add2
+            new_part_request.location_city=city
+            new_part_request.location_state=state
+            new_part_request.location_zip=zip
+            new_part_request.code=unit.areaCode
+            new_part_request.sn=unit.serialNumber
+            new_part_request.case=unit
+            n1=form.cleaned_data["number1"]
+            m1=form.cleaned_data["name1"]
+            q1=form.cleaned_data["qty1"]
+            new_part_request.number=n1
+            new_part_request.name=m1
+            new_part_request.qty=int(q1)
+            new_part_request.save()
+            n2=form.cleaned_data["number2"]
+            m2=form.cleaned_data["name2"]
+            q2=form.cleaned_data["qty2"]
+            n3=form.cleaned_data["number3"]
+            m3=form.cleaned_data["name3"]
+            q3=form.cleaned_data["qty3"]
+            if n2!="" and q2!="" and m2!="":
+                new_part_request=PartRequest()
+                new_part_request.sksid=sksid
+                new_part_request.contact=contact
+                new_part_request.location_add1=add1
+                new_part_request.location_add2=add2
+                new_part_request.location_city=city
+                new_part_request.location_state=state
+                new_part_request.location_zip=zip
+                new_part_request.number=n2
+                new_part_request.name=m2
+                new_part_request.qty=int(q2)
+                new_part_request.code=unit.areaCode
+                new_part_request.pre_diagnosis=unit.pre_diagnosis
+                new_part_request.sn=unit.serialNumber
+                new_part_request.case=unit
+                new_part_request.save()
+            if n3!="" and q3!="" and m3!="":
+                new_part_request=PartRequest()
+                new_part_request.sksid=sksid
+                new_part_request.contact=contact
+                new_part_request.location_add1=add1
+                new_part_request.location_add2=add2
+                new_part_request.location_city=city
+                new_part_request.location_state=state
+                new_part_request.location_zip=zip
+                new_part_request.number=n3
+                new_part_request.name=m3
+                new_part_request.qty=int(q3)
+                new_part_request.code=unit.areaCode
+                new_part_request.pre_diagnosis=unit.pre_diagnosis
+                new_part_request.sn=unit.serialNumber
+                new_part_request.case=unit
+                new_part_request.save()
+            return redirect("#/")
+        return render(request, 'request/part_request_standalone.html',{'form': form,'parts':parts,'unit':unit,'add':add})
+    return render(request, 'request/part_request_standalone.html',{'form': form,'parts':parts,'unit':unit,'add':add})
+
 def update_part(request,pk):
     form=PartForm()
     unit=get_object_or_404(UnitBasicInfo, pk=pk)
     sksid=unit.sksid
-    parts=PartRequest.objects.all().filter(sksid=sksid)
+    parts=unit.partrequest_set.all()
     add=""
     if parts.count()!=0:
         p=parts[0]
@@ -709,32 +818,48 @@ def invoice_dashboard(request):
     }
     return render(request, 'adm/invoice.html', para)
 def invoice_list(request,method):
-    invoices=Invoice.objects.all()
-    if method=="0":
-        i=invoices.filter(status="0")
-        para={
-            'invoices':i,
-        }
-        return render(request,'adm/invoice_list.html',para)
-    if method=="3":
-        i=invoices
-        para={
-            'invoices':i,
-        }
-        return render(request,'adm/invoice_list.html',para)
-    if method=="2":
-        i=invoices.filter(status="2")
-        para={
-            'invoices':i,
-        }
-        return render(request,'adm/invoice_list.html',para)
-    if method=="1":
-        i=invoices.filter(status="1")
-        para={
-            'invoices':i,
-        }
-        return render(request,'adm/invoice_list.html',para)
-    return redirect('/request/invoice')
+    return render(request, 'stat/service_daily.html',{"type":method})
+    # tp=request.GET.get("type","")
+    # invoices=Invoice.objects.all()
+    # if method=="0":
+    #     # i=invoices.filter(status="0")
+    #     # para={
+    #     #     'invoices':i,
+    #     # }
+    #     #return render(request,'adm/invoice_list.html',para)
+    #     return render(request, 'stat/service_daily.html',{"type":method})
+    # if method=="3":
+    #     #invoices=Invoice.objects.all().order_by("-pk")
+
+    #     search_text=request.GET.get("search","")
+    #     if search_text:
+    #         invoices=invoices.filter(
+    #             Q(sksid__icontains=search_text)|
+    #             Q(invoice__icontains=search_text)|
+    #             Q(voucher__icontains=search_text)
+    #             #Q(incident__icontains=search_text)
+    #         )
+    #     paginator = Paginator(invoices, 50)
+
+    #     page = request.GET.get('page')
+    #     i = paginator.get_page(page)
+    #     para={
+    #         'invoices':i,
+    #     }
+    #     return render(request,'adm/invoice_list.html',para)
+    # if method=="2":
+    #     i=invoices.filter(status="2")
+    #     para={
+    #         'invoices':i,
+    #     }
+    #     return render(request,'adm/invoice_list.html',para)
+    # if method=="1":
+    #     i=invoices.filter(status="1")
+    #     para={
+    #         'invoices':i,
+    #     }
+    #     return render(request,'adm/invoice_list.html',para)
+    # return redirect('/request/invoice')
 # def add_tag(request,pk):
 #     unit = get_object_or_404(UnitBasicInfo, pk=pk)
 #     all_tags = Tag.objects.all()
@@ -896,46 +1021,7 @@ def show_question(request,pk):
         return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
     else:
         redirect('/user')
-# def show_tech_question_page(request):
-#     if request.method == "POST":
-#         form = BasicForm(request.POST)
-#         if form.is_valid():
-#             name_business=form.cleaned_data["businessName"]
-#             name_contact=form.cleaned_data["contactName"]
-#             serial=form.cleaned_data["serialNumber"]
-#             phone=form.cleaned_data["phoneCustomer"]
-#             email=form.cleaned_data["emailAddress"]
-#             add1=form.cleaned_data["add1"]
-#             add2=form.cleaned_data["add2"]
-#             city=form.cleaned_data["city"]
-#             state=form.cleaned_data["state"]
-#             zip=form.cleaned_data["zip"]
-#             issue=form.cleaned_data["issue"]
-#             unit_type=form.cleaned_data["type"]
-#             request.session["unit_type"]=unit_type
-#             request.session["unit_sn"]=serial
-#             new_unit=UnitBasicInfo()
-#             new_unit.businessName=name_business
-#             new_unit.contactName=name_contact
-#             new_unit.serialNumber=serial
-#             new_unit.phone=phone
-#             new_unit.email=email
-#             new_unit.location_add1=add1
-#             new_unit.location_add2=add2
-#             new_unit.location_city=city
-#             new_unit.location_state=state
-#             new_unit.location_zip=zip
-#             new_unit.issue=issue
-#             new_unit.receiver=request.session['user_name']
-#             new_unit.save()
-#             if request.session['unit_type']=="HOT":
-#                 form=HotTechQuestionForm()
-#                 return render(request, 'request/tech_question_hot.html', {'form':form,'unit':new_unit})
-#             elif request.session['unit_type']=="COLD":
-#                 form=ColdTechQuestionForm()
-#                 return render(request, 'request/tech_question_cold.html', {'form':form,'unit':new_unit})
-#             else:
-#                 redirect('/user')
+
 def update_hot(request,pk):
     unit=UnitBasicInfo.objects.get(pk=pk)
     form=HotTechQuestionForm()
@@ -985,10 +1071,6 @@ def update_cold(request,pk):
             return redirect('/user')
         return render(request, 'request/tech_question_cold.html', {'form':form,'unit':unit})
     return render(request, 'request/tech_question_cold.html', {'form':form,'unit':unit})
-def available(request):
-    form=CheckForm()
-    return render(request, 'request/check.html',{'form': form})
-
 
 def showAllRequests(request):
     unit_list=UnitBasicInfo.objects.all().order_by('-callTime')

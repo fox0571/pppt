@@ -131,7 +131,7 @@ function prom() {
             statusCode: {
               200: function() {
                 alert( "Update successfully!" );
-                window.location.href = "/warranty/account/invoice/new/";
+                window.location.href = "/warranty/account/invoices/?type=1";
               }
             },
           });
@@ -156,7 +156,7 @@ function prom() {
         dataType: 'json',
         statusCode: {
           200: function() {
-            window.location.href = "/warranty/account/invoice/new/";
+            window.location.href = "/warranty/account/invoices/?type=1";
           }
         },
       });
@@ -176,12 +176,12 @@ function prom() {
         url: '/api/invoice/{{ invoice.pk }}/',
         type : 'PATCH',
         data: {
-          'status': "3",
+          'invoice_type':"1",
         },
         dataType: 'json',
         statusCode: {
           200: function() {
-            window.location.href = "/warranty/account/invoice/new/";
+            window.location.href = "/warranty/account/invoices/?type=1";
           }
         },
       });

@@ -14,11 +14,13 @@ urlpatterns = [
     url(r'^account/(?P<pk>\d+)/$', views.account, name='account'),
     url(r'^account/$', views.ac_list, name='ac_list'),
     url(r'^account/invoice/$', views.invoice_dashboard, name='invoice_dashboard'),
-    url(r'^account/invoice/new/$', views.invoice_waiting, name='invoice_waiting'),
-    url(r'^account/invoice/processed/$', views.invoice_processed, name='invoice_processed'),
-    url(r'^account/invoice/dispute/$', views.invoice_disputed, name='invoice_disputed'),
+    # url(r'^account/invoice/new/$', views.invoice_waiting, name='invoice_waiting'),
+    # url(r'^account/invoice/processed/$', views.invoice_processed, name='invoice_processed'),
+    # url(r'^account/invoice/dispute/$', views.invoice_disputed, name='invoice_disputed'),
     url(r'^account/invoice/all/$', views.invoice_all, name='invoice_all'),
-    url(r'^account/invoice/w9/$', views.invoice_w9, name='invoice_w9'),
+    url(r'^account/invoices/$', views.invoices, name='invoices'),
+    # url(r'^account/invoice/w9/$', views.invoice_w9, name='invoice_w9'),
     url(r'^account/invoice/(?P<pk>\d+)/$', views.invoice_edit, name='invoice_edit'),
     url(r'^account/invoice/getcsv/$', views.export_all_invoices_as_csv, name='export_csv'),
+    url(r'^account/datatable/$', views.get_invoice, name='invoice_datatable')
     ]

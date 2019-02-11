@@ -1,12 +1,49 @@
 {% extends 'adm/index.html' %}
 {% load static %}
-
+{% block css %}
+<link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.min.css" %}">
+<style>
+    .glyphicon.glyphicon-green-dot:before {
+        color: #20F343;
+        content: "\25cf";
+        font-size: 1.5em;
+    }
+    .glyphicon.glyphicon-yellow-dot:before {
+        color: #FFD700;
+        content: "\25cf";
+        font-size: 1.5em;
+    }
+    .glyphicon.glyphicon-red-dot:before {
+        color: #F21616;
+        content: "\25cf";
+        font-size: 1.5em;
+    }
+    </style>
+{% endblock %}
 {% block content %}
 <div class="content-wrapper">
   <section class="content">
-    <div class="box">
+    <!-- <div class="box">
       <div id="myDiv">
       </div>
+    </div> -->
+    <div class="box-body">
+      <table id="assets_table" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <!-- <th>No.</th> -->
+            <th>Invoice</th>
+            <th>Incident Number</th>
+            <th>Total Cost</th>
+            <th>Travel Cost</th>
+            <th>Labor Cost</th>
+            <th>Material Cost</th>
+            <th>Travel Hour</th>
+            <th>Labor Hour</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+      </table>
     </div>
   </section>
 </div>
@@ -14,23 +51,68 @@
 
 {% block script %}
 <script src="{% static "plugins/plotly.min.js" %}"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
 <script>
-  myDiv=document.getElementById('myDiv');
-  var trace = {
-    type: "scatter",
-    mode: "lines",
-    name: 'AAPL High',
-    x: {{ date|safe }},
-    y: {{ service|safe}},
-    line: {color: '#17BECF'}
-  };
-  var layout = {
-      title: 'Daily Service Calls',
-      width: 800,
-      height: 600,
-  };
+  $(document).ready(function() {
+    
+    tp={{type|safe}}
+    $('#assets_table').DataTable( {
+      "iDisplayLength": 50,
+      processing: true,
+      serverSide: true,
+      ajax: '/warranty/account/datatable/?type='+tp,
+      "columns": [
+            { "data": "invoice",
+              "render": function ( data, type, row, meta ) {
+                  return '<a href="'+data.link+'">'+data.number+'</a>';
+              }
+            },
+            { "data": "sksid" },
+            { "data": "total_c" },
+            { "data": "travel_c" },
+            { "data": "labor_c" },
+            { "data": "material_c" },
+            { "data": "travel_t" },
+            { "data": "labor_t" },
+            { "data": "status",
+              "render": function ( data, type, row, meta ) {
+                if (data=="1"){
+                  return '<span class="glyphicon glyphicon-green-dot"></span>'
+                }
+                else if (data=="2"){
+                  return '<span class="glyphicon glyphicon-red-dot"></span>'
+                } else {
+                  return '<span class="glyphicon glyphicon-yellow-dot"></span>'
+                }
+              }
+            }
+    ]
 
-  fig={data:[trace],layout:layout};
-  Plotly.newPlot('myDiv',fig);
+    });
+  });
+//   myDiv=document.getElementById('myDiv');
+//   let add = 'http://192.168.5.130/unit/stat/?number=W0204003'
+//   let xl = []
+//   let yl = []
+//   Plotly.d3.json(add, function(figure){
+//     for (key in figure){
+//       xl.push(key)
+//       yl.push(figure[key]) 
+//     }
+//     let trace = {
+//     x: xl,
+//     y: yl,
+//     type: 'bar'}
+  
+//   var layout = {
+//       title: 'Daily Service Calls',
+//       width: 800,
+//       height: 600,
+//   };
+
+//   fig={data:[trace],layout:layout};
+//   Plotly.newPlot('myDiv',fig);
+// })
 </script>
 {% endblock %}
